@@ -1,7 +1,7 @@
 {
   "name": "kvas-zhizha",
-  "version": "1.0.2",
-  "description": "Reproducible household kvass knowledge base branded as Zhizha: corrected dry bread baseline, recipes, safety checklists, multilingual AI-agent instructions, batch logs, and community notes.",
+  "version": "1.0.3",
+  "description": "Reproducible household kvass knowledge base branded as Zhizha: corrected dry bread baseline, visual photo examples, recipes, safety checklists, multilingual AI-agent instructions, batch logs, and community notes.",
   "type": "module",
   "private": false,
   "license": "SEE LICENSE IN docs/license-note.md",
@@ -27,6 +27,7 @@
     "reproducible-recipe",
     "fermentation",
     "recipes",
+    "photo-examples",
     "batch-log",
     "ai-agent-instructions",
     "knowledge-base"
