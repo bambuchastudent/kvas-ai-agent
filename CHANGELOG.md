@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.4.0
+
+- Renamed the visible project identity to **Жижа**.
+- Reframed the project as a small “cathedral and bazaar” for household kvass and fermentation knowledge.
+- Added ready-to-copy sharing messages.
+- Added a contribution guide.
+- Added a manifesto for the project philosophy.
+- Added a dedicated sharing document.
+
 ## v0.3.0
 
 - Added anonymized community notes.
