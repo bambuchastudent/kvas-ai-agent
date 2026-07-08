@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.3
+
+- Added photo example guidance for a too-thick bread mash / bread slurry.
+- Added `docs/photo-examples.md` with visual-control rules.
+- Updated README with a new visual-control link and a section for the case when the mash looks like thick porridge.
+- Clarified that a thick bread mash should be strained and only the liquid should continue to fermentation.
+- Added photo examples to package metadata, build script, workflow artifacts, README structure, and release notes.
+
 ## 1.0.2
 
 - Corrected the reproducible baseline for dry bread / crackers.
