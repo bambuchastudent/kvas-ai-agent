@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="1.0.1"
+VERSION="1.0.2"
 NAME="kvas"
 BRAND="zhizha"
 PACKAGE_DIR="dist/${NAME}-${VERSION}"
@@ -36,6 +36,8 @@ Brand: Zhizha
 
 This package contains the public text distribution of the Kvas project:
 
+- reproducible kvass protocol;
+- corrected dry bread baseline;
 - recipes;
 - fermentation safety checklist;
 - multilingual AI-agent instructions;
