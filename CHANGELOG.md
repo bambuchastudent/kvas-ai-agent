@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.2
+
+- Corrected the reproducible baseline for dry bread / crackers.
+- Changed 3 l baseline from 400 g dry bread to 180–220 g dry crackers / fully dry bread.
+- Added distinction between fully dry crackers and merely stale bread: 250–300 g for stale but not fully dry bread.
+- Reduced sugar baseline from 120 g to 100–120 g.
+- Reduced malt baseline from 30 g to 20–30 g.
+- Reduced rye flour baseline from 20 g to 10–20 g.
+- Reduced yeast baseline to 2–3 g fresh yeast or 0.5–1 g dry yeast.
+- Added explanation: bread contains mostly starch, while simple kvass needs sugar unless doing a real malt mash with temperature rests.
+- Added anonymized community note about the beer comparison and sugar in bread.
+- Updated package metadata, build script, workflow artifacts, version marker, README, and release notes to 1.0.2.
+
 ## 1.0.1
 
 - Restored the visible project name to **Квас**.
