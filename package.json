@@ -1,0 +1,32 @@
+{
+  "name": "kvas-zhizha",
+  "version": "1.0.1",
+  "description": "Kvas knowledge base branded as Zhizha: household kvass recipes, safety checklists, multilingual AI-agent instructions, and community notes.",
+  "type": "module",
+  "private": false,
+  "license": "SEE LICENSE IN docs/license-note.md",
+  "scripts": {
+    "package": "bash scripts/build-package.sh",
+    "pack:zip": "bash scripts/build-package.sh zip",
+    "pack:tar": "bash scripts/build-package.sh tar"
+  },
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "agent-instructions/",
+    "recipes/",
+    "safety/",
+    "docs/",
+    "release/"
+  ],
+  "keywords": [
+    "kvass",
+    "kvas",
+    "zhizha",
+    "fermentation",
+    "recipes",
+    "ai-agent-instructions",
+    "knowledge-base"
+  ]
+}
