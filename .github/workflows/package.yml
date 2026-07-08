@@ -26,13 +26,13 @@ jobs:
       - name: Upload zip package
         uses: actions/upload-artifact@v4
         with:
-          name: kvas-1.0.2-zip
-          path: dist/kvas-1.0.2.zip
+          name: kvas-1.0.3-zip
+          path: dist/kvas-1.0.3.zip
           if-no-files-found: error
 
       - name: Upload tar.gz package
         uses: actions/upload-artifact@v4
         with:
-          name: kvas-1.0.2-tar-gz
-          path: dist/kvas-1.0.2.tar.gz
+          name: kvas-1.0.3-tar-gz
+          path: dist/kvas-1.0.3.tar.gz
           if-no-files-found: error
