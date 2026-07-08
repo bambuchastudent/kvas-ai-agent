@@ -4,6 +4,13 @@
 
 - Restored the visible project name to **Квас**.
 - Kept **«Жижа»** as the project brand, voice, and public-facing nickname.
+- Added the main goal: **reproducible household kvass**.
+- Added a reproducible baseline protocol: `recipes/kvas-reproducible.md`.
+- Added a batch log template: `docs/batch-log-template.md`.
+- Added release notes: `release/RELEASE-1.0.1.md`.
+- Added package metadata: `package.json`.
+- Added package build script: `scripts/build-package.sh`.
+- Added GitHub Actions workflow: `.github/workflows/package.yml`.
 - Updated README sharing messages to say: project name **Квас**, brand **Жижа**.
 - Updated documentation structure from `zhizha/` back to `kvas/`.
 - Added a dedicated branding document.
