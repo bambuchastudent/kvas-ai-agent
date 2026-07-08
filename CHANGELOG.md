@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.1
+
+- Restored the visible project name to **Квас**.
+- Kept **«Жижа»** as the project brand, voice, and public-facing nickname.
+- Updated README sharing messages to say: project name **Квас**, brand **Жижа**.
+- Updated documentation structure from `zhizha/` back to `kvas/`.
+- Added a dedicated branding document.
+- Kept the existing repository URL unchanged: `bambuchastudent/kvas-ai-agent`.
+
 ## v0.4.0
 
 - Renamed the visible project identity to **Жижа**.
