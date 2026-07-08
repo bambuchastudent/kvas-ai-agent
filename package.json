@@ -1,7 +1,7 @@
 {
   "name": "kvas-zhizha",
   "version": "1.0.1",
-  "description": "Kvas knowledge base branded as Zhizha: household kvass recipes, safety checklists, multilingual AI-agent instructions, and community notes.",
+  "description": "Reproducible household kvass knowledge base branded as Zhizha: recipes, safety checklists, multilingual AI-agent instructions, batch logs, and community notes.",
   "type": "module",
   "private": false,
   "license": "SEE LICENSE IN docs/license-note.md",
@@ -24,8 +24,10 @@
     "kvass",
     "kvas",
     "zhizha",
+    "reproducible-recipe",
     "fermentation",
     "recipes",
+    "batch-log",
     "ai-agent-instructions",
     "knowledge-base"
   ]
