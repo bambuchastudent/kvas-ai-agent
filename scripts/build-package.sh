@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VERSION="1.0.1"
+NAME="kvas"
+BRAND="zhizha"
+PACKAGE_DIR="dist/${NAME}-${VERSION}"
+ARCHIVE_BASENAME="${NAME}-${VERSION}"
+FORMAT="${1:-all}"
+
+rm -rf dist
+mkdir -p "${PACKAGE_DIR}"
+
+copy_if_exists() {
+  local path="$1"
+  if [ -e "$path" ]; then
+    mkdir -p "${PACKAGE_DIR}/$(dirname "$path")"
+    cp -R "$path" "${PACKAGE_DIR}/$path"
+  fi
+}
+
+copy_if_exists README.md
+copy_if_exists CHANGELOG.md
+copy_if_exists CONTRIBUTING.md
+copy_if_exists package.json
+copy_if_exists agent-instructions
+copy_if_exists recipes
+copy_if_exists safety
+copy_if_exists docs
+copy_if_exists release
+
+cat > "${PACKAGE_DIR}/PACKAGE.md" <<EOF
+# Kvas ${VERSION}
+
+Brand: Zhizha
+
+This package contains the public text distribution of the Kvas project:
+
+- recipes;
+- fermentation safety checklist;
+- multilingual AI-agent instructions;
+- community notes;
+- sharing guide;
+- branding and manifesto documents.
+
+Repository: https://github.com/bambuchastudent/kvas-ai-agent
+EOF
+
+(
+  cd dist
+  if [ "${FORMAT}" = "zip" ] || [ "${FORMAT}" = "all" ]; then
+    zip -r "${ARCHIVE_BASENAME}.zip" "${NAME}-${VERSION}" >/dev/null
+  fi
+  if [ "${FORMAT}" = "tar" ] || [ "${FORMAT}" = "all" ]; then
+    tar -czf "${ARCHIVE_BASENAME}.tar.gz" "${NAME}-${VERSION}"
+  fi
+)
+
+echo "Package built in dist/:"
+ls -la dist
