@@ -1,5 +1,5 @@
 {
-  "protocol_version": "1.0.4",
+  "protocol_version": "1.0.5",
   "batch_id": "KVAS-2026-07-12-01",
   "stage": "primary_fermentation",
   "target_volume_l": 3,
