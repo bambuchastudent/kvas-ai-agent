@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.5
+
+- Added mandatory explicit state management for the current kvass batch.
+- Added canonical process stages from `planning` to `ready`, plus `discard` and `unknown`.
+- Added `agent-instructions/state-model.md` and translated state guides in English, Spanish, and German.
+- Added `agent-instructions/state.schema.json` for machine-readable state validation.
+- Added `agent-instructions/state-example.json` as a complete handoff example.
+- Updated all four AI-agent instructions to require state updates from confirmed user facts only.
+- Added the response format: current state, next action, and what the user should report next.
+- Added safety flags for sealed primary fermentation and bottle overpressure.
+- Added explicit agent-to-agent handoff rules.
+- Updated README, reproducible protocol, batch log, Telegram share page, package metadata, workflows, release notes, and artifact names to 1.0.5.
+
 ## 1.0.4
 
 - Added a dedicated Telegram share landing page with the title **Квас Жижа для ИИ-агента**.
