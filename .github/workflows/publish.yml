@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+  pull_request:
+    branches:
+      - develop
   workflow_dispatch:
 
 permissions:
@@ -14,7 +17,7 @@ env:
   TAG: "v1.0.5"
 
 concurrency:
-  group: publish-1.0.5
+  group: publish-1.0.5-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -99,6 +102,7 @@ jobs:
 
   release:
     name: Publish GitHub Release
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -158,6 +162,7 @@ jobs:
 
   gh-pages-branch:
     name: Publish website to gh-pages branch
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -196,6 +201,7 @@ jobs:
 
   github-pages-actions:
     name: Deploy with GitHub Pages Actions
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     continue-on-error: true
