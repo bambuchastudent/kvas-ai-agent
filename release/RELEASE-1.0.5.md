@@ -111,7 +111,15 @@ dist/kvas-1.0.5.zip
 dist/kvas-1.0.5.tar.gz
 ```
 
-## Рекомендуемый GitHub Release
+## GitHub Release
+
+Публикацией занимается workflow:
+
+```text
+.github/workflows/release.yml
+```
+
+Он проверяет согласованность версии, собирает архивы и создаёт или обновляет релиз.
 
 ```text
 Tag: v1.0.5
