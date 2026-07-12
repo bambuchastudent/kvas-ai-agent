@@ -4,6 +4,7 @@ from __future__ import annotations
 import base64
 import importlib.util
 import re
+import sys
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
@@ -17,6 +18,7 @@ def load_builder():
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Cannot load {ORIGINAL}")
     module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 
