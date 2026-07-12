@@ -1,0 +1,100 @@
+name: Verify live 1.0.5 release and website
+
+on:
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  VERSION: "1.0.5"
+  TAG: "v1.0.5"
+  SITE: "https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5"
+
+jobs:
+  verify-live:
+    name: Verify release assets and live language pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p live-verification/release-pdfs
+          gh release view "$TAG" --json tagName,name,assets > live-verification/release.json
+          gh release download "$TAG" --pattern '*.pdf' --dir live-verification/release-pdfs
+
+          expected_languages=(ru en es de zh-CN)
+          expected_types=(summary instructions)
+          for lang in "${expected_languages[@]}"; do
+            for type in "${expected_types[@]}"; do
+              test -s "live-verification/release-pdfs/kvas-${type}-${lang}-${VERSION}.pdf"
+            done
+          done
+          test "$(find live-verification/release-pdfs -maxdepth 1 -name '*.pdf' | wc -l)" -eq 10
+
+          assets="$(gh release view "$TAG" --json assets --jq '.assets[].name')"
+          for asset in \
+            manifest.json \
+            kvas-1.0.5-publication.zip \
+            kvas-1.0.5-publication.tar.gz \
+            kvas-1.0.5-website.zip \
+            kvas-1.0.5-website.tar.gz; do
+            grep -Fxq "$asset" <<<"$assets"
+          done
+
+      - name: Verify live website and PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p live-verification/site
+          curl --fail --location --retry 8 --retry-delay 5 "$SITE/manifest.json" \
+            --output live-verification/site/manifest.json
+
+          expected_languages=(ru en es de zh-CN)
+          expected_types=(summary instructions)
+          for lang in "${expected_languages[@]}"; do
+            for type in "${expected_types[@]}"; do
+              curl --fail --location --retry 8 --retry-delay 5 \
+                "$SITE/${lang}/${type}/" \
+                --output "live-verification/site/${lang}-${type}.html"
+              grep -q 'Version 1.0.5' "live-verification/site/${lang}-${type}.html"
+
+              curl --fail --location --retry 8 --retry-delay 5 \
+                "$SITE/pdfs/kvas-${type}-${lang}-${VERSION}.pdf" \
+                --output "live-verification/site/kvas-${type}-${lang}-${VERSION}.pdf"
+              test "$(head -c 4 "live-verification/site/kvas-${type}-${lang}-${VERSION}.pdf")" = '%PDF'
+            done
+          done
+
+      - name: Write verification summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '# Kvas 1.0.5 live verification'
+            echo
+            echo '- Expected PDFs: 10'
+            echo '- Expected web pages: 10'
+            echo '- Languages: ru, en, es, de, zh-CN'
+            echo '- Release: https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.0.5'
+            echo '- Website: https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/'
+          } > live-verification/README.md
+
+      - name: Upload live verification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kvas-1.0.5-live-verification
+          path: live-verification/
+          if-no-files-found: warn
+          retention-days: 14
