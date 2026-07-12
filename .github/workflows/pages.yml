@@ -6,6 +6,7 @@ on:
       - develop
     paths:
       - "share/**"
+      - "agent-instructions/state*.json"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -36,39 +37,49 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p _site/assets _site/v1.0.4
+          mkdir -p _site/assets _site/v1.0.5
 
           cat share/assets/card-1.0.4.b64.part* \
             | tr -d '\n\r ' \
             | base64 --decode \
-            > _site/assets/kvas-zhizha-ai-agent-1.0.4.jpg
+            > _site/assets/kvas-zhizha-ai-agent-1.0.5.jpg
 
           cp share/index.html _site/index.html
-          cp share/index.html _site/v1.0.4/index.html
+          cp share/index.html _site/v1.0.5/index.html
           touch _site/.nojekyll
 
-      - name: Validate share card
+      - name: Validate share card and state files
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
+          import json
           from pathlib import Path
 
-          image = Path("_site/assets/kvas-zhizha-ai-agent-1.0.4.jpg").read_bytes()
+          image = Path("_site/assets/kvas-zhizha-ai-agent-1.0.5.jpg").read_bytes()
           assert len(image) > 10_000, "Share image is unexpectedly small"
           assert image[:2] == b"\xff\xd8", "Share image is not a JPEG"
           assert image[-2:] == b"\xff\xd9", "Share image is truncated"
 
-          html = Path("_site/v1.0.4/index.html").read_text(encoding="utf-8")
+          html = Path("_site/v1.0.5/index.html").read_text(encoding="utf-8")
           required = [
               "Квас Жижа для ИИ-агента",
+              "Версия 1.0.5",
               'property="og:title"',
               'property="og:image"',
               'property="og:url"',
-              "kvas-zhizha-ai-agent-1.0.4.jpg",
+              "kvas-zhizha-ai-agent-1.0.5.jpg",
+              "/v1.0.5/",
           ]
           missing = [item for item in required if item not in html]
           assert not missing, f"Missing share metadata: {missing}"
+
+          schema = json.loads(Path("agent-instructions/state.schema.json").read_text(encoding="utf-8"))
+          example = json.loads(Path("agent-instructions/state-example.json").read_text(encoding="utf-8"))
+          assert example["protocol_version"] == "1.0.5"
+          assert example["stage"] in schema["properties"]["stage"]["enum"]
+          for field in schema["required"]:
+              assert field in example, f"State example misses required field: {field}"
           PY
 
       - name: Upload GitHub Pages artifact
