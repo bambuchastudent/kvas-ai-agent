@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/bambuchastudent/kvas-ai-agent/agent-instructions/state.schema.json",
+  "title": "Kvass Agent State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol_version",
+    "batch_id",
+    "stage",
+    "target_volume_l",
+    "ingredients",
+    "process",
+    "observations",
+    "safety_flags",
+    "unknowns",
+    "next_action",
+    "updated_from_user_message"
+  ],
+  "properties": {
+    "protocol_version": { "type": "string" },
+    "batch_id": { "type": ["string", "null"] },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "planning",
+        "bread_preparation",
+        "infusion",
+        "straining",
+        "cooling",
+        "inoculation",
+        "primary_fermentation",
+        "ready_to_bottle",
+        "bottling",
+        "bottle_conditioning",
+        "chilling",
+        "ready",
+        "discard",
+        "unknown"
+      ]
+    },
+    "target_volume_l": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+    "ingredients": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bread_type",
+        "bread_condition",
+        "bread_g",
+        "sweetener_type",
+        "sweetener_g",
+        "malt_g",
+        "rye_flour_g",
+        "starter_type",
+        "starter_amount"
+      ],
+      "properties": {
+        "bread_type": { "type": ["string", "null"] },
+        "bread_condition": {
+          "type": ["string", "null"],
+          "enum": ["fully_dry", "dry", "stale", "fresh", "mixed", "unknown", null]
+        },
+        "bread_g": { "type": ["number", "null"], "minimum": 0 },
+        "sweetener_type": { "type": ["string", "null"] },
+        "sweetener_g": { "type": ["number", "null"], "minimum": 0 },
+        "malt_g": { "type": ["number", "null"], "minimum": 0 },
+        "rye_flour_g": { "type": ["number", "null"], "minimum": 0 },
+        "starter_type": { "type": ["string", "null"] },
+        "starter_amount": { "type": ["string", "number", "null"] }
+      }
+    },
+    "process": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "room_temperature_c",
+        "liquid_temperature_c",
+        "stage_started_at",
+        "elapsed_hours",
+        "container_closed_tightly"
+      ],
+      "properties": {
+        "room_temperature_c": { "type": ["number", "null"] },
+        "liquid_temperature_c": { "type": ["number", "null"] },
+        "stage_started_at": { "type": ["string", "null"], "format": "date-time" },
+        "elapsed_hours": { "type": ["number", "null"], "minimum": 0 },
+        "container_closed_tightly": { "type": ["boolean", "null"] }
+      }
+    },
+    "observations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bubbles",
+        "foam",
+        "smell",
+        "mold",
+        "colored_spots",
+        "slime",
+        "bottle_firmness"
+      ],
+      "properties": {
+        "bubbles": { "type": ["boolean", "null"] },
+        "foam": { "type": ["boolean", "null"] },
+        "smell": { "type": ["string", "null"] },
+        "mold": { "type": ["boolean", "null"] },
+        "colored_spots": { "type": ["boolean", "null"] },
+        "slime": { "type": ["boolean", "null"] },
+        "bottle_firmness": {
+          "type": ["string", "null"],
+          "enum": ["soft", "slightly_firm", "firm", "very_firm", "deformed", "unknown", null]
+        }
+      }
+    },
+    "safety_flags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "next_action": { "type": ["string", "null"] },
+    "updated_from_user_message": { "type": ["string", "null"] }
+  }
+}
