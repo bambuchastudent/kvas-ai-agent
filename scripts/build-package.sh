@@ -20,6 +20,7 @@ copy_if_exists() {
 }
 
 copy_if_exists README.md
+copy_if_exists README.zh-CN.md
 copy_if_exists CHANGELOG.md
 copy_if_exists CONTRIBUTING.md
 copy_if_exists package.json
@@ -38,10 +39,10 @@ Brand: Zhizha
 This package contains:
 
 - the reproducible kvass protocol;
-- a simple README recipe;
+- Russian and Simplified Chinese project descriptions;
 - fermentation safety guidance;
 - batch logs and visual-control notes;
-- multilingual stateful AI-agent instructions;
+- stateful AI-agent instructions in Russian, English, Spanish, German, and Simplified Chinese;
 - JSON Schema and example state for agent handoff;
 - the Telegram share landing page and Open Graph card source;
 - release and contribution documents.
