@@ -1,3 +1,3 @@
 # Version
 
-Current release: 1.0.3
+Current release: 1.0.4
