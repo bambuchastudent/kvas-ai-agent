@@ -1,0 +1,53 @@
+name: Deploy Telegram share page
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "share/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build static share page
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site/assets _site/v1.0.4
+          base64 --decode share/assets/kvas-zhizha-ai-agent-1.0.4.jpg.b64 \
+            > _site/assets/kvas-zhizha-ai-agent-1.0.4.jpg
+          cp share/index.html _site/index.html
+          cp share/index.html _site/v1.0.4/index.html
+          touch _site/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
