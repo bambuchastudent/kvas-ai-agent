@@ -21,11 +21,18 @@ https://bambuchastudent.github.io/kvas-ai-agent/v1.0.4/
 ## Что добавлено
 
 - `share/index.html` — страница для репоста;
-- `share/assets/kvas-zhizha-ai-agent-1.0.4.jpg.b64` — источник изображения;
+- `share/assets/card-1.0.4.b64.part01` … `part10` — проверяемый источник JPEG-карточки, разбитый на небольшие части;
 - `share/telegram-message.txt` — готовый текст сообщения;
-- `.github/workflows/pages.yml` — публикация через GitHub Pages;
+- `.github/workflows/pages.yml` — сборка, проверка и публикация через GitHub Pages;
 - `docs/telegram-sharing.md` — правила репоста и обновления карточки;
 - упрощённый README со ссылкой для Telegram в самом начале.
+
+Workflow склеивает Base64-части, декодирует JPEG и проверяет:
+
+- достаточный размер файла;
+- сигнатуру JPEG;
+- наличие завершающего маркера JPEG;
+- наличие `og:title`, `og:image`, `og:url` и нужного заголовка в HTML.
 
 ## Почему отдельная страница
 
