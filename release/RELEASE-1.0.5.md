@@ -34,13 +34,17 @@ kvas-summary-zh-CN-1.0.5.pdf
 kvas-instructions-zh-CN-1.0.5.pdf
 ```
 
-Также к релизу прикладываются:
+## Архивы релиза
 
 ```text
 manifest.json
 kvas-1.0.5-publication.zip
 kvas-1.0.5-publication.tar.gz
+kvas-1.0.5-website.zip
+kvas-1.0.5-website.tar.gz
 ```
+
+`publication` содержит PDF и исходные Markdown-файлы. `website` содержит полностью собранный статический сайт, который можно открыть или разместить отдельно даже при недоступности GitHub Pages.
 
 ## Веб-страницы
 
@@ -136,7 +140,10 @@ bottle_overpressure
 2. обновляет тег `v1.0.5` на проверенный commit;
 3. создаёт или обновляет GitHub Release;
 4. загружает все PDF и архивы;
-5. публикует сайт через GitHub Pages.
+5. публикует сайт в ветку `gh-pages`;
+6. дополнительно пытается выполнить GitHub Pages Actions deployment.
+
+GitHub Release создаётся независимо от результата Pages deployment, поэтому PDF и архив сайта появляются в любом случае.
 
 ## Заголовок релиза
 
