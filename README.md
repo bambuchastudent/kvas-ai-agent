@@ -25,6 +25,9 @@
 
 Итого релиз содержит **10 PDF-файлов и 10 веб-страниц**.
 
+- [GitHub Release v1.0.5](https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.0.5)
+- [Веб-версия 1.0.5](https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/)
+
 ## Веб-версия
 
 Главная страница версии:
@@ -70,7 +73,11 @@ kvas-instructions-zh-CN-1.0.5.pdf
 manifest.json
 kvas-1.0.5-publication.zip
 kvas-1.0.5-publication.tar.gz
+kvas-1.0.5-website.zip
+kvas-1.0.5-website.tar.gz
 ```
+
+Архивы `publication` содержат PDF и исходные Markdown-файлы. Архивы `website` содержат полностью собранный статический сайт.
 
 ## Как обеспечивается одинаковая структура
 
@@ -178,7 +185,7 @@ publication/zh-CN/instructions.md
 
 ```bash
 python -m pip install -r requirements-publication.txt
-python scripts/build-publication.py
+python scripts/build-publication-safe.py
 ```
 
 Или через npm:
@@ -191,7 +198,7 @@ npm run package
 
 ## CI/CD
 
-Единый workflow:
+Основной workflow:
 
 ```text
 .github/workflows/publish.yml
@@ -204,8 +211,16 @@ npm run package
 3. собирает 10 PDF и 10 веб-страниц;
 4. проверяет PDF через `pdfinfo` и `pdftoppm`;
 5. обновляет тег `v1.0.5`;
-6. прикладывает все PDF к GitHub Release;
-7. публикует сайт через GitHub Pages.
+6. прикладывает все PDF и архивы к GitHub Release;
+7. публикует сайт в ветку `gh-pages` и через GitHub Pages Actions.
+
+Проверка уже опубликованных материалов:
+
+```text
+.github/workflows/verify-live.yml
+```
+
+Она проверяет все 10 PDF в GitHub Release, все языковые веб-страницы и PDF на сайте.
 
 ## Репозиторий
 
