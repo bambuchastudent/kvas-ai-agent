@@ -4,10 +4,12 @@
 
 - Added mandatory explicit state management for the current kvass batch.
 - Added canonical process stages from `planning` to `ready`, plus `discard` and `unknown`.
-- Added `agent-instructions/state-model.md` and translated state guides in English, Spanish, and German.
+- Added `agent-instructions/state-model.md` and translated state guides in English, Spanish, German, and Simplified Chinese.
+- Added `README.zh-CN.md` as a Simplified Chinese project description.
+- Added `agent-instructions/kvas-agent.zh-CN.md` and `agent-instructions/state-model.zh-CN.md`.
 - Added `agent-instructions/state.schema.json` for machine-readable state validation.
 - Added `agent-instructions/state-example.json` as a complete handoff example.
-- Updated all four AI-agent instructions to require state updates from confirmed user facts only.
+- Updated all five AI-agent instructions to require state updates from confirmed user facts only.
 - Added the response format: current state, next action, and what the user should report next.
 - Added safety flags for sealed primary fermentation and bottle overpressure.
 - Added explicit agent-to-agent handoff rules.
