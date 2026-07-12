@@ -57,7 +57,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          python scripts/build-publication.py 2>&1 | tee publication-build.log
+          python scripts/build-publication-safe.py 2>&1 | tee publication-build.log
 
       - name: Upload publication builder log
         if: always()
