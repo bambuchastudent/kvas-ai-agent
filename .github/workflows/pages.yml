@@ -38,7 +38,9 @@ jobs:
           set -euo pipefail
           mkdir -p _site/assets _site/v1.0.4
 
-          base64 --decode share/assets/kvas-zhizha-ai-agent-1.0.4.jpg.b64 \
+          cat share/assets/card-1.0.4.b64.part* \
+            | tr -d '\n\r ' \
+            | base64 --decode \
             > _site/assets/kvas-zhizha-ai-agent-1.0.4.jpg
 
           cp share/index.html _site/index.html
