@@ -35,14 +35,37 @@ discard
 unknown
 ```
 
-## Новые файлы
+## Языки
+
+Версия 1.0.5 включает инструкции для ИИ-агентов на пяти языках:
+
+- русский;
+- английский;
+- испанский;
+- немецкий;
+- упрощённый китайский.
+
+Добавлено китайское описание проекта:
+
+```text
+README.zh-CN.md
+```
+
+## Новые файлы состояния
 
 - `agent-instructions/state-model.md`;
 - `agent-instructions/state-model.en.md`;
 - `agent-instructions/state-model.es.md`;
 - `agent-instructions/state-model.de.md`;
+- `agent-instructions/state-model.zh-CN.md`;
 - `agent-instructions/state.schema.json`;
 - `agent-instructions/state-example.json`.
+
+Китайская инструкция агента:
+
+```text
+agent-instructions/kvas-agent.zh-CN.md
+```
 
 ## Правила состояния
 
@@ -96,7 +119,7 @@ https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/
 Квас Жижа для ИИ-агента
 ```
 
-В описание добавлено состояние партии и передача между ИИ-агентами.
+В описание добавлены состояние партии, передача между ИИ-агентами и поддержка пяти языков.
 
 ## Пакет
 
@@ -111,6 +134,8 @@ dist/kvas-1.0.5.zip
 dist/kvas-1.0.5.tar.gz
 ```
 
+В архивы включён `README.zh-CN.md` и китайские инструкции агента.
+
 ## GitHub Release
 
 Публикацией занимается workflow:
@@ -119,7 +144,7 @@ dist/kvas-1.0.5.tar.gz
 .github/workflows/release.yml
 ```
 
-Он проверяет согласованность версии, собирает архивы и создаёт или обновляет релиз.
+Он проверяет согласованность версии, наличие китайской документации, собирает архивы и создаёт или обновляет релиз.
 
 ```text
 Tag: v1.0.5
