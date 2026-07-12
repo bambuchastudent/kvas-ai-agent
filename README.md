@@ -7,6 +7,11 @@
 
 **Текущая версия: 1.0.5**
 
+Языки:
+
+- Русский — этот README;
+- [简体中文](README.zh-CN.md).
+
 ## Поделиться в Telegram
 
 Отправляй эту ссылку:
@@ -18,7 +23,7 @@
 ```text
 Квас Жижа для ИИ-агента
 
-Открытая база знаний про воспроизводимый домашний квас: простой рецепт в граммах, безопасность, состояние текущей партии, журнал и инструкции для ИИ-агентов на русском, английском, испанском и немецком.
+Открытая база знаний про воспроизводимый домашний квас: простой рецепт в граммах, безопасность, состояние текущей партии, журнал и инструкции для ИИ-агентов на русском, английском, испанском, немецком и китайском.
 
 https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/
 ```
@@ -157,6 +162,7 @@ unknown
 - English: [`agent-instructions/kvas-agent.en.md`](agent-instructions/kvas-agent.en.md)
 - Español: [`agent-instructions/kvas-agent.es.md`](agent-instructions/kvas-agent.es.md)
 - Deutsch: [`agent-instructions/kvas-agent.de.md`](agent-instructions/kvas-agent.de.md)
+- 简体中文: [`agent-instructions/kvas-agent.zh-CN.md`](agent-instructions/kvas-agent.zh-CN.md)
 
 Модели состояния:
 
@@ -164,6 +170,7 @@ unknown
 - English: [`agent-instructions/state-model.en.md`](agent-instructions/state-model.en.md)
 - Español: [`agent-instructions/state-model.es.md`](agent-instructions/state-model.es.md)
 - Deutsch: [`agent-instructions/state-model.de.md`](agent-instructions/state-model.de.md)
+- 简体中文: [`agent-instructions/state-model.zh-CN.md`](agent-instructions/state-model.zh-CN.md)
 
 ИИ-агент обязан:
 
@@ -221,8 +228,11 @@ GitHub Actions:
 
 ```text
 README.md
+README.zh-CN.md
 agent-instructions/kvas-agent.md
+agent-instructions/kvas-agent.zh-CN.md
 agent-instructions/state-model.md
+agent-instructions/state-model.zh-CN.md
 agent-instructions/state.schema.json
 agent-instructions/state-example.json
 recipes/kvas-reproducible.md
