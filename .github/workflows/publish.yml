@@ -7,9 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 
 env:
   VERSION: "1.0.5"
@@ -20,18 +18,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  publish:
-    name: Build, verify, release, and deploy
+  build:
+    name: Build and verify publication
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -57,6 +52,16 @@ jobs:
       - name: Build identical multilingual PDFs and web pages
         run: python scripts/build-publication.py
 
+      - name: Package generated website
+        shell: bash
+        run: |
+          set -euo pipefail
+          (
+            cd dist/site
+            zip -qr "../kvas-${VERSION}-website.zip" .
+          )
+          tar -C dist/site -czf "dist/kvas-${VERSION}-website.tar.gz" .
+
       - name: Verify publication outputs
         shell: bash
         run: |
@@ -80,18 +85,36 @@ jobs:
           test "$(find dist/publication -maxdepth 1 -name '*.pdf' | wc -l)" -eq 10
           test -s "dist/kvas-${VERSION}-publication.zip"
           test -s "dist/kvas-${VERSION}-publication.tar.gz"
+          test -s "dist/kvas-${VERSION}-website.zip"
+          test -s "dist/kvas-${VERSION}-website.tar.gz"
           test -s "dist/site/v${VERSION}/manifest.json"
 
-      - name: Upload verified build artifact
+      - name: Upload verified publication build
         uses: actions/upload-artifact@v4
         with:
-          name: kvas-1.0.5-publication
-          path: |
-            dist/publication/
-            dist/kvas-1.0.5-publication.zip
-            dist/kvas-1.0.5-publication.tar.gz
+          name: kvas-1.0.5-publication-build
+          path: dist/
           if-no-files-found: error
           retention-days: 30
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download verified publication
+        uses: actions/download-artifact@v4
+        with:
+          name: kvas-1.0.5-publication-build
+          path: dist
 
       - name: Point v1.0.5 tag to the verified commit
         shell: bash
@@ -102,7 +125,7 @@ jobs:
           git tag -f "$TAG" "$GITHUB_SHA"
           git push origin "refs/tags/$TAG" --force
 
-      - name: Create or update GitHub Release with all PDFs
+      - name: Create or update GitHub Release with PDFs and website
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -128,12 +151,69 @@ jobs:
             dist/publication/manifest.json \
             dist/kvas-1.0.5-publication.zip \
             dist/kvas-1.0.5-publication.tar.gz \
+            dist/kvas-1.0.5-website.zip \
+            dist/kvas-1.0.5-website.tar.gz \
             --clobber
+
+  gh-pages-branch:
+    name: Publish website to gh-pages branch
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download verified publication
+        uses: actions/download-artifact@v4
+        with:
+          name: kvas-1.0.5-publication-build
+          path: dist
+
+      - name: Force-publish static website branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/kvas-site
+          mkdir -p /tmp/kvas-site
+          cp -a dist/site/. /tmp/kvas-site/
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --orphan gh-pages-build
+          git rm -rf . >/dev/null 2>&1 || true
+          cp -a /tmp/kvas-site/. .
+          touch .nojekyll
+          git add -A
+          git commit -m "Publish Kvas 1.0.5 multilingual website"
+          git push origin HEAD:gh-pages --force
+
+  github-pages-actions:
+    name: Deploy with GitHub Pages Actions
+    needs: build
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Download verified publication
+        uses: actions/download-artifact@v4
+        with:
+          name: kvas-1.0.5-publication-build
+          path: dist
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload multilingual website
         uses: actions/upload-pages-artifact@v3
