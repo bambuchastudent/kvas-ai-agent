@@ -134,7 +134,13 @@ dist/kvas-1.0.5.zip
 dist/kvas-1.0.5.tar.gz
 ```
 
-В архивы включён `README.zh-CN.md` и китайские инструкции агента.
+В архивы включены:
+
+```text
+README.zh-CN.md
+agent-instructions/kvas-agent.zh-CN.md
+agent-instructions/state-model.zh-CN.md
+```
 
 ## GitHub Release
 
