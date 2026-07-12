@@ -1,7 +1,7 @@
 {
   "name": "kvas-zhizha",
-  "version": "1.0.4",
-  "description": "Reproducible household kvass knowledge base branded as Zhizha, with multilingual AI-agent instructions and a Telegram share page with a custom Open Graph card.",
+  "version": "1.0.5",
+  "description": "Reproducible household kvass knowledge base branded as Zhizha, with multilingual stateful AI-agent instructions, JSON state schema, batch logs, safety rules, and a Telegram share page.",
   "type": "module",
   "private": false,
   "license": "SEE LICENSE IN docs/license-note.md",
@@ -27,10 +27,10 @@
     "zhizha",
     "reproducible-recipe",
     "fermentation",
-    "recipes",
-    "photo-examples",
+    "state-machine",
+    "json-schema",
+    "agent-handoff",
     "telegram-preview",
-    "open-graph",
     "batch-log",
     "ai-agent-instructions",
     "knowledge-base"
