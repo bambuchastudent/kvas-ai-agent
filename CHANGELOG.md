@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.4
+
+- Added a dedicated Telegram share landing page with the title **Квас Жижа для ИИ-агента**.
+- Added custom Open Graph and Twitter Card metadata for Telegram and other messengers.
+- Added a branded share image generated from the user-provided kvass photo.
+- Added a versioned share URL: `https://bambuchastudent.github.io/kvas-ai-agent/v1.0.4/`.
+- Added `.github/workflows/pages.yml` to deploy the share page through GitHub Pages.
+- Added `docs/telegram-sharing.md` and `share/telegram-message.txt`.
+- Simplified README and moved the Telegram share link to the top.
+- Added panela as a valid replacement for white sugar in the simple recipe.
+- Updated package metadata, build script, workflow artifacts, version marker, and release notes to 1.0.4.
+
 ## 1.0.3
 
 - Added photo example guidance for a too-thick bread mash / bread slurry.
