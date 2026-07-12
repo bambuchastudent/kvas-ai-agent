@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Квас Жижа для ИИ-агента</title>
-  <meta name="description" content="Воспроизводимый домашний квас: простой рецепт, безопасность, журнал партий и инструкции для ИИ-агентов.">
+  <meta name="description" content="Воспроизводимый домашний квас: рецепт, безопасность, состояние партии, журнал и инструкции для ИИ-агентов.">
 
-  <link rel="canonical" href="https://bambuchastudent.github.io/kvas-ai-agent/v1.0.4/">
+  <link rel="canonical" href="https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/">
 
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:site_name" content="Квас — бренд Жижа">
   <meta property="og:title" content="Квас Жижа для ИИ-агента">
-  <meta property="og:description" content="Воспроизводимый домашний квас: простой рецепт, безопасность, журнал партий и инструкции для ИИ-агентов.">
-  <meta property="og:url" content="https://bambuchastudent.github.io/kvas-ai-agent/v1.0.4/">
-  <meta property="og:image" content="https://bambuchastudent.github.io/kvas-ai-agent/assets/kvas-zhizha-ai-agent-1.0.4.jpg">
-  <meta property="og:image:secure_url" content="https://bambuchastudent.github.io/kvas-ai-agent/assets/kvas-zhizha-ai-agent-1.0.4.jpg">
+  <meta property="og:description" content="Рецепт в граммах, безопасность, явное состояние партии и передача между ИИ-агентами.">
+  <meta property="og:url" content="https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/">
+  <meta property="og:image" content="https://bambuchastudent.github.io/kvas-ai-agent/assets/kvas-zhizha-ai-agent-1.0.5.jpg">
+  <meta property="og:image:secure_url" content="https://bambuchastudent.github.io/kvas-ai-agent/assets/kvas-zhizha-ai-agent-1.0.5.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="600">
   <meta property="og:image:height" content="315">
@@ -23,8 +23,8 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Квас Жижа для ИИ-агента">
-  <meta name="twitter:description" content="Воспроизводимый домашний квас: простой рецепт, безопасность, журнал партий и инструкции для ИИ-агентов.">
-  <meta name="twitter:image" content="https://bambuchastudent.github.io/kvas-ai-agent/assets/kvas-zhizha-ai-agent-1.0.4.jpg">
+  <meta name="twitter:description" content="Рецепт в граммах, безопасность, явное состояние партии и передача между ИИ-агентами.">
+  <meta name="twitter:image" content="https://bambuchastudent.github.io/kvas-ai-agent/assets/kvas-zhizha-ai-agent-1.0.5.jpg">
 
   <style>
     :root { color-scheme: dark; --bg:#15100b; --card:#21180f; --gold:#eeb53f; --text:#fff8e8; --muted:#d8c9b1; }
@@ -36,6 +36,7 @@
     .eyebrow { color:var(--gold); font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
     h1 { font-size:clamp(38px,7vw,76px); line-height:.98; margin:.25em 0 .25em; }
     p { color:var(--muted); font-size:clamp(18px,2.2vw,24px); line-height:1.55; max-width:760px; }
+    .state { margin-top:20px; padding:18px 20px; border-radius:16px; background:rgba(255,255,255,.055); color:var(--muted); line-height:1.5; }
     .actions { display:flex; flex-wrap:wrap; gap:14px; margin-top:30px; }
     a.button { display:inline-flex; align-items:center; justify-content:center; padding:15px 22px; border-radius:14px; text-decoration:none; font-weight:800; background:var(--gold); color:#21180f; }
     a.secondary { background:transparent; color:var(--text); border:1px solid rgba(255,255,255,.25); }
@@ -44,15 +45,17 @@
 </head>
 <body>
   <main>
-    <img class="hero" src="https://bambuchastudent.github.io/kvas-ai-agent/assets/kvas-zhizha-ai-agent-1.0.4.jpg" alt="Квас Жижа для ИИ-агента">
+    <img class="hero" src="https://bambuchastudent.github.io/kvas-ai-agent/assets/kvas-zhizha-ai-agent-1.0.5.jpg" alt="Квас Жижа для ИИ-агента">
     <section class="content">
-      <div class="eyebrow">Версия 1.0.4</div>
+      <div class="eyebrow">Версия 1.0.5</div>
       <h1>Квас Жижа<br>для ИИ-агента</h1>
-      <p>Открытая база знаний про воспроизводимый домашний квас: простой рецепт в граммах, визуальный контроль, безопасность, журнал партий и инструкции для ИИ-агентов на четырёх языках.</p>
+      <p>Открытая база знаний про воспроизводимый домашний квас: простой рецепт, визуальный контроль, безопасность, журнал партий и инструкции на четырёх языках.</p>
+      <div class="state"><strong>Новое:</strong> ИИ-агент ведёт явное состояние партии, не выдумывает пропущенные данные и может передать другому агенту JSON, последнее действие, следующий шаг и неизвестные поля.</div>
       <div class="actions">
-        <a class="button" href="https://t.me/share/url?url=https%3A%2F%2Fbambuchastudent.github.io%2Fkvas-ai-agent%2Fv1.0.4%2F&text=%D0%9A%D0%B2%D0%B0%D1%81%20%D0%96%D0%B8%D0%B6%D0%B0%20%D0%B4%D0%BB%D1%8F%20%D0%98%D0%98-%D0%B0%D0%B3%D0%B5%D0%BD%D1%82%D0%B0">Поделиться в Telegram</a>
+        <a class="button" href="https://t.me/share/url?url=https%3A%2F%2Fbambuchastudent.github.io%2Fkvas-ai-agent%2Fv1.0.5%2F&text=%D0%9A%D0%B2%D0%B0%D1%81%20%D0%96%D0%B8%D0%B6%D0%B0%20%D0%B4%D0%BB%D1%8F%20%D0%98%D0%98-%D0%B0%D0%B3%D0%B5%D0%BD%D1%82%D0%B0">Поделиться в Telegram</a>
         <a class="button secondary" href="https://github.com/bambuchastudent/kvas-ai-agent">Открыть GitHub</a>
         <a class="button secondary" href="https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/agent-instructions/kvas-agent.md">Инструкция для ИИ-агента</a>
+        <a class="button secondary" href="https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/agent-instructions/state-model.md">Состояние партии</a>
       </div>
       <div class="small">Название проекта — «Квас». Бренд и характер — «Жижа».</div>
     </section>
