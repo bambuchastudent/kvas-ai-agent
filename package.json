@@ -1,14 +1,16 @@
 {
   "name": "kvas-zhizha",
   "version": "1.0.5",
-  "description": "Reproducible household kvass knowledge base branded as Zhizha, with multilingual stateful AI-agent instructions in Russian, English, Spanish, German, and Simplified Chinese.",
+  "description": "Reproducible household kvass knowledge base with identical multilingual summaries and AI-agent instructions published as PDF and web pages.",
   "type": "module",
   "private": false,
   "license": "SEE LICENSE IN docs/license-note.md",
   "scripts": {
-    "package": "bash scripts/build-package.sh",
-    "pack:zip": "bash scripts/build-package.sh zip",
-    "pack:tar": "bash scripts/build-package.sh tar"
+    "package": "python scripts/build-publication.py",
+    "publication": "python scripts/build-publication.py",
+    "legacy-package": "bash scripts/build-package.sh",
+    "legacy-pack:zip": "bash scripts/build-package.sh zip",
+    "legacy-pack:tar": "bash scripts/build-package.sh tar"
   },
   "files": [
     "README.md",
@@ -16,11 +18,14 @@
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "agent-instructions/",
+    "publication/",
+    "requirements-publication.txt",
     "recipes/",
     "safety/",
     "docs/",
     "share/",
-    "release/"
+    "release/",
+    "scripts/build-publication.py"
   ],
   "keywords": [
     "kvass",
@@ -31,8 +36,9 @@
     "state-machine",
     "json-schema",
     "agent-handoff",
+    "multilingual-pdf",
+    "github-pages",
     "simplified-chinese",
-    "telegram-preview",
     "batch-log",
     "ai-agent-instructions",
     "knowledge-base"
