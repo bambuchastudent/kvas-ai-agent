@@ -42,18 +42,31 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends \
             fonts-noto-core \
             fonts-noto-cjk \
             fonts-noto-mono \
             poppler-utils
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements-publication.txt
-          fc-cache -f
+          python -m pip install --upgrade --quiet pip
+          python -m pip install --quiet -r requirements-publication.txt
+          fc-cache -f >/dev/null
 
       - name: Build identical multilingual PDFs and web pages
-        run: python scripts/build-publication.py
+        id: build-publication
+        shell: bash
+        run: |
+          set -o pipefail
+          python scripts/build-publication.py 2>&1 | tee publication-build.log
+
+      - name: Upload publication builder log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kvas-1.0.5-publication-log
+          path: publication-build.log
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Package generated website
         shell: bash
