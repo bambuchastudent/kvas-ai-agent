@@ -238,9 +238,9 @@ def page_html(doc: SourceDoc, language: dict[str, str], manifest: dict[str, Any]
     <div class="meta">Version {VERSION} · Source of truth: publication/{lang}/{doc.doc_type}.md</div>
   </section>
   <nav class="nav web-only">
-    <a href="../../../">Languages</a>
+    <a href="../../">Languages</a>
     <a href="../{other}/">{other_label}</a>
-    <a href="../../../pdfs/{pdf_name}">PDF</a>
+    <a href="../../pdfs/{pdf_name}">PDF</a>
     <a href="https://github.com/bambuchastudent/kvas-ai-agent">GitHub</a>
   </nav>
   <article>{body}</article>
