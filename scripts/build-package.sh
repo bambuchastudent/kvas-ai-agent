@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="1.0.3"
+VERSION="1.0.4"
 NAME="kvas"
 BRAND="zhizha"
 PACKAGE_DIR="dist/${NAME}-${VERSION}"
@@ -27,6 +27,7 @@ copy_if_exists agent-instructions
 copy_if_exists recipes
 copy_if_exists safety
 copy_if_exists docs
+copy_if_exists share
 copy_if_exists release
 
 cat > "${PACKAGE_DIR}/PACKAGE.md" <<EOF
@@ -34,19 +35,18 @@ cat > "${PACKAGE_DIR}/PACKAGE.md" <<EOF
 
 Brand: Zhizha
 
-This package contains the public text distribution of the Kvas project:
+This package contains:
 
-- reproducible kvass protocol;
-- corrected dry bread baseline;
-- photo example notes and visual control checklist;
-- recipes;
-- fermentation safety checklist;
+- the reproducible kvass protocol;
+- the simple README recipe;
+- fermentation safety guidance;
+- batch logs and visual-control notes;
 - multilingual AI-agent instructions;
-- community notes;
-- sharing guide;
-- branding and manifesto documents.
+- the Telegram share landing page and Open Graph card source;
+- release and contribution documents.
 
 Repository: https://github.com/bambuchastudent/kvas-ai-agent
+Telegram share page: https://bambuchastudent.github.io/kvas-ai-agent/v1.0.4/
 EOF
 
 (
