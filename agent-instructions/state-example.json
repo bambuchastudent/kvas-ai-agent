@@ -1,0 +1,37 @@
+{
+  "protocol_version": "1.0.4",
+  "batch_id": "KVAS-2026-07-12-01",
+  "stage": "primary_fermentation",
+  "target_volume_l": 3,
+  "ingredients": {
+    "bread_type": "150 g white crackers + 60 g rye crackers",
+    "bread_condition": "fully_dry",
+    "bread_g": 210,
+    "sweetener_type": "panela",
+    "sweetener_g": 110,
+    "malt_g": 0,
+    "rye_flour_g": 15,
+    "starter_type": "dry_yeast",
+    "starter_amount": "0.8 g"
+  },
+  "process": {
+    "room_temperature_c": 29,
+    "liquid_temperature_c": 28,
+    "stage_started_at": "2026-07-12T13:00:00+02:00",
+    "elapsed_hours": 2,
+    "container_closed_tightly": false
+  },
+  "observations": {
+    "bubbles": true,
+    "foam": false,
+    "smell": "bread-like, mildly sweet-sour",
+    "mold": false,
+    "colored_spots": false,
+    "slime": false,
+    "bottle_firmness": null
+  },
+  "safety_flags": [],
+  "unknowns": [],
+  "next_action": "Check bubbles, smell and taste after 4 more hours; do not seal the container tightly.",
+  "updated_from_user_message": "User confirmed 0.8 g dry yeast was added at 28°C and bubbles appeared after 2 hours."
+}
