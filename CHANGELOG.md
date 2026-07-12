@@ -4,16 +4,17 @@
 
 - Added mandatory explicit state management for the current kvass batch.
 - Added canonical process stages from `planning` to `ready`, plus `discard` and `unknown`.
-- Added `agent-instructions/state-model.md` and translated state guides in English, Spanish, German, and Simplified Chinese.
-- Added `README.zh-CN.md` as a Simplified Chinese project description.
-- Added `agent-instructions/kvas-agent.zh-CN.md` and `agent-instructions/state-model.zh-CN.md`.
-- Added `agent-instructions/state.schema.json` for machine-readable state validation.
-- Added `agent-instructions/state-example.json` as a complete handoff example.
-- Updated all five AI-agent instructions to require state updates from confirmed user facts only.
-- Added the response format: current state, next action, and what the user should report next.
-- Added safety flags for sealed primary fermentation and bottle overpressure.
-- Added explicit agent-to-agent handoff rules.
-- Updated README, reproducible protocol, batch log, Telegram share page, package metadata, workflows, release notes, and artifact names to 1.0.5.
+- Added state guides in Russian, English, Spanish, German, and Simplified Chinese.
+- Added `agent-instructions/state.schema.json` and a complete handoff example.
+- Added identical publication sources for `summary` and `instructions` in all five languages.
+- Added stable section markers and parity validation across translations.
+- Added `scripts/build-publication.py` to generate both PDF and HTML from the same rendered source.
+- Added 10 versioned PDF files: one summary and one AI-agent instruction per language.
+- Added 10 versioned web pages with matching content.
+- Added Noto font installation and PDF rendering checks for Cyrillic, Latin, and Chinese.
+- Replaced the separate package, release, and Pages workflows with one validated publish pipeline.
+- Added automatic update of tag `v1.0.5`, GitHub Release assets, and GitHub Pages.
+- Added publication ZIP/TAR bundles and a machine-readable manifest.
 
 ## 1.0.4
 
@@ -38,12 +39,12 @@
 ## 1.0.2
 
 - Corrected the reproducible baseline for dry bread / crackers.
-- Changed 3 l baseline from 400 g dry bread to 180–220 g dry crackers / fully dry bread.
-- Added distinction between fully dry crackers and merely stale bread: 250–300 g for stale but not fully dry bread.
-- Reduced sugar baseline from 120 g to 100–120 g.
-- Reduced malt baseline from 30 g to 20–30 g.
-- Reduced rye flour baseline from 20 g to 10–20 g.
-- Reduced yeast baseline to 2–3 g fresh yeast or 0.5–1 g dry yeast.
+- Changed 3 l baseline from 400 g dry bread to 180-220 g dry crackers / fully dry bread.
+- Added distinction between fully dry crackers and merely stale bread: 250-300 g for stale but not fully dry bread.
+- Reduced sugar baseline from 120 g to 100-120 g.
+- Reduced malt baseline from 30 g to 20-30 g.
+- Reduced rye flour baseline from 20 g to 10-20 g.
+- Reduced yeast baseline to 2-3 g fresh yeast or 0.5-1 g dry yeast.
 - Added explanation: bread contains mostly starch, while simple kvass needs sugar unless doing a real malt mash with temperature rests.
 - Added anonymized community note about the beer comparison and sugar in bread.
 - Updated package metadata, build script, workflow artifacts, version marker, README, and release notes to 1.0.2.
