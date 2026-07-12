@@ -6,8 +6,8 @@
   "private": false,
   "license": "SEE LICENSE IN docs/license-note.md",
   "scripts": {
-    "package": "python scripts/build-publication.py",
-    "publication": "python scripts/build-publication.py",
+    "package": "python scripts/build-publication-safe.py",
+    "publication": "python scripts/build-publication-safe.py",
     "legacy-package": "bash scripts/build-package.sh",
     "legacy-pack:zip": "bash scripts/build-package.sh zip",
     "legacy-pack:tar": "bash scripts/build-package.sh tar"
@@ -25,7 +25,8 @@
     "docs/",
     "share/",
     "release/",
-    "scripts/build-publication.py"
+    "scripts/build-publication.py",
+    "scripts/build-publication-safe.py"
   ],
   "keywords": [
     "kvass",
