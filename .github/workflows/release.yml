@@ -10,6 +10,7 @@ on:
       - "release/version.md"
       - "package.json"
       - "scripts/build-package.sh"
+      - "README.zh-CN.md"
       - "agent-instructions/**"
   workflow_dispatch:
 
@@ -29,7 +30,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify version consistency
+      - name: Verify version consistency and translations
         shell: bash
         run: |
           set -euo pipefail
@@ -38,9 +39,22 @@ jobs:
           grep -q 'Current release: 1.0.5' release/version.md
           grep -q '# Квас 1.0.5' release/RELEASE-1.0.5.md
           grep -q '"protocol_version": "1.0.5"' agent-instructions/state-example.json
+          test -s README.zh-CN.md
+          test -s agent-instructions/kvas-agent.zh-CN.md
+          test -s agent-instructions/state-model.zh-CN.md
+          grep -q '当前版本：1.0.5' README.zh-CN.md
+          grep -q '模型版本：\*\*1.0.5\*\*' agent-instructions/state-model.zh-CN.md
 
       - name: Build packages
         run: bash scripts/build-package.sh
+
+      - name: Verify Chinese files are packaged
+        shell: bash
+        run: |
+          set -euo pipefail
+          unzip -l dist/kvas-1.0.5.zip | grep -q 'kvas-1.0.5/README.zh-CN.md'
+          unzip -l dist/kvas-1.0.5.zip | grep -q 'kvas-1.0.5/agent-instructions/kvas-agent.zh-CN.md'
+          unzip -l dist/kvas-1.0.5.zip | grep -q 'kvas-1.0.5/agent-instructions/state-model.zh-CN.md'
 
       - name: Create or update GitHub Release
         env:
@@ -51,6 +65,9 @@ jobs:
           set -euo pipefail
 
           if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" \
+              --title "Квас 1.0.5 — stateful AI agent" \
+              --notes-file release/RELEASE-1.0.5.md
             gh release upload "$TAG" \
               dist/kvas-1.0.5.zip \
               dist/kvas-1.0.5.tar.gz \
