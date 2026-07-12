@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="1.0.4"
+VERSION="1.0.5"
 NAME="kvas"
 BRAND="zhizha"
 PACKAGE_DIR="dist/${NAME}-${VERSION}"
@@ -38,15 +38,16 @@ Brand: Zhizha
 This package contains:
 
 - the reproducible kvass protocol;
-- the simple README recipe;
+- a simple README recipe;
 - fermentation safety guidance;
 - batch logs and visual-control notes;
-- multilingual AI-agent instructions;
+- multilingual stateful AI-agent instructions;
+- JSON Schema and example state for agent handoff;
 - the Telegram share landing page and Open Graph card source;
 - release and contribution documents.
 
 Repository: https://github.com/bambuchastudent/kvas-ai-agent
-Telegram share page: https://bambuchastudent.github.io/kvas-ai-agent/v1.0.4/
+Telegram share page: https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/
 EOF
 
 (
