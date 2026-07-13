@@ -1,7 +1,9 @@
 {
-  "version": "1.1.0",
-  "project": "Kvas",
-  "brand": "Zhizha",
+  "version": "1.1.1",
+  "source_version": "1.1.0",
+  "ones_count": 3,
+  "project": "КВАССИСТЕНТ",
+  "brand": "Жижа",
   "languages": [
     {"code": "ru", "html_lang": "ru", "label": "Русский", "summary": "publication/ru/summary.md", "instructions": "publication/ru/instructions.md"},
     {"code": "en", "html_lang": "en", "label": "English", "summary": "publication/en/summary.md", "instructions": "publication/en/instructions.md"},

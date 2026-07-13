@@ -1,73 +1,80 @@
-# Как делиться проектом в Telegram
+# Как делиться КВАССИСТЕНТОМ в Telegram
 
 ## Основная ссылка
 
 ```text
-https://kvassistent.pages.dev/v1.1.0/
+https://kvassistent.pages.dev/v1.1.1/
 ```
 
-Страница содержит выбор языка, веб-версии summary и instructions, а также ссылки на соответствующие PDF.
+На главной странице сначала показаны лучшие инструкции для людей, затем отдельные разделы для людей и ИИ-агентов.
 
 ## Готовое сообщение
 
 ```text
-Квас Жижа для ИИ-агента
+КВАССИСТЕНТ
 
-Одинаковые краткие описания и инструкции в PDF и на веб-страницах на русском, английском, испанском, немецком и китайском.
+Сначала — лучшие короткие инструкции для людей. Затем — отдельные инструкции для ИИ-агентов. Домашний квас «Жижа», PDF и веб-страницы на пяти языках.
 
-https://kvassistent.pages.dev/v1.1.0/
+Версия 1.1.1 · единиц: 3
+
+https://kvassistent.pages.dev/v1.1.1/
 ```
 
-## Языковые страницы
+## Языковые страницы для людей
 
 ```text
-https://kvassistent.pages.dev/v1.1.0/ru/summary/
-https://kvassistent.pages.dev/v1.1.0/en/summary/
-https://kvassistent.pages.dev/v1.1.0/es/summary/
-https://kvassistent.pages.dev/v1.1.0/de/summary/
-https://kvassistent.pages.dev/v1.1.0/zh-CN/summary/
+https://kvassistent.pages.dev/v1.1.1/ru/summary/
+https://kvassistent.pages.dev/v1.1.1/en/summary/
+https://kvassistent.pages.dev/v1.1.1/es/summary/
+https://kvassistent.pages.dev/v1.1.1/de/summary/
+https://kvassistent.pages.dev/v1.1.1/zh-CN/summary/
 ```
 
-Для инструкции заменить `summary` на `instructions`.
+## Языковые страницы для ИИ-агентов
+
+Заменить `summary` на `instructions`:
+
+```text
+https://kvassistent.pages.dev/v1.1.1/ru/instructions/
+```
 
 ## Telegram-карточка
 
 Главная страница задаёт:
 
-- `og:title`;
-- `og:description`;
+- `og:title` — **КВАССИСТЕНТ**;
+- описание человеческой и агентской частей;
 - `og:image`;
 - `og:url`;
 - Twitter Card-поля.
 
-Исходное изображение хранится частями:
+Сборщик публикует изображение как:
 
 ```text
-share/assets/card-1.0.4.b64.part01
-...
-share/assets/card-1.0.4.b64.part10
-```
-
-Сборщик восстанавливает JPEG и публикует его как:
-
-```text
-/assets/kvas-zhizha-ai-agent-1.1.0.jpg
+/assets/kvassistent-1.1.1.jpg
 ```
 
 ## Публикация
 
-Единый workflow:
+Workflow:
 
 ```text
 .github/workflows/publish.yml
 ```
 
-Он одновременно:
+Он читает каноническую версию из:
 
-1. собирает одинаковые материалы на пяти языках;
-2. создаёт и проверяет 10 PDF;
-3. обновляет GitHub Release `v1.1.0`;
-4. публикует 10 веб-страниц в ветку `gh-pages`;
-5. Cloudflare Pages автоматически разворачивает ветку на `kvassistent.pages.dev`.
+```text
+release/version.json
+```
 
-Содержимое PDF и веб-страницы создаётся из одного HTML, поэтому форматы не расходятся.
+И выполняет:
+
+1. сборку одинаковых материалов на пяти языках;
+2. создание и проверку 10 PDF;
+3. проверку human-first главной страницы;
+4. публикацию GitHub Release `v1.1.1`;
+5. публикацию 10 веб-страниц в `gh-pages`;
+6. проверку Cloudflare Pages.
+
+Содержимое PDF и соответствующей веб-страницы создаётся из одного HTML.
