@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0
+
+- Added an animated golden beer-style background with rising bubbles to the landing page.
+- Added `prefers-reduced-motion` support for the background animation.
+- Added a data-driven gallery section for real successful community drinks.
+- Added an honest empty state and contribution links instead of placeholder success stories.
+- Added `gallery/drinks.json` and documentation for submitting a drink.
+- Removed the obsolete optional GitHub Pages deployment job; Cloudflare Pages remains the verified publication target.
+
 ## 1.0.6
 
 - Clarified that yeast is used for the first batch only.

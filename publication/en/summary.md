@@ -3,13 +3,13 @@ lang: en
 doc_type: summary
 title: Kvas Zhizha - Summary
 subtitle: Reproducible homemade kvass for people and AI agents
-version: 1.0.6
+version: 1.1.0
 ---
 
 <!-- section:overview -->
 ## What this is
 
-**Kvas** is an open knowledge base for safe and reproducible homemade kvass. **Zhizha** is the project brand and personality. Version 1.0.6 provides the same document structure in five languages, as PDFs and web pages.
+**Kvas** is an open knowledge base for safe and reproducible homemade kvass. **Zhizha** is the project brand and personality. Version 1.1.0 provides the same document structure in five languages, as PDFs and web pages.
 
 <!-- section:baseline -->
 ## 3-liter baseline

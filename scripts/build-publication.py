@@ -18,7 +18,7 @@ from pypdf import PdfReader
 from weasyprint import CSS, HTML
 
 SECTION_RE = re.compile(r"<!--\s*section:([a-z0-9-]+)\s*-->")
-VERSION = "1.0.6"
+VERSION = "1.1.0"
 DOC_TYPES = ("summary", "instructions")
 
 
@@ -100,7 +100,7 @@ def stylesheet() -> str:
   size: A4;
   margin: 20mm 18mm 22mm;
   @bottom-left {
-    content: "Kvas Zhizha 1.0.6";
+    content: "Kvas Zhizha 1.1.0";
     font-size: 8.5pt;
     color: #746856;
   }
@@ -151,7 +151,7 @@ h1 { font-size: 30pt; line-height: 1.08; margin: 12px 0; }
   gap: 12px;
   margin-top: 22px;
 }
-.hero-actions .primary {
+.button.primary {
   border-color: var(--gold);
   background: var(--gold);
   color: #fffdf7;
@@ -212,6 +212,131 @@ a { color: #8c5600; }
 }
 .language-card h2 { margin-top: 0; border: 0; }
 .downloads { margin-top: 14px; }
+.landing-page {
+  min-height: 100vh;
+  background: #f2b632;
+}
+.landing-page main {
+  position: relative;
+  z-index: 2;
+}
+.landing-page .cover,
+.landing-page .language-card,
+.landing-page .gallery {
+  background: rgba(255, 253, 247, .91);
+  box-shadow: 0 18px 50px rgba(91, 54, 3, .13);
+  backdrop-filter: blur(5px);
+}
+.beer-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(255, 246, 166, .95), transparent 38%),
+    linear-gradient(180deg, #ffd969 0%, #efb42f 54%, #d99113 100%);
+}
+.beer-bubble {
+  position: absolute;
+  left: var(--x);
+  bottom: -14vh;
+  width: var(--size);
+  height: var(--size);
+  border: 2px solid rgba(255, 255, 235, .72);
+  border-radius: 50%;
+  background: rgba(255, 247, 190, .18);
+  box-shadow: inset 3px 3px 6px rgba(255, 255, 255, .42), 0 0 14px rgba(255, 244, 164, .2);
+  animation: bubble-rise var(--duration) linear var(--delay) infinite;
+}
+@keyframes bubble-rise {
+  0% { transform: translate3d(0, 0, 0) scale(.7); opacity: 0; }
+  10% { opacity: .8; }
+  55% { transform: translate3d(var(--drift), -58vh, 0) scale(1); }
+  100% { transform: translate3d(0, -125vh, 0) scale(1.12); opacity: 0; }
+}
+.gallery {
+  margin-top: 46px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+.gallery > h2 { margin-top: 0; }
+.gallery-intro { max-width: 760px; color: var(--muted); font-size: 12pt; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+.gallery-card,
+.gallery-empty {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffaf0;
+}
+.gallery-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.gallery-card-content { padding: 18px; }
+.gallery-card h3 { margin: 0 0 8px; }
+.gallery-empty {
+  display: grid;
+  grid-template-columns: minmax(210px, .8fr) minmax(260px, 1.2fr);
+  grid-column: 1 / -1;
+}
+.gallery-empty-visual {
+  display: grid;
+  place-items: center;
+  min-height: 250px;
+  background: linear-gradient(160deg, #ffd95f, #c9780c);
+}
+.kvass-glass {
+  position: relative;
+  width: 92px;
+  height: 150px;
+  border: 5px solid rgba(255,255,255,.88);
+  border-top-width: 2px;
+  border-radius: 8px 8px 24px 24px;
+  background: linear-gradient(180deg, #8b4a0a 0%, #4d2207 100%);
+  box-shadow: inset 12px 0 18px rgba(255, 206, 82, .22), 0 15px 26px rgba(62, 28, 2, .3);
+}
+.kvass-glass::before {
+  content: "";
+  position: absolute;
+  inset: 7px 5px auto;
+  height: 18px;
+  border-radius: 50%;
+  background: #f7d88a;
+  box-shadow: 0 4px 0 rgba(255,255,255,.35);
+}
+.kvass-glass::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: 24px;
+  bottom: 32px;
+  border: 2px solid rgba(255,255,255,.62);
+  border-radius: 50%;
+  box-shadow: 30px -22px 0 -2px rgba(255,255,255,.62), 14px -52px 0 -3px rgba(255,255,255,.62);
+}
+.gallery-empty-copy { padding: 28px; align-self: center; }
+.gallery-empty-copy h3 { margin-top: 0; font-size: 17pt; }
+.gallery-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+@media (max-width: 640px) {
+  main { padding: 16px; }
+  .cover { padding: 24px; }
+  .gallery-empty { grid-template-columns: 1fr; }
+  .gallery-empty-visual { min-height: 190px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .beer-bubble { animation: none; opacity: .42; transform: translateY(-35vh); }
+}
 @media print {
   main { padding: 0; }
   .web-only { display: none !important; }
@@ -265,7 +390,72 @@ def page_html(doc: SourceDoc, language: dict[str, str], manifest: dict[str, Any]
 </html>"""
 
 
-def selector_html(manifest: dict[str, Any]) -> str:
+def beer_background_html() -> str:
+    bubbles = (
+        (4, 18, -2, 17, 22), (10, 34, -8, 23, -28), (17, 12, -4, 14, 18),
+        (23, 52, -15, 28, 34), (31, 24, -11, 18, -21), (39, 15, -5, 16, 26),
+        (47, 42, -19, 25, -35), (54, 20, -7, 15, 19), (61, 31, -14, 22, 30),
+        (69, 13, -3, 13, -16), (75, 47, -21, 27, 38), (82, 22, -9, 18, -24),
+        (89, 36, -16, 24, 31), (95, 16, -6, 15, -18),
+    )
+    return "".join(
+        f'<span class="beer-bubble" style="--x:{x}%;--size:{size}px;--delay:{delay}s;--duration:{duration}s;--drift:{drift}px"></span>'
+        for x, size, delay, duration, drift in bubbles
+    )
+
+
+def gallery_html(gallery: dict[str, Any], gallery_root: Path) -> str:
+    drinks = gallery.get("drinks", [])
+    cards: list[str] = []
+    for drink in drinks:
+        title = html.escape(str(drink.get("title", "Удачная партия")))
+        description = html.escape(str(drink.get("description", "")))
+        author = html.escape(str(drink.get("author", "Участник сообщества")))
+        image_path = Path(str(drink.get("image", "")))
+        if not image_path.parts or image_path.is_absolute() or ".." in image_path.parts:
+            raise ValueError(f"Invalid gallery image path: {image_path}")
+        if not (gallery_root / image_path).is_file():
+            raise ValueError(f"Missing gallery image: {gallery_root / image_path}")
+        recipe_url = html.escape(str(drink.get("recipe_url", "")), quote=True)
+        recipe_link = f'<p><a href="{recipe_url}">Рецепт и журнал партии</a></p>' if recipe_url else ""
+        cards.append(f"""
+<article class="gallery-card">
+  <img src="gallery/{html.escape(image_path.as_posix(), quote=True)}" alt="{title}" loading="lazy">
+  <div class="gallery-card-content">
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <p><strong>Автор:</strong> {author}</p>
+    {recipe_link}
+  </div>
+</article>""")
+
+    if cards:
+        content = f'<div class="gallery-grid">{"".join(cards)}</div>'
+    else:
+        content = """
+<div class="gallery-grid">
+  <div class="gallery-empty">
+    <div class="gallery-empty-visual" aria-hidden="true"><div class="kvass-glass"></div></div>
+    <div class="gallery-empty-copy">
+      <h3>Первое место ждёт твою «Жижу»</h3>
+      <p>Пришли фотографию удачной партии, пропорции, время брожения и короткую заметку о вкусе. После проверки напиток появится здесь с указанием автора.</p>
+      <div class="gallery-actions web-only">
+        <a class="button primary" href="https://github.com/bambuchastudent/kvas-ai-agent/issues/new">Добавить свой напиток</a>
+        <a class="button" href="https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/gallery/README.md">Как оформить результат</a>
+      </div>
+    </div>
+  </div>
+</div>"""
+
+    return f"""
+<section class="gallery" id="gallery">
+  <h2>Галерея успешных напитков</h2>
+  <p class="gallery-intro">Реальные партии сообщества: фотография, проверенный рецепт и заметки о результате. Галерея пополняется только настоящими напитками — без выдуманных примеров.</p>
+  {content}
+</section>"""
+
+
+def selector_html(manifest: dict[str, Any], gallery: dict[str, Any], gallery_root: Path) -> str:
     cards = []
     for language in manifest["languages"]:
         code = language["code"]
@@ -281,6 +471,8 @@ def selector_html(manifest: dict[str, Any]) -> str:
   </div>
 </div>""")
     cards_html = "\n".join(cards)
+    bubbles_html = beer_background_html()
+    gallery_section = gallery_html(gallery, gallery_root)
     image_url = f"https://kvassistent.pages.dev/assets/kvas-zhizha-ai-agent-{VERSION}.jpg"
     return f"""<!doctype html>
 <html lang="ru">
@@ -300,7 +492,8 @@ def selector_html(manifest: dict[str, Any]) -> str:
 <meta name="twitter:image" content="{image_url}">
 <style>{stylesheet()}</style>
 </head>
-<body>
+<body class="landing-page">
+<div class="beer-background web-only" aria-hidden="true">{bubbles_html}</div>
 <main>
   <section class="cover">
     <div class="eyebrow">Квассистент · Версия {VERSION}</div>
@@ -314,6 +507,7 @@ def selector_html(manifest: dict[str, Any]) -> str:
   </section>
   <h2>Выбери язык и формат</h2>
   <div class="language-grid">{cards_html}</div>
+  {gallery_section}
 </main>
 </body>
 </html>"""
@@ -366,6 +560,9 @@ def main() -> None:
     if manifest.get("version") != VERSION:
         raise ValueError("Manifest version mismatch")
     languages: list[dict[str, str]] = manifest["languages"]
+    gallery = json.loads((root / "gallery/drinks.json").read_text(encoding="utf-8"))
+    if gallery.get("version") != VERSION:
+        raise ValueError("Gallery version mismatch")
 
     docs: list[SourceDoc] = []
     for language in languages:
@@ -376,10 +573,19 @@ def main() -> None:
     (site / "index.html").write_text(root_redirect(), encoding="utf-8")
     version_site = site / f"v{VERSION}"
     version_site.mkdir(parents=True)
-    (version_site / "index.html").write_text(selector_html(manifest), encoding="utf-8")
+    (version_site / "index.html").write_text(
+        selector_html(manifest, gallery, root / "gallery"), encoding="utf-8"
+    )
+    gallery_assets = root / "gallery/assets"
+    if gallery_assets.exists():
+        shutil.copytree(gallery_assets, version_site / "gallery/assets")
     build_share_image(root, site)
 
-    public_manifest: dict[str, Any] = {"version": VERSION, "documents": []}
+    public_manifest: dict[str, Any] = {
+        "version": VERSION,
+        "gallery": {"count": len(gallery.get("drinks", [])), "web": "#gallery"},
+        "documents": [],
+    }
     css = CSS(string=stylesheet())
 
     for doc in docs:

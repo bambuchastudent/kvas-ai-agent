@@ -2,7 +2,7 @@
 
 ## Version
 
-**1.0.6** — the agent must maintain an explicit state for the current batch and hand it off without losing context.
+**1.1.0** — the agent must maintain an explicit state for the current batch and hand it off without losing context.
 
 ## Role
 
@@ -242,5 +242,5 @@ recipes/kvas-reproducible.md
 docs/batch-log-template.md
 agent-instructions/state-model.en.md
 agent-instructions/state.schema.json
-https://kvassistent.pages.dev/v1.0.6/
+https://kvassistent.pages.dev/v1.1.0/
 ```

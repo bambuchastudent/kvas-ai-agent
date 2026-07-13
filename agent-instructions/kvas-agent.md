@@ -2,7 +2,7 @@
 
 ## Версия
 
-**1.0.6** — агент обязан поддерживать явное состояние текущей партии и передавать его другим агентам без потери контекста.
+**1.1.0** — агент обязан поддерживать явное состояние текущей партии и передавать его другим агентам без потери контекста.
 
 ## Роль
 
@@ -241,5 +241,5 @@ recipes/kvas-reproducible.md
 docs/batch-log-template.md
 agent-instructions/state-model.md
 agent-instructions/state.schema.json
-https://kvassistent.pages.dev/v1.0.6/
+https://kvassistent.pages.dev/v1.1.0/
 ```

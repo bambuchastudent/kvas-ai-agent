@@ -3,13 +3,13 @@ lang: de
 doc_type: summary
 title: Kvas Zhizha - Zusammenfassung
 subtitle: Reproduzierbarer hausgemachter Kwas für Menschen und KI-Agenten
-version: 1.0.6
+version: 1.1.0
 ---
 
 <!-- section:overview -->
 ## Was ist das?
 
-**Kvas** ist eine offene Wissensbasis für sicheren und reproduzierbaren hausgemachten Kwas. **Zhizha** ist Marke und Charakter des Projekts. Version 1.0.6 bietet dieselbe Dokumentstruktur in fünf Sprachen als PDF und Webseite.
+**Kvas** ist eine offene Wissensbasis für sicheren und reproduzierbaren hausgemachten Kwas. **Zhizha** ist Marke und Charakter des Projekts. Version 1.1.0 bietet dieselbe Dokumentstruktur in fünf Sprachen als PDF und Webseite.
 
 <!-- section:baseline -->
 ## Basis für 3 Liter

@@ -59,14 +59,14 @@ def generated_card(path: Path) -> None:
     draw.text((95, 210), "ЖИЖА", font=title, fill=(238, 181, 63))
     draw.text((95, 335), "для ИИ-агента", font=subtitle, fill=(255, 250, 237))
     draw.text((95, 430), "PDF + WEB  ·  RU  EN  ES  DE  ZH-CN", font=small, fill=(215, 199, 174))
-    draw.text((95, 495), "Версия 1.0.6", font=small, fill=(238, 181, 63))
+    draw.text((95, 495), "Версия 1.1.0", font=small, fill=(238, 181, 63))
 
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, format="JPEG", quality=90, optimize=True, progressive=True)
 
 
 def safe_build_share_image(root: Path, site: Path) -> None:
-    output = site / "assets/kvas-zhizha-ai-agent-1.0.6.jpg"
+    output = site / "assets/kvas-zhizha-ai-agent-1.1.0.jpg"
     parts = sorted((root / "share/assets").glob("card-1.0.4.b64.part*"))
 
     if parts:

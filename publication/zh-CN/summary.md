@@ -3,13 +3,13 @@ lang: zh-CN
 doc_type: summary
 title: 克瓦斯 Zhizha - 摘要
 subtitle: 适用于人和 AI 智能体的可复现家庭克瓦斯
-version: 1.0.6
+version: 1.1.0
 ---
 
 <!-- section:overview -->
 ## 项目简介
 
-**Kvass** 是一个关于安全、可复现家庭克瓦斯的开放知识库。**Zhizha** 是项目品牌和个性。1.0.6 版本以五种语言提供结构一致的 PDF 和网页。
+**Kvass** 是一个关于安全、可复现家庭克瓦斯的开放知识库。**Zhizha** 是项目品牌和个性。1.1.0 版本以五种语言提供结构一致的 PDF 和网页。
 
 <!-- section:baseline -->
 ## 3 升基础配方

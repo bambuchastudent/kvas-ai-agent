@@ -1,6 +1,6 @@
 # 克瓦斯 AI 智能体状态模型
 
-模型版本：**1.0.6**。
+模型版本：**1.1.0**。
 
 本文件是 AI 智能体说明的强制组成部分。
 
@@ -46,7 +46,7 @@
 
 ```json
 {
-  "protocol_version": "1.0.6",
+  "protocol_version": "1.1.0",
   "batch_id": null,
   "stage": "unknown",
   "target_volume_l": null,

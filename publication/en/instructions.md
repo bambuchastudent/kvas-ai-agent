@@ -3,7 +3,7 @@ lang: en
 doc_type: instructions
 title: Kvas Zhizha - AI Agent Instruction
 subtitle: State, recipe, safety, and batch handoff
-version: 1.0.6
+version: 1.1.0
 ---
 
 <!-- section:role -->

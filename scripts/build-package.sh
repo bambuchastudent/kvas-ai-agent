@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="1.0.6"
+VERSION="1.1.0"
 NAME="kvas"
 BRAND="zhizha"
 PACKAGE_DIR="dist/${NAME}-${VERSION}"
@@ -29,6 +29,7 @@ copy_if_exists recipes
 copy_if_exists safety
 copy_if_exists docs
 copy_if_exists share
+copy_if_exists gallery
 copy_if_exists release
 
 cat > "${PACKAGE_DIR}/PACKAGE.md" <<EOF
@@ -45,10 +46,11 @@ This package contains:
 - stateful AI-agent instructions in Russian, English, Spanish, German, and Simplified Chinese;
 - JSON Schema and example state for agent handoff;
 - the Telegram share landing page and Open Graph card source;
+- the successful-drinks gallery data and contribution guide;
 - release and contribution documents.
 
 Repository: https://github.com/bambuchastudent/kvas-ai-agent
-Telegram share page: https://kvassistent.pages.dev/v1.0.6/
+Telegram share page: https://kvassistent.pages.dev/v1.1.0/
 EOF
 
 (

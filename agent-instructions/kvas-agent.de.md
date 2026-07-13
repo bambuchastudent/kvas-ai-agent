@@ -2,7 +2,7 @@
 
 ## Version
 
-**1.0.6** — der Agent muss einen ausdrücklichen Zustand der aktuellen Charge führen und ohne Kontextverlust übergeben.
+**1.1.0** — der Agent muss einen ausdrücklichen Zustand der aktuellen Charge führen und ohne Kontextverlust übergeben.
 
 ## Rolle
 
@@ -242,5 +242,5 @@ recipes/kvas-reproducible.md
 docs/batch-log-template.md
 agent-instructions/state-model.de.md
 agent-instructions/state.schema.json
-https://kvassistent.pages.dev/v1.0.6/
+https://kvassistent.pages.dev/v1.1.0/
 ```

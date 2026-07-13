@@ -3,7 +3,7 @@ lang: de
 doc_type: instructions
 title: Kvas Zhizha - KI-Agent-Anweisung
 subtitle: Zustand, Rezept, Sicherheit und Chargenübergabe
-version: 1.0.6
+version: 1.1.0
 ---
 
 <!-- section:role -->

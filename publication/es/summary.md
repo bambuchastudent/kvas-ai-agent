@@ -3,13 +3,13 @@ lang: es
 doc_type: summary
 title: Kvas Zhizha - Resumen
 subtitle: Kvas casero reproducible para personas y agentes de IA
-version: 1.0.6
+version: 1.1.0
 ---
 
 <!-- section:overview -->
 ## Qué es
 
-**Kvas** es una base de conocimientos abierta para preparar kvas casero de forma segura y reproducible. **Zhizha** es la marca y personalidad del proyecto. La versión 1.0.6 ofrece la misma estructura documental en cinco idiomas, en PDF y páginas web.
+**Kvas** es una base de conocimientos abierta para preparar kvas casero de forma segura y reproducible. **Zhizha** es la marca y personalidad del proyecto. La versión 1.1.0 ofrece la misma estructura documental en cinco idiomas, en PDF y páginas web.
 
 <!-- section:baseline -->
 ## Base para 3 litros

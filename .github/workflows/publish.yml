@@ -1,4 +1,4 @@
-name: Publish 1.0.6 PDFs and multilingual website
+name: Publish 1.1.0 PDFs and multilingual website
 
 on:
   push:
@@ -13,11 +13,11 @@ permissions:
   contents: read
 
 env:
-  VERSION: "1.0.6"
-  TAG: "v1.0.6"
+  VERSION: "1.1.0"
+  TAG: "v1.1.0"
 
 concurrency:
-  group: publish-1.0.6-${{ github.event_name }}-${{ github.ref }}
+  group: publish-1.1.0-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -63,7 +63,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kvas-1.0.6-publication-log
+          name: kvas-1.1.0-publication-log
           path: publication-build.log
           if-no-files-found: warn
           retention-days: 7
@@ -104,11 +104,15 @@ jobs:
           test -s "dist/kvas-${VERSION}-website.zip"
           test -s "dist/kvas-${VERSION}-website.tar.gz"
           test -s "dist/site/v${VERSION}/manifest.json"
+          test -s "dist/site/v${VERSION}/index.html"
+          grep -q 'beer-background' "dist/site/v${VERSION}/index.html"
+          grep -q 'Галерея успешных напитков' "dist/site/v${VERSION}/index.html"
+          grep -q 'prefers-reduced-motion' "dist/site/v${VERSION}/index.html"
 
       - name: Upload verified publication build
         uses: actions/upload-artifact@v4
         with:
-          name: kvas-1.0.6-publication-build
+          name: kvas-1.1.0-publication-build
           path: dist/
           if-no-files-found: error
           retention-days: 30
@@ -130,10 +134,10 @@ jobs:
       - name: Download verified publication
         uses: actions/download-artifact@v4
         with:
-          name: kvas-1.0.6-publication-build
+          name: kvas-1.1.0-publication-build
           path: dist
 
-      - name: Point v1.0.6 tag to the verified commit
+      - name: Point v1.1.0 tag to the verified commit
         continue-on-error: true
         shell: bash
         run: |
@@ -152,25 +156,25 @@ jobs:
 
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release edit "$TAG" \
-              --title "Квас 1.0.6 — PDFs and multilingual website" \
-              --notes-file release/RELEASE-1.0.6.md
+              --title "Квас 1.1.0 — PDFs and multilingual website" \
+              --notes-file release/RELEASE-1.1.0.md
           else
             gh release create "$TAG" \
               --target "$GITHUB_SHA" \
-              --title "Квас 1.0.6 — PDFs and multilingual website" \
-              --notes-file release/RELEASE-1.0.6.md
+              --title "Квас 1.1.0 — PDFs and multilingual website" \
+              --notes-file release/RELEASE-1.1.0.md
           fi
 
-          gh release delete-asset "$TAG" "kvas-1.0.6.zip" -y 2>/dev/null || true
-          gh release delete-asset "$TAG" "kvas-1.0.6.tar.gz" -y 2>/dev/null || true
+          gh release delete-asset "$TAG" "kvas-1.1.0.zip" -y 2>/dev/null || true
+          gh release delete-asset "$TAG" "kvas-1.1.0.tar.gz" -y 2>/dev/null || true
 
           gh release upload "$TAG" \
             dist/publication/*.pdf \
             dist/publication/manifest.json \
-            dist/kvas-1.0.6-publication.zip \
-            dist/kvas-1.0.6-publication.tar.gz \
-            dist/kvas-1.0.6-website.zip \
-            dist/kvas-1.0.6-website.tar.gz \
+            dist/kvas-1.1.0-publication.zip \
+            dist/kvas-1.1.0-publication.tar.gz \
+            dist/kvas-1.1.0-website.zip \
+            dist/kvas-1.1.0-website.tar.gz \
             --clobber
 
   gh-pages-branch:
@@ -191,7 +195,7 @@ jobs:
       - name: Download verified publication
         uses: actions/download-artifact@v4
         with:
-          name: kvas-1.0.6-publication-build
+          name: kvas-1.1.0-publication-build
           path: dist
 
       - name: Force-publish static website branch
@@ -209,7 +213,7 @@ jobs:
           cp -a /tmp/kvas-site/. .
           touch .nojekyll
           git add -A
-          git commit -m "Publish Kvas 1.0.6 multilingual website"
+          git commit -m "Publish Kvas 1.1.0 multilingual website"
           git push origin HEAD:gh-pages --force
 
   verify-cloudflare-pages:
@@ -233,7 +237,11 @@ jobs:
               && grep -q "\"version\": \"${VERSION}\"" /tmp/manifest.json \
               && curl --fail --location --silent --show-error \
                  "$site/ru/summary/index.html" -o /tmp/ru-summary.html \
-              && grep -q "Version ${VERSION}" /tmp/ru-summary.html; then
+              && grep -q "Version ${VERSION}" /tmp/ru-summary.html \
+              && curl --fail --location --silent --show-error \
+                 "$site/index.html" -o /tmp/landing.html \
+              && grep -q "beer-background" /tmp/landing.html \
+              && grep -q "Галерея успешных напитков" /tmp/landing.html; then
               echo "Verified $site"
               exit 0
             fi
@@ -244,36 +252,3 @@ jobs:
 
           echo "Cloudflare Pages did not publish version ${VERSION} in time." >&2
           exit 1
-
-  github-pages-actions:
-    name: Deploy with GitHub Pages Actions
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: build
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Download verified publication
-        uses: actions/download-artifact@v4
-        with:
-          name: kvas-1.0.6-publication-build
-          path: dist
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload multilingual website
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/site
-
-      - name: Deploy multilingual website
-        id: deployment
-        uses: actions/deploy-pages@v4

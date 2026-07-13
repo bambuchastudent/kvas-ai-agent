@@ -2,7 +2,7 @@
 
 ## 版本
 
-**1.0.6** — 智能体必须维护当前批次的明确状态，并在交接时保留完整上下文。
+**1.1.0** — 智能体必须维护当前批次的明确状态，并在交接时保留完整上下文。
 
 ## 角色
 
@@ -242,5 +242,5 @@ recipes/kvas-reproducible.md
 docs/batch-log-template.md
 agent-instructions/state-model.zh-CN.md
 agent-instructions/state.schema.json
-https://kvassistent.pages.dev/v1.0.6/
+https://kvassistent.pages.dev/v1.1.0/
 ```
