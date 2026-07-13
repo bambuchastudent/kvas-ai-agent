@@ -140,6 +140,22 @@ main { max-width: 920px; margin: 0 auto; padding: 30px; }
 .eyebrow { color: var(--gold); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 h1 { font-size: 30pt; line-height: 1.08; margin: 12px 0; }
 .subtitle { color: var(--muted); font-size: 15pt; }
+.hero-copy {
+  max-width: 760px;
+  margin: 16px 0 0;
+  font-size: 12.5pt;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+.hero-actions .primary {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #fffdf7;
+}
 .meta { color: var(--muted); margin-top: 18px; font-size: 9.5pt; }
 h2 {
   font-size: 18pt;
@@ -271,11 +287,11 @@ def selector_html(manifest: dict[str, Any]) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Квас Жижа для ИИ-агента - {VERSION}</title>
-<meta name="description" content="Одинаковые инструкции и краткие описания в PDF и на веб-страницах на пяти языках.">
+<title>Твой личный Квассистент — квас «Жижа» твоими руками</title>
+<meta name="description" content="Квассистент помогает тебе приготовить домашний квас «Жижа» своими руками: ведёт по шагам, помнит состояние партии и подсказывает, что делать дальше.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Квас Жижа для ИИ-агента">
-<meta property="og:description" content="PDF и веб-страницы на русском, английском, испанском, немецком и китайском.">
+<meta property="og:title" content="Твой личный Квассистент">
+<meta property="og:description" content="Приготовь квас «Жижа» своими руками — Квассистент проведёт тебя по всему процессу.">
 <meta property="og:url" content="https://kvassistent.pages.dev/v{VERSION}/">
 <meta property="og:image" content="{image_url}">
 <meta property="og:image:width" content="600">
@@ -287,10 +303,16 @@ def selector_html(manifest: dict[str, Any]) -> str:
 <body>
 <main>
   <section class="cover">
-    <div class="eyebrow">Version {VERSION}</div>
-    <h1>Квас Жижа для ИИ-агента</h1>
-    <div class="subtitle">Одинаковые инструкции и саммари как PDF и веб-страницы на пяти языках.</div>
+    <div class="eyebrow">Квассистент · Версия {VERSION}</div>
+    <h1>Твой личный Квассистент</h1>
+    <div class="subtitle">Готовит квас «Жижа» твоими руками.</div>
+    <p class="hero-copy">Он проведёт тебя по рецепту шаг за шагом, запомнит состояние текущей партии и вовремя подскажет, что делать дальше. Ты готовишь настоящий домашний квас — Квассистент помогает не сбиться.</p>
+    <nav class="hero-actions web-only" aria-label="Быстрые действия">
+      <a class="button primary" href="ru/instructions/">Начать готовить</a>
+      <a class="button" href="https://github.com/bambuchastudent/kvas-ai-agent">Поддержать проект своим рецептом</a>
+    </nav>
   </section>
+  <h2>Выбери язык и формат</h2>
   <div class="language-grid">{cards_html}</div>
 </main>
 </body>
