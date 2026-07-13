@@ -1,4 +1,4 @@
-name: Verify live 1.0.5 release and website
+name: Verify live 1.0.6 release and website
 
 on:
   pull_request:
@@ -10,10 +10,10 @@ permissions:
   contents: read
 
 env:
-  VERSION: "1.0.5"
-  TAG: "v1.0.5"
-  SITE: "https://raw.githack.com/bambuchastudent/kvas-ai-agent/gh-pages/v1.0.5"
-  PAGES_SITE: "https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5"
+  VERSION: "1.0.6"
+  TAG: "v1.0.6"
+  SITE: "https://raw.githack.com/bambuchastudent/kvas-ai-agent/gh-pages/v1.0.6"
+  PAGES_SITE: "https://kvassistent.pages.dev/v1.0.6"
 
 jobs:
   verify-live:
@@ -46,10 +46,10 @@ jobs:
           assets="$(gh release view "$TAG" --json assets --jq '.assets[].name')"
           for asset in \
             manifest.json \
-            kvas-1.0.5-publication.zip \
-            kvas-1.0.5-publication.tar.gz \
-            kvas-1.0.5-website.zip \
-            kvas-1.0.5-website.tar.gz; do
+            kvas-1.0.6-publication.zip \
+            kvas-1.0.6-publication.tar.gz \
+            kvas-1.0.6-website.zip \
+            kvas-1.0.6-website.tar.gz; do
             grep -Fxq "$asset" <<<"$assets"
           done
 
@@ -68,7 +68,7 @@ jobs:
               curl --fail --location --retry 8 --retry-delay 5 \
                 "$SITE/${lang}/${type}/index.html" \
                 --output "live-verification/site/${lang}-${type}.html"
-              grep -q 'Version 1.0.5' "live-verification/site/${lang}-${type}.html"
+              grep -q 'Version 1.0.6' "live-verification/site/${lang}-${type}.html"
 
               curl --fail --location --retry 8 --retry-delay 5 \
                 "$SITE/pdfs/kvas-${type}-${lang}-${VERSION}.pdf" \
@@ -77,34 +77,34 @@ jobs:
             done
           done
 
-      - name: Check GitHub Pages domain when enabled
-        continue-on-error: true
+      - name: Check Cloudflare Pages domain
         shell: bash
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 --retry-delay 5 "$PAGES_SITE/manifest.json" \
-            --output live-verification/site/github-pages-manifest.json
+            --output live-verification/site/cloudflare-pages-manifest.json
+          grep -q '"version": "1.0.6"' live-verification/site/cloudflare-pages-manifest.json
 
       - name: Write verification summary
         if: always()
         shell: bash
         run: |
           {
-            echo '# Kvas 1.0.5 live verification'
+            echo '# Kvas 1.0.6 live verification'
             echo
             echo '- Expected PDFs: 10'
             echo '- Expected web pages: 10'
             echo '- Languages: ru, en, es, de, zh-CN'
-            echo '- Release: https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.0.5'
-            echo '- Guaranteed web mirror: https://raw.githack.com/bambuchastudent/kvas-ai-agent/gh-pages/v1.0.5/index.html'
-            echo '- GitHub Pages domain: https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/'
+            echo '- Release: https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.0.6'
+            echo '- Guaranteed web mirror: https://raw.githack.com/bambuchastudent/kvas-ai-agent/gh-pages/v1.0.6/index.html'
+            echo '- Cloudflare Pages: https://kvassistent.pages.dev/v1.0.6/'
           } > live-verification/README.md
 
       - name: Upload live verification report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kvas-1.0.5-live-verification
+          name: kvas-1.0.6-live-verification
           path: live-verification/
           if-no-files-found: warn
           retention-days: 14

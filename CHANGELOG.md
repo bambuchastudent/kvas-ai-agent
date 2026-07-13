@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.6
+
+- Clarified that yeast is used for the first batch only.
+- Added old kvass/starter and sediment as the inoculation source for later batches.
+- Added the public KVASSISTENT website on Cloudflare Pages.
+- Added automatic verification of the Cloudflare deployment after publishing `gh-pages`.
+- Updated all active publication sources and release artifacts to 1.0.6.
+
 ## 1.0.5
 
 - Added mandatory explicit state management for the current kvass batch.

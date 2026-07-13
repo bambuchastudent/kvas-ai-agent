@@ -3,7 +3,7 @@ lang: es
 doc_type: instructions
 title: Kvas Zhizha - Instrucción del agente de IA
 subtitle: Estado, receta, seguridad y transferencia de la tanda
-version: 1.0.5
+version: 1.0.6
 ---
 
 <!-- section:role -->

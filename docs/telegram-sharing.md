@@ -3,7 +3,7 @@
 ## Основная ссылка
 
 ```text
-https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/
+https://kvassistent.pages.dev/v1.0.6/
 ```
 
 Страница содержит выбор языка, веб-версии summary и instructions, а также ссылки на соответствующие PDF.
@@ -15,17 +15,17 @@ https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/
 
 Одинаковые краткие описания и инструкции в PDF и на веб-страницах на русском, английском, испанском, немецком и китайском.
 
-https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/
+https://kvassistent.pages.dev/v1.0.6/
 ```
 
 ## Языковые страницы
 
 ```text
-https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/ru/summary/
-https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/en/summary/
-https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/es/summary/
-https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/de/summary/
-https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/zh-CN/summary/
+https://kvassistent.pages.dev/v1.0.6/ru/summary/
+https://kvassistent.pages.dev/v1.0.6/en/summary/
+https://kvassistent.pages.dev/v1.0.6/es/summary/
+https://kvassistent.pages.dev/v1.0.6/de/summary/
+https://kvassistent.pages.dev/v1.0.6/zh-CN/summary/
 ```
 
 Для инструкции заменить `summary` на `instructions`.
@@ -51,7 +51,7 @@ share/assets/card-1.0.4.b64.part10
 Сборщик восстанавливает JPEG и публикует его как:
 
 ```text
-/assets/kvas-zhizha-ai-agent-1.0.5.jpg
+/assets/kvas-zhizha-ai-agent-1.0.6.jpg
 ```
 
 ## Публикация
@@ -66,7 +66,8 @@ share/assets/card-1.0.4.b64.part10
 
 1. собирает одинаковые материалы на пяти языках;
 2. создаёт и проверяет 10 PDF;
-3. обновляет GitHub Release `v1.0.5`;
-4. публикует 10 веб-страниц через GitHub Pages.
+3. обновляет GitHub Release `v1.0.6`;
+4. публикует 10 веб-страниц в ветку `gh-pages`;
+5. Cloudflare Pages автоматически разворачивает ветку на `kvassistent.pages.dev`.
 
 Содержимое PDF и веб-страницы создаётся из одного HTML, поэтому форматы не расходятся.

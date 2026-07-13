@@ -3,13 +3,13 @@ lang: de
 doc_type: summary
 title: Kvas Zhizha - Zusammenfassung
 subtitle: Reproduzierbarer hausgemachter Kwas für Menschen und KI-Agenten
-version: 1.0.5
+version: 1.0.6
 ---
 
 <!-- section:overview -->
 ## Was ist das?
 
-**Kvas** ist eine offene Wissensbasis für sicheren und reproduzierbaren hausgemachten Kwas. **Zhizha** ist Marke und Charakter des Projekts. Version 1.0.5 bietet dieselbe Dokumentstruktur in fünf Sprachen als PDF und Webseite.
+**Kvas** ist eine offene Wissensbasis für sicheren und reproduzierbaren hausgemachten Kwas. **Zhizha** ist Marke und Charakter des Projekts. Version 1.0.6 bietet dieselbe Dokumentstruktur in fünf Sprachen als PDF und Webseite.
 
 <!-- section:baseline -->
 ## Basis für 3 Liter
@@ -19,9 +19,9 @@ version: 1.0.5
 - bevorzugt 150 g weiß + 50-70 g Roggen oder Borodinsky;
 - Zucker oder Panela - 100-120 g;
 - Malz - 20-30 g, oder Roggenmehl - 10-20 g;
-- frische Hefe - 2-3 g, oder Trockenhefe - 0,5-1 g.
+- frische Hefe - 2-3 g, oder Trockenhefe - 0,5-1 g, nur für die erste Charge.
 
-Spätere Chargen können 500 ml alten Kwas oder 3-5 EL Bodensatz verwenden.
+Für spätere Chargen keine neue Hefe zugeben; stattdessen 500 ml alten Kwas/Starter oder 3-5 EL Bodensatz verwenden.
 
 <!-- section:process -->
 ## Kurzer Ablauf

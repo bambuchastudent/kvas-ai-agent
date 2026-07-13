@@ -18,7 +18,7 @@ from pypdf import PdfReader
 from weasyprint import CSS, HTML
 
 SECTION_RE = re.compile(r"<!--\s*section:([a-z0-9-]+)\s*-->")
-VERSION = "1.0.5"
+VERSION = "1.0.6"
 DOC_TYPES = ("summary", "instructions")
 
 
@@ -100,7 +100,7 @@ def stylesheet() -> str:
   size: A4;
   margin: 20mm 18mm 22mm;
   @bottom-left {
-    content: "Kvas Zhizha 1.0.5";
+    content: "Kvas Zhizha 1.0.6";
     font-size: 8.5pt;
     color: #746856;
   }
@@ -218,7 +218,7 @@ def page_html(doc: SourceDoc, language: dict[str, str], manifest: dict[str, Any]
     title = html.escape(doc.title)
     subtitle = html.escape(doc.subtitle)
     body = render_markdown(doc.markdown)
-    canonical = f"https://bambuchastudent.github.io/kvas-ai-agent/v{VERSION}/{lang}/{doc.doc_type}/"
+    canonical = f"https://kvassistent.pages.dev/v{VERSION}/{lang}/{doc.doc_type}/"
     return f"""<!doctype html>
 <html lang="{html.escape(language['html_lang'])}">
 <head>
@@ -265,7 +265,7 @@ def selector_html(manifest: dict[str, Any]) -> str:
   </div>
 </div>""")
     cards_html = "\n".join(cards)
-    image_url = f"https://bambuchastudent.github.io/kvas-ai-agent/assets/kvas-zhizha-ai-agent-{VERSION}.jpg"
+    image_url = f"https://kvassistent.pages.dev/assets/kvas-zhizha-ai-agent-{VERSION}.jpg"
     return f"""<!doctype html>
 <html lang="ru">
 <head>
@@ -276,7 +276,7 @@ def selector_html(manifest: dict[str, Any]) -> str:
 <meta property="og:type" content="website">
 <meta property="og:title" content="Квас Жижа для ИИ-агента">
 <meta property="og:description" content="PDF и веб-страницы на русском, английском, испанском, немецком и китайском.">
-<meta property="og:url" content="https://bambuchastudent.github.io/kvas-ai-agent/v{VERSION}/">
+<meta property="og:url" content="https://kvassistent.pages.dev/v{VERSION}/">
 <meta property="og:image" content="{image_url}">
 <meta property="og:image:width" content="600">
 <meta property="og:image:height" content="315">

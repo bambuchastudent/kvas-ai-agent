@@ -3,7 +3,7 @@ lang: ru
 doc_type: instructions
 title: Квас Жижа - инструкция ИИ-агента
 subtitle: Состояние, рецепт, безопасность и передача партии
-version: 1.0.5
+version: 1.0.6
 ---
 
 <!-- section:role -->

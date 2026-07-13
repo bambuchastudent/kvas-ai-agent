@@ -1,6 +1,6 @@
 # Multilingual publication source
 
-Version: **1.0.5**.
+Version: **1.0.6**.
 
 The release and website are generated from the Markdown files in this directory.
 
@@ -28,17 +28,17 @@ Every translated document uses stable section markers:
 Generated release assets:
 
 ```text
-kvas-summary-<lang>-1.0.5.pdf
-kvas-instructions-<lang>-1.0.5.pdf
-kvas-1.0.5-publication.zip
-kvas-1.0.5-publication.tar.gz
+kvas-summary-<lang>-1.0.6.pdf
+kvas-instructions-<lang>-1.0.6.pdf
+kvas-1.0.6-publication.zip
+kvas-1.0.6-publication.tar.gz
 manifest.json
 ```
 
 Generated website paths:
 
 ```text
-/v1.0.5/<lang>/summary/
-/v1.0.5/<lang>/instructions/
-/v1.0.5/pdfs/
+/v1.0.6/<lang>/summary/
+/v1.0.6/<lang>/instructions/
+/v1.0.6/pdfs/
 ```

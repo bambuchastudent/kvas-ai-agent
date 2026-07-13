@@ -1,6 +1,6 @@
 {
   "name": "kvas-zhizha",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Reproducible household kvass knowledge base with identical multilingual summaries and AI-agent instructions published as PDF and web pages.",
   "type": "module",
   "private": false,

@@ -3,13 +3,13 @@ lang: es
 doc_type: summary
 title: Kvas Zhizha - Resumen
 subtitle: Kvas casero reproducible para personas y agentes de IA
-version: 1.0.5
+version: 1.0.6
 ---
 
 <!-- section:overview -->
 ## Qué es
 
-**Kvas** es una base de conocimientos abierta para preparar kvas casero de forma segura y reproducible. **Zhizha** es la marca y personalidad del proyecto. La versión 1.0.5 ofrece la misma estructura documental en cinco idiomas, en PDF y páginas web.
+**Kvas** es una base de conocimientos abierta para preparar kvas casero de forma segura y reproducible. **Zhizha** es la marca y personalidad del proyecto. La versión 1.0.6 ofrece la misma estructura documental en cinco idiomas, en PDF y páginas web.
 
 <!-- section:baseline -->
 ## Base para 3 litros
@@ -19,9 +19,9 @@ version: 1.0.5
 - preferiblemente 150 g blanco + 50-70 g de centeno o Borodinsky;
 - azúcar o panela - 100-120 g;
 - malta - 20-30 g, o harina de centeno - 10-20 g;
-- levadura fresca - 2-3 g, o seca - 0,5-1 g.
+- levadura fresca - 2-3 g, o seca - 0,5-1 g, solo para la primera tanda.
 
-Las tandas siguientes pueden usar 500 ml de kvas viejo o 3-5 cucharadas de sedimento.
+No se añade levadura nueva a las tandas siguientes; en su lugar se usan 500 ml de kvas viejo/fermento o 3-5 cucharadas de sedimento.
 
 <!-- section:process -->
 ## Proceso corto

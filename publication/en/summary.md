@@ -3,13 +3,13 @@ lang: en
 doc_type: summary
 title: Kvas Zhizha - Summary
 subtitle: Reproducible homemade kvass for people and AI agents
-version: 1.0.5
+version: 1.0.6
 ---
 
 <!-- section:overview -->
 ## What this is
 
-**Kvas** is an open knowledge base for safe and reproducible homemade kvass. **Zhizha** is the project brand and personality. Version 1.0.5 provides the same document structure in five languages, as PDFs and web pages.
+**Kvas** is an open knowledge base for safe and reproducible homemade kvass. **Zhizha** is the project brand and personality. Version 1.0.6 provides the same document structure in five languages, as PDFs and web pages.
 
 <!-- section:baseline -->
 ## 3-liter baseline
@@ -19,9 +19,9 @@ version: 1.0.5
 - preferably 150 g white + 50-70 g rye or Borodinsky;
 - sugar or panela - 100-120 g;
 - malt - 20-30 g, or rye flour - 10-20 g;
-- fresh yeast - 2-3 g, or dry yeast - 0.5-1 g.
+- fresh yeast - 2-3 g, or dry yeast - 0.5-1 g, for the first batch only.
 
-Later batches may use 500 ml old kvass or 3-5 tbsp sediment.
+Do not add new yeast to later batches; use 500 ml old kvass/starter or 3-5 tbsp sediment instead.
 
 <!-- section:process -->
 ## Short process

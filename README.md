@@ -1,11 +1,15 @@
 # Квас
 
+**Квассистент — ваш личный помощник по приготовлению кваса.**
+
+[Открыть Квассистент](https://kvassistent.pages.dev/)
+
 **Квас** - открытая база знаний про воспроизводимый домашний квас.
 
 **Бренд: «Жижа».**  
-**Версия: 1.0.5.**
+**Версия: 1.0.6.**
 
-## Что представляет собой релиз 1.0.5
+## Что представляет собой релиз 1.0.6
 
 Релиз состоит из одинаково структурированных материалов на пяти языках:
 
@@ -25,21 +29,21 @@
 
 Итого релиз содержит **10 PDF-файлов и 10 веб-страниц**.
 
-- [GitHub Release v1.0.5](https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.0.5)
-- [Веб-версия 1.0.5](https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/)
+- [GitHub Release v1.0.6](https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.0.6)
+- [Веб-версия 1.0.6](https://kvassistent.pages.dev/v1.0.6/)
 
 ## Веб-версия
 
 Главная страница версии:
 
-**https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/**
+**https://kvassistent.pages.dev/v1.0.6/**
 
 Структура ссылок:
 
 ```text
-/v1.0.5/<lang>/summary/
-/v1.0.5/<lang>/instructions/
-/v1.0.5/pdfs/
+/v1.0.6/<lang>/summary/
+/v1.0.6/<lang>/instructions/
+/v1.0.6/pdfs/
 ```
 
 Коды языков:
@@ -55,26 +59,26 @@ zh-CN
 ## PDF-файлы релиза
 
 ```text
-kvas-summary-ru-1.0.5.pdf
-kvas-instructions-ru-1.0.5.pdf
-kvas-summary-en-1.0.5.pdf
-kvas-instructions-en-1.0.5.pdf
-kvas-summary-es-1.0.5.pdf
-kvas-instructions-es-1.0.5.pdf
-kvas-summary-de-1.0.5.pdf
-kvas-instructions-de-1.0.5.pdf
-kvas-summary-zh-CN-1.0.5.pdf
-kvas-instructions-zh-CN-1.0.5.pdf
+kvas-summary-ru-1.0.6.pdf
+kvas-instructions-ru-1.0.6.pdf
+kvas-summary-en-1.0.6.pdf
+kvas-instructions-en-1.0.6.pdf
+kvas-summary-es-1.0.6.pdf
+kvas-instructions-es-1.0.6.pdf
+kvas-summary-de-1.0.6.pdf
+kvas-instructions-de-1.0.6.pdf
+kvas-summary-zh-CN-1.0.6.pdf
+kvas-instructions-zh-CN-1.0.6.pdf
 ```
 
 Дополнительно публикуются:
 
 ```text
 manifest.json
-kvas-1.0.5-publication.zip
-kvas-1.0.5-publication.tar.gz
-kvas-1.0.5-website.zip
-kvas-1.0.5-website.tar.gz
+kvas-1.0.6-publication.zip
+kvas-1.0.6-publication.tar.gz
+kvas-1.0.6-website.zip
+kvas-1.0.6-website.tar.gz
 ```
 
 Архивы `publication` содержат PDF и исходные Markdown-файлы. Архивы `website` содержат полностью собранный статический сайт.
@@ -94,7 +98,7 @@ kvas-1.0.5-website.tar.gz
 - отсутствует язык;
 - отсутствует summary или instructions;
 - порядок секций отличается;
-- версия не равна 1.0.5;
+- версия не равна 1.0.6;
 - PDF не создаётся;
 - PDF не открывается рендерером;
 - веб-страница отсутствует.
@@ -210,9 +214,11 @@ npm run package
 2. устанавливает шрифты Noto, включая китайские;
 3. собирает 10 PDF и 10 веб-страниц;
 4. проверяет PDF через `pdfinfo` и `pdftoppm`;
-5. обновляет тег `v1.0.5`;
+5. обновляет тег `v1.0.6`;
 6. прикладывает все PDF и архивы к GitHub Release;
-7. публикует сайт в ветку `gh-pages` и через GitHub Pages Actions.
+7. публикует сайт в ветку `gh-pages`;
+8. Cloudflare Pages автоматически разворачивает эту ветку;
+9. workflow проверяет опубликованную русскую страницу на `kvassistent.pages.dev`.
 
 Проверка уже опубликованных материалов:
 

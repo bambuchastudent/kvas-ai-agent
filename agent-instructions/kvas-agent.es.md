@@ -2,7 +2,7 @@
 
 ## Versión
 
-**1.0.5** — el agente debe mantener un estado explícito de la tanda actual y transferirlo sin perder contexto.
+**1.0.6** — el agente debe mantener un estado explícito de la tanda actual y transferirlo sin perder contexto.
 
 ## Rol
 
@@ -242,5 +242,5 @@ recipes/kvas-reproducible.md
 docs/batch-log-template.md
 agent-instructions/state-model.es.md
 agent-instructions/state.schema.json
-https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/
+https://kvassistent.pages.dev/v1.0.6/
 ```

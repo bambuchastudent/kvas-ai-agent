@@ -5,7 +5,7 @@
 **项目品牌：Zhizha（Жижа）。**  
 Kvass 是项目名称，Zhizha 是项目风格与个性。
 
-**当前版本：1.0.5**
+**当前版本：1.0.6**
 
 ## 项目目标
 
@@ -69,7 +69,7 @@ Kvass 是项目名称，Zhizha 是项目风格与个性。
 
 ## AI 智能体状态
 
-版本 1.0.5 要求 AI 智能体维护当前批次的明确状态。
+版本 1.0.6 要求 AI 智能体维护当前批次的明确状态。
 
 允许的阶段：
 
@@ -125,6 +125,6 @@ unknown
 ## 链接
 
 - 仓库：`https://github.com/bambuchastudent/kvas-ai-agent`
-- Telegram 分享页：`https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/`
+- Telegram 分享页：`https://kvassistent.pages.dev/v1.0.6/`
 - 完整可复现协议：[`recipes/kvas-reproducible.md`](recipes/kvas-reproducible.md)
 - 批次记录模板：[`docs/batch-log-template.md`](docs/batch-log-template.md)

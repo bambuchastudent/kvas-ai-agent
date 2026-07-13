@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="1.0.5"
+VERSION="1.0.6"
 NAME="kvas"
 BRAND="zhizha"
 PACKAGE_DIR="dist/${NAME}-${VERSION}"
@@ -48,7 +48,7 @@ This package contains:
 - release and contribution documents.
 
 Repository: https://github.com/bambuchastudent/kvas-ai-agent
-Telegram share page: https://bambuchastudent.github.io/kvas-ai-agent/v1.0.5/
+Telegram share page: https://kvassistent.pages.dev/v1.0.6/
 EOF
 
 (

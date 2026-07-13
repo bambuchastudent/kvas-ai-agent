@@ -3,7 +3,7 @@ lang: zh-CN
 doc_type: instructions
 title: 克瓦斯 Zhizha - AI 智能体说明
 subtitle: 状态、配方、安全和批次交接
-version: 1.0.5
+version: 1.0.6
 ---
 
 <!-- section:role -->
