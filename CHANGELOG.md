@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.1
+
+- Renamed the visible product identity to **КВАССИСТЕНТ** in uppercase.
+- Reworked the landing page so the best concise instructions for people appear first.
+- Split the landing page into separate **Для людей** and **Для ИИ-агентов** sections.
+- Kept human summaries and AI-agent instructions as separate multilingual PDF and web documents.
+- Added canonical release metadata in `release/version.json`.
+- Added the append-one version rule: `1.1.1`, `1.1.1.1`, `1.1.1.1.1`, and so on.
+- Added `ones_count`, displayed as `единиц: 3` for version 1.1.1.
+- Added `scripts/next-ones-version.py` for generating the next custom release version.
+- Made publication and live-verification workflows read the canonical version metadata.
+- Added homepage validation for uppercase branding, human-first instructions, audience separation, and the unit counter.
+
 ## 1.1.0
 
 - Added an animated golden beer-style background with rising bubbles to the landing page.
