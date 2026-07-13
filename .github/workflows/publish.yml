@@ -130,11 +130,23 @@ jobs:
           test -s "dist/site/v${VERSION}/manifest.json"
           test -s "dist/site/v${VERSION}/version.json"
           test -s "$landing"
-          grep -q '<h1>КВАССИСТЕНТ</h1>' "$landing"
+          grep -q '<h1>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ</h1>' "$landing"
+          grep -q 'ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками.' "$landing"
+          grep -q '<strong>ИИ управляет</strong>' "$landing"
+          grep -q '<strong>Ты готовишь</strong>' "$landing"
+          grep -q 'твой домашний квас «Жижа»' "$landing"
           grep -q 'Лучшие инструкции для людей' "$landing"
           grep -q 'id="for-people"' "$landing"
           grep -q 'id="for-ai-agents"' "$landing"
           grep -q 'Для ИИ-агентов' "$landing"
+          grep -q 'Open human guide' "$landing"
+          grep -q 'Abrir guía para personas' "$landing"
+          grep -q 'Anleitung für Menschen' "$landing"
+          grep -q '打开用户指南' "$landing"
+          grep -q 'AI agent instructions' "$landing"
+          grep -q 'Instrucciones para agente de IA' "$landing"
+          grep -q 'Anleitung für KI-Agenten' "$landing"
+          grep -q 'AI 智能体说明' "$landing"
           grep -q "единиц: ${ONES_COUNT}" "$landing"
           grep -q 'beer-background' "$landing"
           grep -q 'Галерея успешных напитков' "$landing"
@@ -278,7 +290,11 @@ jobs:
               && grep -q "Version ${VERSION}" /tmp/ru-summary.html \
               && curl --fail --location --silent --show-error \
                  "$site/index.html" -o /tmp/landing.html \
-              && grep -q '<h1>КВАССИСТЕНТ</h1>' /tmp/landing.html \
+              && grep -q '<h1>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ</h1>' /tmp/landing.html \
+              && grep -q 'ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками.' /tmp/landing.html \
+              && grep -q '<strong>ИИ управляет</strong>' /tmp/landing.html \
+              && grep -q '<strong>Ты готовишь</strong>' /tmp/landing.html \
+              && grep -q 'твой домашний квас «Жижа»' /tmp/landing.html \
               && grep -q 'Лучшие инструкции для людей' /tmp/landing.html \
               && grep -q 'Для ИИ-агентов' /tmp/landing.html \
               && grep -q "единиц: ${ONES_COUNT}" /tmp/landing.html; then

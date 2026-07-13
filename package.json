@@ -1,16 +1,16 @@
 {
   "name": "kvas-zhizha",
   "version": "1.1.1",
-  "kvassistentRelease": "1.1.1",
-  "onesCount": 3,
+  "kvassistentRelease": "1.1.1.1",
+  "onesCount": 4,
   "description": "КВАССИСТЕНТ: reproducible household kvass guidance for people and stateful AI agents, published as multilingual PDF and web pages.",
   "type": "module",
   "private": false,
   "license": "SEE LICENSE IN docs/license-note.md",
   "scripts": {
-    "package": "python scripts/build-publication-safe.py",
-    "publication": "python scripts/build-publication-safe.py",
-    "next-release": "python scripts/next-ones-version.py",
+    "package": "bash scripts/run-python.sh scripts/build-publication-safe.py",
+    "publication": "bash scripts/run-python.sh scripts/build-publication-safe.py",
+    "next-release": "bash scripts/run-python.sh scripts/next-ones-version.py",
     "legacy-package": "bash scripts/build-package.sh",
     "legacy-pack:zip": "bash scripts/build-package.sh zip",
     "legacy-pack:tar": "bash scripts/build-package.sh tar"
@@ -31,6 +31,7 @@
     "release/",
     "scripts/build-publication.py",
     "scripts/build-publication-safe.py",
+    "scripts/run-python.sh",
     "scripts/next-ones-version.py"
   ],
   "keywords": [

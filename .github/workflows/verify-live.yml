@@ -99,11 +99,23 @@ jobs:
 
           curl --fail --location --retry 8 --retry-delay 5 "$PAGES_SITE/index.html" \
             --output live-verification/site/cloudflare-homepage.html
-          grep -q '<h1>КВАССИСТЕНТ</h1>' live-verification/site/cloudflare-homepage.html
+          grep -q '<h1>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ</h1>' live-verification/site/cloudflare-homepage.html
+          grep -q 'ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками.' live-verification/site/cloudflare-homepage.html
+          grep -q '<strong>ИИ управляет</strong>' live-verification/site/cloudflare-homepage.html
+          grep -q '<strong>Ты готовишь</strong>' live-verification/site/cloudflare-homepage.html
+          grep -q 'твой домашний квас «Жижа»' live-verification/site/cloudflare-homepage.html
           grep -q 'Лучшие инструкции для людей' live-verification/site/cloudflare-homepage.html
           grep -q 'id="for-people"' live-verification/site/cloudflare-homepage.html
           grep -q 'id="for-ai-agents"' live-verification/site/cloudflare-homepage.html
           grep -q 'Для ИИ-агентов' live-verification/site/cloudflare-homepage.html
+          grep -q 'Open human guide' live-verification/site/cloudflare-homepage.html
+          grep -q 'Abrir guía para personas' live-verification/site/cloudflare-homepage.html
+          grep -q 'Anleitung für Menschen' live-verification/site/cloudflare-homepage.html
+          grep -q '打开用户指南' live-verification/site/cloudflare-homepage.html
+          grep -q 'AI agent instructions' live-verification/site/cloudflare-homepage.html
+          grep -q 'Instrucciones para agente de IA' live-verification/site/cloudflare-homepage.html
+          grep -q 'Anleitung für KI-Agenten' live-verification/site/cloudflare-homepage.html
+          grep -q 'AI 智能体说明' live-verification/site/cloudflare-homepage.html
           grep -q "единиц: ${ONES_COUNT}" live-verification/site/cloudflare-homepage.html
 
       - name: Write verification summary

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.1.1
+
+- Changed the hero to **ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ**.
+- Made the roles explicit above the fold: AI manages the batch, the person performs the physical steps, and the result is homemade kvass **Жижа**.
+- Added a persistent brand contract and release checklist for future changes.
+- Localized every human and AI-agent language card, including descriptions and action buttons, in Russian, English, Spanish, German, and Simplified Chinese.
+- Added `lang` attributes to language cards and CI checks for all localized buttons.
+- Fixed Cyrillic rendering in the locally generated social card on macOS.
+- Added a local Python launcher that reuses `.venv` when available.
+
 ## 1.1.1
 
 - Renamed the visible product identity to **КВАССИСТЕНТ** in uppercase.

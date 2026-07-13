@@ -20,6 +20,41 @@ ONES_COUNT = int(VERSION_META["ones_count"])
 DISPLAY_VERSION = str(VERSION_META["display"])
 NEXT_VERSION = str(VERSION_META["next"])
 PROJECT_NAME = "КВАССИСТЕНТ"
+HERO_TITLE = "ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ"
+HERO_SUBTITLE = "ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками."
+
+CARD_COPY = {
+    "ru": {
+        "human_description": "Краткий рецепт, последовательность действий и правила безопасности для человека.",
+        "human_button": "Открыть для человека",
+        "agent_description": "Состояние партии, формат ответа, безопасность, воспроизводимость и передача между агентами.",
+        "agent_button": "Инструкция ИИ-агента",
+    },
+    "en": {
+        "human_description": "A short recipe, step-by-step process, and safety rules for people.",
+        "human_button": "Open human guide",
+        "agent_description": "Batch state, response format, safety, reproducibility, and handoff between agents.",
+        "agent_button": "AI agent instructions",
+    },
+    "es": {
+        "human_description": "Receta breve, pasos de preparación y normas de seguridad para personas.",
+        "human_button": "Abrir guía para personas",
+        "agent_description": "Estado del lote, formato de respuesta, seguridad, reproducibilidad y traspaso entre agentes.",
+        "agent_button": "Instrucciones para agente de IA",
+    },
+    "de": {
+        "human_description": "Kurzrezept, einzelne Arbeitsschritte und Sicherheitsregeln für Menschen.",
+        "human_button": "Anleitung für Menschen",
+        "agent_description": "Chargenstatus, Antwortformat, Sicherheit, Reproduzierbarkeit und Übergabe zwischen Agenten.",
+        "agent_button": "Anleitung für KI-Agenten",
+    },
+    "zh-CN": {
+        "human_description": "面向用户的简明配方、操作步骤和安全规则。",
+        "human_button": "打开用户指南",
+        "agent_description": "批次状态、回复格式、安全、可复现性以及智能体之间的交接。",
+        "agent_button": "AI 智能体说明",
+    },
+}
 
 
 def load_builder():
@@ -34,6 +69,10 @@ def load_builder():
 
 def find_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
     candidates = [
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+        "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
+        "/Library/Fonts/Arial Unicode.ttf",
+        "/System/Library/Fonts/SFNS.ttf",
         "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
         "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
@@ -70,9 +109,10 @@ def generated_card(path: Path) -> None:
         outline=(238, 181, 63),
         width=3,
     )
-    draw.text((92, 105), PROJECT_NAME, font=title, fill=(255, 250, 237))
-    draw.text((95, 220), "квас «Жижа» своими руками", font=subtitle, fill=(238, 181, 63))
-    draw.text((95, 330), "ЛЮДЯМ + ИИ-АГЕНТАМ", font=subtitle, fill=(255, 250, 237))
+    draw.text((92, 92), "ТВОЙ ЛИЧНЫЙ", font=small, fill=(238, 181, 63))
+    draw.text((92, 140), PROJECT_NAME, font=title, fill=(255, 250, 237))
+    draw.text((95, 255), "ИИ УПРАВЛЯЕТ · ТЫ ГОТОВИШЬ", font=subtitle, fill=(238, 181, 63))
+    draw.text((95, 335), "КВАС «ЖИЖА» СВОИМИ РУКАМИ", font=small, fill=(255, 250, 237))
     draw.text((95, 430), "PDF + WEB  ·  RU  EN  ES  DE  ZH-CN", font=small, fill=(215, 199, 174))
     draw.text((95, 495), DISPLAY_VERSION, font=small, fill=(238, 181, 63))
 
@@ -105,6 +145,32 @@ def safe_build_share_image(root: Path, site: Path) -> None:
 
 def extra_styles() -> str:
     return r"""
+.role-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0;
+}
+.role-chip {
+  padding: 14px 16px;
+  border: 1px solid rgba(238, 181, 63, .58);
+  border-radius: 14px;
+  background: rgba(255, 250, 237, .09);
+  color: #fffaf0;
+  font-weight: 800;
+  text-align: center;
+}
+.role-chip strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #eeb53f;
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+@media (max-width: 720px) {
+  .role-strip { grid-template-columns: 1fr; }
+}
 .people-quickstart,
 .audience-section {
   margin-top: 34px;
@@ -191,14 +257,16 @@ def human_cards(manifest: dict[str, Any]) -> str:
     cards: list[str] = []
     for language in manifest["languages"]:
         code = language["code"]
+        html_lang = html.escape(language["html_lang"])
         label = html.escape(language["label"])
+        copy = CARD_COPY[code]
         cards.append(
             f"""
-<article class="language-card">
+<article class="language-card" lang="{html_lang}">
   <h2>{label}</h2>
-  <p>Краткий рецепт, последовательность действий и правила безопасности для человека.</p>
+  <p>{html.escape(copy["human_description"])}</p>
   <div class="audience-links web-only">
-    <a class="button primary" href="{code}/summary/">Открыть для человека</a>
+    <a class="button primary" href="{code}/summary/">{html.escape(copy["human_button"])}</a>
     <a class="button" href="pdfs/kvas-summary-{code}-{CURRENT_VERSION}.pdf">PDF</a>
   </div>
 </article>"""
@@ -210,14 +278,16 @@ def agent_cards(manifest: dict[str, Any]) -> str:
     cards: list[str] = []
     for language in manifest["languages"]:
         code = language["code"]
+        html_lang = html.escape(language["html_lang"])
         label = html.escape(language["label"])
+        copy = CARD_COPY[code]
         cards.append(
             f"""
-<article class="language-card">
+<article class="language-card" lang="{html_lang}">
   <h2>{label}</h2>
-  <p>Состояние партии, формат ответа, безопасность, воспроизводимость и передача между агентами.</p>
+  <p>{html.escape(copy["agent_description"])}</p>
   <div class="audience-links web-only">
-    <a class="button" href="{code}/instructions/">Инструкция ИИ-агента</a>
+    <a class="button" href="{code}/instructions/">{html.escape(copy["agent_button"])}</a>
     <a class="button" href="pdfs/kvas-instructions-{code}-{CURRENT_VERSION}.pdf">PDF</a>
   </div>
 </article>"""
@@ -238,11 +308,11 @@ def make_selector_html(builder):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{PROJECT_NAME} — домашний квас «Жижа»</title>
-<meta name="description" content="КВАССИСТЕНТ: лучшие инструкции для людей и отдельные инструкции для ИИ-агентов. Домашний квас «Жижа» шаг за шагом.">
+<title>{HERO_TITLE} — квас «Жижа» твоими руками</title>
+<meta name="description" content="ИИ управляет приготовлением домашнего кваса «Жижа», а ты делаешь его своими руками. Личный КВАССИСТЕНТ ведёт партию шаг за шагом.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="{PROJECT_NAME}">
-<meta property="og:description" content="Сначала понятные инструкции человеку, затем отдельный раздел для ИИ-агентов.">
+<meta property="og:title" content="{HERO_TITLE}">
+<meta property="og:description" content="ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками.">
 <meta property="og:url" content="https://kvassistent.pages.dev/v{CURRENT_VERSION}/">
 <meta property="og:image" content="{image_url}">
 <meta property="og:image:width" content="1200">
@@ -256,9 +326,14 @@ def make_selector_html(builder):
 <main>
   <section class="cover">
     <div class="eyebrow">{PROJECT_NAME} · {CURRENT_VERSION}<span class="version-counter">единиц: {ONES_COUNT}</span></div>
-    <h1>{PROJECT_NAME}</h1>
-    <div class="subtitle">Квас «Жижа» твоими руками.</div>
-    <p class="hero-copy">Сначала — короткие и понятные действия для человека. Ниже — отдельная техническая часть для ИИ-агентов, которые ведут состояние партии и не выдумывают пропущенные данные.</p>
+    <h1>{HERO_TITLE}</h1>
+    <div class="subtitle">{HERO_SUBTITLE}</div>
+    <div class="role-strip" aria-label="Роли КВАССИСТЕНТА и человека">
+      <div class="role-chip"><strong>ИИ управляет</strong>ведёт партию и выбирает следующий шаг</div>
+      <div class="role-chip"><strong>Ты готовишь</strong>выполняешь действия своими руками</div>
+      <div class="role-chip"><strong>Результат</strong>твой домашний квас «Жижа»</div>
+    </div>
+    <p class="hero-copy">КВАССИСТЕНТ ведёт состояние партии, выбирает следующий безопасный шаг и объясняет его. Человек своими руками подготавливает ингредиенты, выполняет действия и подтверждает результат.</p>
     <nav class="hero-actions web-only" aria-label="Быстрые действия">
       <a class="button primary" href="#for-people">Готовить человеку</a>
       <a class="button" href="#for-ai-agents">Инструкция ИИ-агенту</a>
