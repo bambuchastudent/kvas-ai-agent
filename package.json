@@ -1,19 +1,17 @@
 {
   "name": "kvas-zhizha",
   "version": "1.1.1",
-  "kvassistentRelease": "1.1.1.1",
-  "onesCount": 4,
-  "description": "КВАССИСТЕНТ: reproducible household kvass guidance for people and stateful AI agents, published as multilingual PDF and web pages.",
+  "kvassistentRelease": "1.1.1.1.1",
+  "onesCount": 5,
+  "description": "КВАССИСТЕНТ: research-backed household kvass guidance with heat, sunlight, alcohol-boundary and stateful AI-agent controls, published as multilingual PDF and web pages.",
   "type": "module",
   "private": false,
   "license": "SEE LICENSE IN docs/license-note.md",
   "scripts": {
-    "package": "bash scripts/run-python.sh scripts/build-publication-safe.py",
-    "publication": "bash scripts/run-python.sh scripts/build-publication-safe.py",
+    "package": "bash scripts/run-python.sh scripts/build-release.py",
+    "publication": "bash scripts/run-python.sh scripts/build-release.py",
     "next-release": "bash scripts/run-python.sh scripts/next-ones-version.py",
-    "legacy-package": "bash scripts/build-package.sh",
-    "legacy-pack:zip": "bash scripts/build-package.sh zip",
-    "legacy-pack:tar": "bash scripts/build-package.sh tar"
+    "legacy-package": "bash scripts/build-package.sh"
   },
   "files": [
     "README.md",
@@ -31,24 +29,9 @@
     "release/",
     "scripts/build-publication.py",
     "scripts/build-publication-safe.py",
+    "scripts/build-release.py",
     "scripts/run-python.sh",
     "scripts/next-ones-version.py"
   ],
-  "keywords": [
-    "kvass",
-    "kvas",
-    "kvassistent",
-    "zhizha",
-    "reproducible-recipe",
-    "fermentation",
-    "state-machine",
-    "json-schema",
-    "agent-handoff",
-    "multilingual-pdf",
-    "cloudflare-pages",
-    "simplified-chinese",
-    "batch-log",
-    "ai-agent-instructions",
-    "knowledge-base"
-  ]
+  "keywords": ["kvass","kvas","kvassistent","zhizha","fermentation","hot-fermentation","direct-sunlight","alcohol-estimation","state-machine","multilingual-pdf","cloudflare-pages","ai-agent-instructions"]
 }
