@@ -1,9 +1,9 @@
 # Version
 
-Current release: 1.1.1.1.1
+Current release: 1.1.1.1.1.1
 
-Display: 1.1.1.1.1 · единиц: 5
+Display: 1.1.1.1.1.1 · единиц: 6
 
-Previous release: 1.1.1.1
+Previous release: 1.1.1.1.1
 
-Next release: 1.1.1.1.1.1
+Next release: 1.1.1.1.1.1.1

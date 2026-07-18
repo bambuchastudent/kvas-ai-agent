@@ -1,9 +1,9 @@
 {
   "name": "kvas-zhizha",
   "version": "1.1.1",
-  "kvassistentRelease": "1.1.1.1.1",
-  "onesCount": 5,
-  "description": "КВАССИСТЕНТ: research-backed household kvass guidance with heat, sunlight, alcohol-boundary and stateful AI-agent controls, published as multilingual PDF and web pages.",
+  "kvassistentRelease": "1.1.1.1.1.1",
+  "onesCount": 6,
+  "description": "КВАССИСТЕНТ: research-backed household kvass guidance with heat, sunlight, alcohol-boundary controls and a simple comic visual guide, published as multilingual PDF and web pages.",
   "type": "module",
   "private": false,
   "license": "SEE LICENSE IN docs/license-note.md",
@@ -33,5 +33,5 @@
     "scripts/run-python.sh",
     "scripts/next-ones-version.py"
   ],
-  "keywords": ["kvass","kvas","kvassistent","zhizha","fermentation","hot-fermentation","direct-sunlight","alcohol-estimation","state-machine","multilingual-pdf","cloudflare-pages","ai-agent-instructions"]
+  "keywords": ["kvass","kvas","kvassistent","zhizha","fermentation","hot-fermentation","direct-sunlight","alcohol-estimation","comic-guide","state-machine","multilingual-pdf","cloudflare-pages","ai-agent-instructions"]
 }
