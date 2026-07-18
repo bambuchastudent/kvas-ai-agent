@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/bambuchastudent/kvas-ai-agent/agent-instructions/state.schema.json",
-  "title": "Kvass Agent State",
+  "title": "KVASSISTENT Batch State",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -12,6 +12,7 @@
     "ingredients",
     "process",
     "observations",
+    "alcohol_estimate",
     "safety_flags",
     "unknowns",
     "next_action",
@@ -75,16 +76,27 @@
       "required": [
         "room_temperature_c",
         "liquid_temperature_c",
+        "highest_liquid_temperature_c",
+        "temperature_zone",
         "stage_started_at",
         "elapsed_hours",
-        "container_closed_tightly"
+        "container_closed_tightly",
+        "container_in_direct_sun",
+        "sun_exposure_minutes"
       ],
       "properties": {
         "room_temperature_c": { "type": ["number", "null"] },
         "liquid_temperature_c": { "type": ["number", "null"] },
+        "highest_liquid_temperature_c": { "type": ["number", "null"] },
+        "temperature_zone": {
+          "type": ["string", "null"],
+          "enum": ["slow", "recommended", "fast", "hot", "overheated", "stop", "unknown", null]
+        },
         "stage_started_at": { "type": ["string", "null"], "format": "date-time" },
         "elapsed_hours": { "type": ["number", "null"], "minimum": 0 },
-        "container_closed_tightly": { "type": ["boolean", "null"] }
+        "container_closed_tightly": { "type": ["boolean", "null"] },
+        "container_in_direct_sun": { "type": ["boolean", "null"] },
+        "sun_exposure_minutes": { "type": ["number", "null"], "minimum": 0 }
       }
     },
     "observations": {
@@ -94,6 +106,7 @@
         "bubbles",
         "foam",
         "smell",
+        "taste",
         "mold",
         "colored_spots",
         "slime",
@@ -103,12 +116,36 @@
         "bubbles": { "type": ["boolean", "null"] },
         "foam": { "type": ["boolean", "null"] },
         "smell": { "type": ["string", "null"] },
+        "taste": { "type": ["string", "null"] },
         "mold": { "type": ["boolean", "null"] },
         "colored_spots": { "type": ["boolean", "null"] },
         "slime": { "type": ["boolean", "null"] },
         "bottle_firmness": {
           "type": ["string", "null"],
           "enum": ["soft", "slightly_firm", "firm", "very_firm", "deformed", "unknown", null]
+        }
+      }
+    },
+    "alcohol_estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "added_fermentable_sugar_g",
+        "estimated_max_abv_from_added_sugar_percent",
+        "original_gravity",
+        "final_gravity",
+        "measured_or_calculated_abv_percent",
+        "confidence"
+      ],
+      "properties": {
+        "added_fermentable_sugar_g": { "type": ["number", "null"], "minimum": 0 },
+        "estimated_max_abv_from_added_sugar_percent": { "type": ["number", "null"], "minimum": 0 },
+        "original_gravity": { "type": ["number", "null"], "minimum": 0 },
+        "final_gravity": { "type": ["number", "null"], "minimum": 0 },
+        "measured_or_calculated_abv_percent": { "type": ["number", "null"], "minimum": 0 },
+        "confidence": {
+          "type": "string",
+          "enum": ["unknown", "theoretical_from_added_sugar", "calculated_from_gravity", "laboratory"]
         }
       }
     },
