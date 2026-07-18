@@ -1,6 +1,6 @@
 {
-  "protocol_version": "1.1.0",
-  "batch_id": "KVAS-2026-07-12-01",
+  "protocol_version": "1.1.1.1.1",
+  "batch_id": "KVAS-2026-07-18-01",
   "stage": "primary_fermentation",
   "target_volume_l": 3,
   "ingredients": {
@@ -15,23 +15,42 @@
     "starter_amount": "0.8 g"
   },
   "process": {
-    "room_temperature_c": 29,
+    "room_temperature_c": 28,
     "liquid_temperature_c": 28,
-    "stage_started_at": "2026-07-12T13:00:00+02:00",
+    "highest_liquid_temperature_c": 28,
+    "temperature_zone": "hot",
+    "stage_started_at": "2026-07-18T13:00:00+02:00",
     "elapsed_hours": 2,
-    "container_closed_tightly": false
+    "container_closed_tightly": false,
+    "container_in_direct_sun": false,
+    "sun_exposure_minutes": 0
   },
   "observations": {
     "bubbles": true,
     "foam": false,
     "smell": "bread-like, mildly sweet-sour",
+    "taste": "still sweet, light acidity",
     "mold": false,
     "colored_spots": false,
     "slime": false,
     "bottle_firmness": null
   },
-  "safety_flags": [],
-  "unknowns": [],
-  "next_action": "Check bubbles, smell and taste after 4 more hours; do not seal the container tightly.",
-  "updated_from_user_message": "User confirmed 0.8 g dry yeast was added at 28°C and bubbles appeared after 2 hours."
+  "alcohol_estimate": {
+    "added_fermentable_sugar_g": 110,
+    "estimated_max_abv_from_added_sugar_percent": 2.4,
+    "original_gravity": null,
+    "final_gravity": null,
+    "measured_or_calculated_abv_percent": null,
+    "confidence": "theoretical_from_added_sugar"
+  },
+  "safety_flags": [
+    "hot_fermentation"
+  ],
+  "unknowns": [
+    "original_gravity",
+    "final_gravity",
+    "actual_abv"
+  ],
+  "next_action": "Keep the jar out of direct sunlight and check liquid temperature, bubbles, smell and taste after 2 more hours.",
+  "updated_from_user_message": "User confirmed a room temperature of 28°C, the jar was moved out of direct sun, the cover is loose and bubbles appeared after 2 hours."
 }
