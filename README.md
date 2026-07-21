@@ -4,25 +4,26 @@
 
 [Открыть КВАССИСТЕНТ](https://kvassistent.pages.dev/)
 
-**Текущая версия: 1.1.1.1.1.1 · единиц: 6.**  
-**Следующая версия: 1.1.1.1.1.1.1 · единиц: 7.**
+**Текущая версия: 1.1.1.1.1.1.1 · единиц: 7.**
 
-## Что изменилось в 1.1.1.1.1.1
+**Следующая версия: 1.1.1.1.1.1.1.1 · единиц: 8.**
 
-В релиз добавлена **схематическая картинка в стиле простого комикса**, созданная по реальной фотогалерее партии.
+## Что изменилось в 1.1.1.1.1.1.1
 
-Комикс показывает шесть этапов:
+Репозиторий получил воспроизводимую связку инструментов для ИИ-разработки:
 
-1. подготовить сухари;
-2. сложить их в ёмкость;
-3. залить водой и размочить;
-4. перелить в бутыль;
-5. бродить под тканью и не держать на прямом солнце;
-6. примерно через сутки при 28°C проверить запах, поверхность и вкус, затем процедить и охладить.
+1. **Graphify** строит карту знаний и показывает связи между кодом, рецептами, переводами и релизами;
+2. **Serena** подключена как MCP-сервер Codex и работает с символами Python/Bash;
+3. `AGENTS.md` объясняет будущим ИИ-агентам, когда использовать каждый инструмент;
+4. `npm run ai:setup` воспроизводит подключение на новом компьютере;
+5. `npm run ai:check` проверяет CLI, MCP, индекс и Git hooks.
 
-- [Открыть комикс в репозитории](share/kvassistent-1.1.1.1.1.1-comic.svg)
-- [Веб-версия с комиксом](https://kvassistent.pages.dev/v1.1.1.1.1.1/#comic-guide)
-- [GitHub Release v1.1.1.1.1.1](https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.1.1.1.1.1)
+Исследование жары и визуальная инструкция предыдущего релиза сохранены.
+
+- [Настройка Graphify + Serena](docs/ai-tooling.md)
+- [Открыть комикс в репозитории](share/kvassistent-1.1.1.1.1.1.1-comic.svg)
+- [Веб-версия с комиксом](https://kvassistent.pages.dev/v1.1.1.1.1.1.1/#comic-guide)
+- [GitHub Release v1.1.1.1.1.1.1](https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.1.1.1.1.1.1)
 
 ## Главный вывод по жаре
 
@@ -92,9 +93,9 @@ Schema: [`agent-instructions/state.schema.json`](agent-instructions/state.schema
 
 ## Релиз и сайт
 
-- [GitHub Release v1.1.1.1.1.1](https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.1.1.1.1.1)
-- [Веб-версия](https://kvassistent.pages.dev/v1.1.1.1.1.1/)
-- [Комикс на сайте](https://kvassistent.pages.dev/v1.1.1.1.1.1/assets/kvassistent-1.1.1.1.1.1-comic.svg)
+- [GitHub Release v1.1.1.1.1.1.1](https://github.com/bambuchastudent/kvas-ai-agent/releases/tag/v1.1.1.1.1.1.1)
+- [Веб-версия](https://kvassistent.pages.dev/v1.1.1.1.1.1.1/)
+- [Комикс на сайте](https://kvassistent.pages.dev/v1.1.1.1.1.1.1/assets/kvassistent-1.1.1.1.1.1.1-comic.svg)
 
 Для русского, английского, испанского, немецкого и китайского создаются одинаково структурированные summary и instructions, PDF и веб-страницы.
 
@@ -106,6 +107,7 @@ Schema: [`agent-instructions/state.schema.json`](agent-instructions/state.schema
 1.1.1.1.1       · единиц: 5
 1.1.1.1.1.1     · единиц: 6
 1.1.1.1.1.1.1   · единиц: 7
+1.1.1.1.1.1.1.1 · единиц: 8
 ```
 
 Канонические данные: `release/version.json`.
@@ -118,3 +120,12 @@ npm run publication
 ```
 
 Pipeline: `.github/workflows/publish.yml`.
+
+## Инструменты для ИИ-разработки
+
+```bash
+npm run ai:setup
+npm run ai:check
+```
+
+Подробности: [`docs/ai-tooling.md`](docs/ai-tooling.md).

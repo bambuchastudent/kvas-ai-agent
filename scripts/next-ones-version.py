@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,6 +53,14 @@ def main() -> None:
     manifest = read_json(MANIFEST_FILE)
     manifest["version"] = next_version
     manifest["ones_count"] = ones_count
+    visual_guide = manifest.get("visual_guide")
+    if isinstance(visual_guide, str) and visual_guide:
+        source_guide = ROOT / visual_guide
+        next_guide = Path("share") / f"kvassistent-{next_version}-comic.svg"
+        if not source_guide.is_file():
+            raise FileNotFoundError(f"Missing current visual guide: {source_guide}")
+        shutil.copy2(source_guide, ROOT / next_guide)
+        manifest["visual_guide"] = next_guide.as_posix()
     write_json(MANIFEST_FILE, manifest)
 
     gallery = read_json(GALLERY_FILE)

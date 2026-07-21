@@ -1,19 +1,25 @@
 {
   "name": "kvas-zhizha",
   "version": "1.1.1",
-  "kvassistentRelease": "1.1.1.1.1.1",
-  "onesCount": 6,
-  "description": "КВАССИСТЕНТ: research-backed household kvass guidance with heat, sunlight, alcohol-boundary controls and a simple comic visual guide, published as multilingual PDF and web pages.",
+  "kvassistentRelease": "1.1.1.1.1.1.1",
+  "onesCount": 7,
+  "description": "КВАССИСТЕНТ: research-backed household kvass guidance with Graphify and Serena support for AI-assisted maintenance, published as multilingual PDF and web pages.",
   "type": "module",
   "private": false,
   "license": "SEE LICENSE IN docs/license-note.md",
   "scripts": {
+    "ai:setup": "bash scripts/setup-ai-tools.sh",
+    "ai:check": "bash scripts/check-ai-tools.sh",
+    "graph:update": "graphify update .",
+    "graph:query": "graphify query",
     "package": "bash scripts/run-python.sh scripts/build-release.py",
     "publication": "bash scripts/run-python.sh scripts/build-release.py",
     "next-release": "bash scripts/run-python.sh scripts/next-ones-version.py",
     "legacy-package": "bash scripts/build-package.sh"
   },
   "files": [
+    "AGENTS.md",
+    ".serena/project.yml",
     "README.md",
     "README.zh-CN.md",
     "CHANGELOG.md",
@@ -31,7 +37,26 @@
     "scripts/build-publication-safe.py",
     "scripts/build-release.py",
     "scripts/run-python.sh",
-    "scripts/next-ones-version.py"
+    "scripts/next-ones-version.py",
+    "scripts/setup-ai-tools.sh",
+    "scripts/check-ai-tools.sh"
   ],
-  "keywords": ["kvass","kvas","kvassistent","zhizha","fermentation","hot-fermentation","direct-sunlight","alcohol-estimation","comic-guide","state-machine","multilingual-pdf","cloudflare-pages","ai-agent-instructions"]
+  "keywords": [
+    "kvass",
+    "kvas",
+    "kvassistent",
+    "zhizha",
+    "fermentation",
+    "hot-fermentation",
+    "direct-sunlight",
+    "alcohol-estimation",
+    "comic-guide",
+    "state-machine",
+    "multilingual-pdf",
+    "cloudflare-pages",
+    "ai-agent-instructions",
+    "graphify",
+    "serena",
+    "mcp"
+  ]
 }

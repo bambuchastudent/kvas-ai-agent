@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.1.1.1.1.1
+
+- Added a versioned Serena configuration for Python and Bash symbol-aware navigation and editing.
+- Registered Serena as a Codex MCP server and added repeatable setup and health checks.
+- Connected Graphify to Codex and Git hooks for repository knowledge-graph updates.
+- Added `AGENTS.md` guidance explaining when agents should use Graphify, Serena, or built-in tools.
+- Made the next-version script carry the versioned comic asset and manifest reference forward automatically.
+- Preserved the heat/sunlight research, multilingual publication, and comic guide from version 6.
+
 ## 1.1.1.1
 
 - Changed the hero to **ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ**.

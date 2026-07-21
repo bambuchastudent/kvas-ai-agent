@@ -1,0 +1,16 @@
+.venv/
+dist/
+scripts/__pycache__/
+*.py[cod]
+
+# Generated local knowledge graph. Rebuild with `npm run graph:update`.
+graphify-out/
+
+# Serena's shared project config is versioned; caches and local overrides are not.
+.serena/cache/
+.serena/memories/
+.serena/logs/
+.serena/project.local.yml
+
+# Graphify writes a machine-specific absolute command here.
+.codex/hooks.json
