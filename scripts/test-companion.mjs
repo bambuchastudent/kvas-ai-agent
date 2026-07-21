@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { agentHandoff, assessBatch, decisionTrace, makeBatch } from "../companion/engine.js";
+import { normalizeConsent, normalizeLanguage, resolvePreferredLanguage } from "../companion/preferences.js";
 
 const now = new Date("2026-07-21T12:00:00Z");
 const started = new Date("2026-07-20T12:00:00Z");
@@ -24,4 +25,18 @@ assert.deepEqual(hotTrace.unknowns,["microbiological_safety","starter_activity"]
 assert.equal(agentHandoff(batchWith({temperatureC:28,sunlight:true})).decision_trace.signals.length,6);
 assert.equal("alcohol_estimate" in agentHandoff(batchWith()),false);
 
-console.log("KVASSISTENT companion rule engine: 13 checks passed");
+assert.equal(resolvePreferredLanguage("ru", ["de-DE"]), "ru");
+assert.equal(resolvePreferredLanguage(null, ["es-MX", "en-US"]), "es");
+assert.equal(resolvePreferredLanguage(null, ["zh-Hans-CN"]), "zh-CN");
+assert.equal(resolvePreferredLanguage(null, ["zh-SG"]), "zh-CN");
+assert.equal(resolvePreferredLanguage(null, ["el-GR"]), "el");
+assert.equal(resolvePreferredLanguage("xx", ["fr-FR"]), "en");
+assert.equal(normalizeLanguage("de-DE"), "de");
+for (const language of ["ru", "en", "es", "de", "zh-CN", "el"]) {
+  assert.equal(resolvePreferredLanguage(language, ["fr-FR"]), language);
+}
+assert.equal(normalizeConsent("essential"), "essential");
+assert.equal(normalizeConsent("all"), "all");
+assert.equal(normalizeConsent("maybe"), null);
+
+console.log("KVASSISTENT companion: 29 rule, language, and consent checks passed");

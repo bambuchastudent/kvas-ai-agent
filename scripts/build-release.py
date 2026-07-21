@@ -34,7 +34,7 @@ def install_comic(version: str) -> Path:
 
 
 def install_companion(version: str) -> Path:
-    required = ("index.html", "styles.css", "engine.js", "app.js", "manifest.webmanifest", "icon.svg", "sw.js")
+    required = ("index.html", "styles.css", "engine.js", "preferences.js", "app.js", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "sw.js")
     missing = [name for name in required if not (COMPANION / name).is_file()]
     if missing:
         raise RuntimeError(f"Missing live-batch companion assets: {missing}")
@@ -142,13 +142,20 @@ def verify(version: str) -> None:
         raise RuntimeError(f"Landing page misses release content: {missing}")
     if not comic.is_file() or comic.stat().st_size < 1000:
         raise RuntimeError(f"Comic asset was not copied: {comic}")
-    companion_required = ("index.html", "styles.css", "engine.js", "app.js", "manifest.webmanifest", "icon.svg", "sw.js")
+    companion_required = ("index.html", "styles.css", "engine.js", "preferences.js", "app.js", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "sw.js")
     missing_companion = [name for name in companion_required if not (companion / name).is_file()]
     if missing_companion:
         raise RuntimeError(f"Companion assets were not copied: {missing_companion}")
     companion_text = (companion / "index.html").read_text(encoding="utf-8")
     if "Живая партия" not in companion_text or "Простой квас без догадок" not in companion_text:
         raise RuntimeError("Companion entry point misses the feature title")
+    if "consent-card" not in companion_text or "data-consent=\"essential\"" not in companion_text:
+        raise RuntimeError("Companion entry point misses privacy consent controls")
+    if 'option value="el"' not in companion_text or 'id="nearby-kvass"' not in companion_text:
+        raise RuntimeError("Companion entry point misses Greek or nearby-kvass discovery")
+    service_worker = (companion / "sw.js").read_text(encoding="utf-8")
+    if "kvassistent-live-v9" not in service_worker or "self.skipWaiting()" not in service_worker:
+        raise RuntimeError("Companion service worker is not release-safe")
 
     manifest = json.loads((ROOT / "publication/manifest.json").read_text(encoding="utf-8"))
     if manifest.get("visual_guide") != f"share/kvassistent-{version}-comic.svg":

@@ -118,6 +118,19 @@ jobs:
           grep -q 'AI 智能体说明' live-verification/site/cloudflare-homepage.html
           grep -q "единиц: ${ONES_COUNT}" live-verification/site/cloudflare-homepage.html
 
+          curl --fail --location --retry 8 --retry-delay 5 "$PAGES_SITE/companion/index.html" \
+            --output live-verification/site/cloudflare-companion.html
+          grep -q 'id="consent-card"' live-verification/site/cloudflare-companion.html
+          grep -q 'data-consent="essential"' live-verification/site/cloudflare-companion.html
+          grep -q 'option value="el"' live-verification/site/cloudflare-companion.html
+          grep -q 'id="nearby-kvass"' live-verification/site/cloudflare-companion.html
+          curl --fail --location --retry 8 --retry-delay 5 "$PAGES_SITE/companion/preferences.js" \
+            --output live-verification/site/cloudflare-preferences.js
+          grep -q 'resolvePreferredLanguage' live-verification/site/cloudflare-preferences.js
+          curl --fail --location --retry 8 --retry-delay 5 "$PAGES_SITE/companion/sw.js" \
+            --output live-verification/site/cloudflare-sw.js
+          grep -q 'kvassistent-live-v9' live-verification/site/cloudflare-sw.js
+
       - name: Write verification summary
         if: always()
         shell: bash

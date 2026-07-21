@@ -32,7 +32,7 @@ The batch can be handed to another AI agent as structured JSON containing the la
 
 ### Judge it in 60 seconds
 
-1. Open the [one-click live scenario](https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1/companion/?demo=1): a real-world check-in at 26 hours, 28°C, with direct sunlight.
+1. Open the [one-click live scenario](https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1/companion/?demo=1): a real-world check-in at 26 hours, 28°C, with direct sunlight.
 2. Read the single recommended next action.
 3. Expand **Why this advice?** and see the warm-temperature and sunlight signals separated from what the system cannot know.
 4. Copy the AI safety brief to see a structured, inspectable handoff.
@@ -63,7 +63,7 @@ KVASSISTENT existed as a multilingual knowledge project before the event. During
 - the root-level `AI_AGENT_START.md` contract that activates any compatible AI agent from the repository link;
 - a simple first-batch recipe embedded into the product;
 - expanded automated tests and CI verification;
-- the one-click judge scenario and versioned release `1.1.1.1.1.1.1.1`.
+- the one-click judge scenario and versioned release `1.1.1.1.1.1.1.1.1`.
 
 The dated commit history, README section **How Codex helped in this version**, release notes, and Codex session provide a clear boundary between prior work and the Build Week implementation.
 
@@ -110,7 +110,7 @@ Codex, GPT-5.6, JavaScript, HTML, CSS, Python, PWA, JSON Schema, Markdown, Graph
 ## Try it out
 
 - Live product: https://kvassistent.pages.dev/
-- One-click judge demo: https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1/companion/?demo=1
+- One-click judge demo: https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1/companion/?demo=1
 - AI agent entry: https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/AI_AGENT_START.md
 - Source: https://github.com/bambuchastudent/kvas-ai-agent
 

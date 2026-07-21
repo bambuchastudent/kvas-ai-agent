@@ -8,6 +8,7 @@
   <title>Живая партия · КВАССИСТЕНТ</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -20,7 +21,7 @@
     <label class="language-picker">
       <span class="sr-only" data-i18n="language">Язык</span>
       <select id="language" aria-label="Language">
-        <option value="ru">RU</option><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option><option value="zh-CN">中文</option>
+        <option value="ru">RU</option><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option><option value="zh-CN">简体中文</option><option value="el">ΕΛ</option>
       </select>
     </label>
   </header>
@@ -31,6 +32,11 @@
       <p class="kicker" data-i18n="kicker">Твой квас. Один честный check-in за раз.</p>
       <h1 data-i18n="headline">Узнай, что делать с банкой <em>прямо сейчас.</em></h1>
       <p class="lead" data-i18n="lead">Температура, запах и поверхность превращаются в следующий безопасный шаг — без догадок и облачной слежки.</p>
+      <a class="nearby-card" id="nearby-kvass" href="https://www.google.com/maps/search/?api=1&amp;query=kvass%20cafe" target="_blank" rel="noopener noreferrer">
+        <span class="nearby-icon" aria-hidden="true">⌖</span>
+        <span><strong data-i18n="nearbyTitle">Найти квас рядом</strong><small data-i18n="nearbyCopy">Откроем поиск ближайших кафе в картах — только после твоего нажатия.</small></span>
+        <span class="nearby-arrow" aria-hidden="true">↗</span>
+      </a>
     </section>
 
     <section class="setup-panel panel" id="setup-panel">
@@ -123,6 +129,29 @@
 
   <footer><span>КВАССИСТЕНТ · ЖИЖА</span><span data-i18n="footer">Бытовой помощник, не лаборатория</span></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <section class="consent-card hidden" id="consent-card" role="dialog" aria-modal="true" aria-labelledby="consent-title" aria-describedby="consent-copy">
+    <div class="consent-copy">
+      <span class="consent-kicker" data-i18n="consentKicker">Твоя кухня — твои данные</span>
+      <h2 id="consent-title" data-i18n="consentTitle">Печенье — к квасу. Cookies — только по делу.</h2>
+      <p id="consent-copy" data-i18n="consentCopy">КВАССИСТЕНТ хранит на устройстве выбранный язык, согласие и состояние партии. PWA также сохраняет файлы для работы без сети. Рекламных и аналитических cookies сейчас нет.</p>
+      <p class="consent-detail" data-i18n="consentDetail">Полное согласие разрешает необязательные улучшения в будущем. Частичное — оставляет только данные, необходимые для языка, партии и офлайн-режима.</p>
+    </div>
+    <div class="consent-actions">
+      <button class="consent-button secondary" id="consent-essential" type="button" data-consent="essential" data-i18n="consentEssential">Согласен, но не полностью</button>
+      <button class="consent-button primary" id="consent-all" type="button" data-consent="all" data-i18n="consentAll">Согласен</button>
+    </div>
+  </section>
+
+  <div class="cookie-toast hidden" id="cookie-toast" role="status" aria-live="polite" aria-atomic="true">
+    <div class="cookie-scene" aria-hidden="true">
+      <div class="cookie"><i></i><i></i><i></i><i></i></div>
+      <div class="taster"><span class="head"><i class="mouth"></i></span><span class="body"></span></div>
+      <div class="kvass-glass"><span></span></div>
+      <div class="sparkles">✦</div>
+    </div>
+    <strong data-i18n="consentCheers">Хрум! И глоток кваса за приватность.</strong>
+  </div>
   <script type="module" src="app.js"></script>
 </body>
 </html>

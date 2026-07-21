@@ -131,8 +131,11 @@ jobs:
           test -s "$companion/index.html"
           test -s "$companion/app.js"
           test -s "$companion/engine.js"
+          test -s "$companion/preferences.js"
           test -s "$companion/styles.css"
           test -s "$companion/manifest.webmanifest"
+          test -s "$companion/icon-192.png"
+          test -s "$companion/icon-512.png"
           test -s "$companion/sw.js"
           grep -q '<h1>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ</h1>' "$landing"
           grep -q 'ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками.' "$landing"
@@ -146,6 +149,13 @@ jobs:
           grep -q 'href="ru/instructions/"' "$landing"
           grep -q 'Живая партия' "$companion/index.html"
           grep -q 'Простой квас без догадок' "$companion/index.html"
+          grep -q 'id="consent-card"' "$companion/index.html"
+          grep -q 'data-consent="essential"' "$companion/index.html"
+          grep -q 'option value="el"' "$companion/index.html"
+          grep -q 'id="nearby-kvass"' "$companion/index.html"
+          grep -q 'resolvePreferredLanguage' "$companion/preferences.js"
+          grep -q 'kvassistent-live-v9' "$companion/sw.js"
+          grep -q 'self.skipWaiting()' "$companion/sw.js"
           grep -q 'kvassistent-live-batch-v1' "$companion/engine.js"
           grep -q "kvassistent-${VERSION}-comic.svg" "$landing"
           grep -q 'id="for-people"' "$landing"
@@ -310,9 +320,19 @@ jobs:
                  "$site/companion/index.html" -o /tmp/companion.html \
               && grep -q 'Живая партия' /tmp/companion.html \
               && grep -q 'Простой квас без догадок' /tmp/companion.html \
+              && grep -q 'id="consent-card"' /tmp/companion.html \
+              && grep -q 'data-consent="essential"' /tmp/companion.html \
+              && grep -q 'option value="el"' /tmp/companion.html \
+              && grep -q 'id="nearby-kvass"' /tmp/companion.html \
               && curl --fail --location --silent --show-error \
                  "$site/companion/engine.js" -o /tmp/companion-engine.js \
-              && grep -q 'kvassistent-live-batch-v1' /tmp/companion-engine.js; then
+              && grep -q 'kvassistent-live-batch-v1' /tmp/companion-engine.js \
+              && curl --fail --location --silent --show-error \
+                 "$site/companion/preferences.js" -o /tmp/companion-preferences.js \
+              && grep -q 'resolvePreferredLanguage' /tmp/companion-preferences.js \
+              && curl --fail --location --silent --show-error \
+                 "$site/companion/sw.js" -o /tmp/companion-sw.js \
+              && grep -q 'kvassistent-live-v9' /tmp/companion-sw.js; then
               echo "Verified $site, comic asset, and live-batch companion"
               exit 0
             fi

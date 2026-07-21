@@ -1,13 +1,15 @@
 # Changelog
 
-## Working tree — AI safety brief
+## 1.1.1.1.1.1.1.1.1
 
-- Added an explainable decision trace to the Live Batch dashboard.
-- Shows the six signals behind every household recommendation and makes unknowns explicit.
-- Adds a one-tap human-readable + JSON handoff for an AI second opinion without an account or automatic upload.
-- Keeps the trace derived from the same deterministic safety engine and covered by tests.
-- Replaced the alcohol-focused dashboard metric with a clear first-batch recipe and a three-step, agent-readable entry point.
-- Added `AI_AGENT_START.md` and a conditional `AGENTS.md` entry, so agents opening the repository have a single, safe way to begin helping.
+- Made language resolution deterministic: a saved choice wins, then the closest supported device language, then English.
+- Added a multilingual privacy notice with full and essential-only consent choices.
+- Added the celebratory cookie-and-kvass animation for both consent paths, including reduced-motion behavior.
+- Reworked the service worker so installed PWAs receive fresh navigations, activate new releases immediately, and retain an offline fallback.
+- Added 192 px and 512 px install icons plus stronger web-app manifest metadata.
+- Expanded automated checks for language preference, consent, PWA assets, and the live Cloudflare deployment.
+- Added Greek to the companion and made Simplified Chinese the target for Chinese device locales.
+- Added an explicit, privacy-preserving nearby-café map search for finding kvass outside the home.
 
 ## 1.1.1.1.1.1.1.1
 

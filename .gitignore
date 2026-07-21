@@ -1,6 +1,7 @@
 .venv/
 node_modules/
 .pnpm-store/
+pnpm-lock.yaml
 dist/
 scripts/__pycache__/
 *.py[cod]
