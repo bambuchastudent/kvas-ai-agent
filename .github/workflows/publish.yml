@@ -75,6 +75,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
+          node scripts/test-companion.mjs
           python scripts/build-release.py 2>&1 | tee publication-build.log
 
       - name: Upload publication builder log
@@ -117,6 +118,7 @@ jobs:
 
           landing="dist/site/v${VERSION}/index.html"
           comic="dist/site/v${VERSION}/assets/kvassistent-${VERSION}-comic.svg"
+          companion="dist/site/v${VERSION}/companion"
           test "$(find dist/publication -maxdepth 1 -name '*.pdf' | wc -l)" -eq 10
           test -s "dist/kvas-${VERSION}-publication.zip"
           test -s "dist/kvas-${VERSION}-publication.tar.gz"
@@ -126,12 +128,25 @@ jobs:
           test -s "dist/site/v${VERSION}/version.json"
           test -s "$landing"
           test -s "$comic"
+          test -s "$companion/index.html"
+          test -s "$companion/app.js"
+          test -s "$companion/engine.js"
+          test -s "$companion/styles.css"
+          test -s "$companion/manifest.webmanifest"
+          test -s "$companion/sw.js"
           grep -q '<h1>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ</h1>' "$landing"
           grep -q 'ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками.' "$landing"
           grep -q 'Лучшие инструкции для людей' "$landing"
           grep -q 'id="hot-fermentation"' "$landing"
           grep -q 'id="comic-guide"' "$landing"
           grep -q 'Реальная партия — в простом комиксе' "$landing"
+          grep -q 'id="live-batch"' "$landing"
+          grep -q 'href="companion/"' "$landing"
+          grep -q 'Один ИИ-агент — одна понятная партия кваса' "$landing"
+          grep -q 'href="ru/instructions/"' "$landing"
+          grep -q 'Живая партия' "$companion/index.html"
+          grep -q 'Простой квас без догадок' "$companion/index.html"
+          grep -q 'kvassistent-live-batch-v1' "$companion/engine.js"
           grep -q "kvassistent-${VERSION}-comic.svg" "$landing"
           grep -q 'id="for-people"' "$landing"
           grep -q 'id="for-ai-agents"' "$landing"
@@ -290,8 +305,15 @@ jobs:
               && curl --fail --location --silent --show-error \
                  "$site/assets/kvassistent-${VERSION}-comic.svg" -o /tmp/comic.svg \
               && grep -q '<svg' /tmp/comic.svg \
-              && grep -q 'КВАССИСТЕНТ' /tmp/comic.svg; then
-              echo "Verified $site and comic asset"
+              && grep -q 'КВАССИСТЕНТ' /tmp/comic.svg \
+              && curl --fail --location --silent --show-error \
+                 "$site/companion/index.html" -o /tmp/companion.html \
+              && grep -q 'Живая партия' /tmp/companion.html \
+              && grep -q 'Простой квас без догадок' /tmp/companion.html \
+              && curl --fail --location --silent --show-error \
+                 "$site/companion/engine.js" -o /tmp/companion-engine.js \
+              && grep -q 'kvassistent-live-batch-v1' /tmp/companion-engine.js; then
+              echo "Verified $site, comic asset, and live-batch companion"
               exit 0
             fi
             echo "Waiting for Cloudflare Pages ($attempt/30)..."

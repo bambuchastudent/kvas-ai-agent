@@ -1,5 +1,24 @@
 # Changelog
 
+## Working tree — AI safety brief
+
+- Added an explainable decision trace to the Live Batch dashboard.
+- Shows the six signals behind every household recommendation and makes unknowns explicit.
+- Adds a one-tap human-readable + JSON handoff for an AI second opinion without an account or automatic upload.
+- Keeps the trace derived from the same deterministic safety engine and covered by tests.
+- Replaced the alcohol-focused dashboard metric with a clear first-batch recipe and a three-step, agent-readable entry point.
+- Added `AI_AGENT_START.md` and a conditional `AGENTS.md` entry, so agents opening the repository have a single, safe way to begin helping.
+
+## 1.1.1.1.1.1.1.1
+
+- Added **Live Batch**, a mobile-first consumer PWA for daily household fermentation check-ins.
+- Added a deterministic, tested safety engine for temperature, direct sunlight, closure, surface, smell, taste, and extended warm fermentation.
+- Added personal next-check timing, batch progress, local history, and a theoretical alcohol ceiling based on added sugar.
+- Added a one-tap 28°C demo scenario and structured AI handoff with explicit unknowns and safety flags.
+- Added local-first persistence, offline caching, installable metadata, JSON export, and Web Share support.
+- Added interface support for Russian, English, Spanish, German, and Simplified Chinese.
+- Integrated the PWA and its rule tests into the multilingual release build and CI verification.
+
 ## 1.1.1.1.1.1.1
 
 - Added a versioned Serena configuration for Python and Bash symbol-aware navigation and editing.

@@ -1,3 +1,7 @@
+## KVASSISTENT kitchen-agent entry point
+
+If the user asks for help making, checking, or rescuing kvass rather than changing this repository, read [`AI_AGENT_START.md`](AI_AGENT_START.md) before responding. Follow its one-batch, confirmation-first, safety-first protocol.
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.

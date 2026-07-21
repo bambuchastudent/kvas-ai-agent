@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#17130d">
+  <meta name="description" content="Private, offline-first companion for safer household kvass fermentation.">
+  <title>Живая партия · КВАССИСТЕНТ</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="KVASSISTENT home">
+      <span class="brand-mark">К</span>
+      <span><strong>КВАССИСТЕНТ</strong><small data-i18n="featureName">Живая партия</small></span>
+    </a>
+    <label class="language-picker">
+      <span class="sr-only" data-i18n="language">Язык</span>
+      <select id="language" aria-label="Language">
+        <option value="ru">RU</option><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option><option value="zh-CN">中文</option>
+      </select>
+    </label>
+  </header>
+
+  <main>
+    <section class="intro" id="intro">
+      <div class="privacy-pill"><span></span><span data-i18n="privacyPill">Без аккаунта · данные остаются на устройстве</span></div>
+      <p class="kicker" data-i18n="kicker">Твой квас. Один честный check-in за раз.</p>
+      <h1 data-i18n="headline">Узнай, что делать с банкой <em>прямо сейчас.</em></h1>
+      <p class="lead" data-i18n="lead">Температура, запах и поверхность превращаются в следующий безопасный шаг — без догадок и облачной слежки.</p>
+    </section>
+
+    <section class="setup-panel panel" id="setup-panel">
+      <div class="panel-heading">
+        <div><span class="step-number">01</span><h2 data-i18n="startTitle">Заведи живую партию</h2></div>
+        <button class="text-button" id="demo-button" type="button" data-i18n="demoButton">Загрузить демо 28°C ↗</button>
+      </div>
+      <section class="recipe-guide" aria-labelledby="recipe-title">
+        <div class="recipe-guide-heading"><div><span class="recipe-kicker" data-i18n="recipeKicker">Первая партия · 3 литра</span><h3 id="recipe-title" data-i18n="recipeTitle">Простой квас без догадок</h3></div><span data-i18n="recipeTime">около суток + охлаждение</span></div>
+        <div class="recipe-ingredients"><strong data-i18n="recipeIngredients">Что нужно</strong><ul><li data-i18n="recipeBread">180–220 г сухарей, лучше часть ржаных</li><li data-i18n="recipeSugar">100–120 г сахара или панелы</li><li data-i18n="recipeStarter">2–3 г свежих или 0,5–1 г сухих дрожжей</li></ul></div>
+        <ol class="recipe-steps"><li data-i18n="recipeStep1">Поджарь сухари до тёмно-золотистого цвета, не сжигай.</li><li data-i18n="recipeStep2">Залей 3 л кипятка и оставь под неплотной крышкой на 4–8 часов.</li><li data-i18n="recipeStep3">Процеди: в брожение должна идти жидкость, а не хлебная каша.</li><li data-i18n="recipeStep4">Добавь сахар и остуди настой до 25–35°C.</li><li data-i18n="recipeStep5">Добавь дрожжи, накрой тканью или неплотной крышкой и запусти партию ниже.</li><li data-i18n="recipeStep6">Проверь через 8–12 часов; в жаре — уже через 6 часов.</li><li data-i18n="recipeStep7">Когда вкус и запах нравятся, процеди ещё раз и охлади минимум на ночь.</li></ol>
+        <p class="recipe-safety" data-i18n="recipeSafety">Плесень, слизь или гнилой/химический запах — не пробуй, партию лучше вылить.</p>
+      </section>
+      <form id="setup-form">
+        <div class="form-grid">
+          <label class="field wide"><span data-i18n="batchName">Название</span><input id="batch-name" name="name" value="Моя Жижа #1" maxlength="48" required></label>
+          <label class="field"><span data-i18n="volume">Объём, л</span><input name="volumeL" type="number" min="0.5" max="20" step="0.1" value="3" required></label>
+          <label class="field"><span data-i18n="sugar">Добавленный сахар, г</span><input name="sugarG" type="number" min="0" max="2000" step="5" value="110" required></label>
+          <label class="field wide"><span data-i18n="startedAt">Начало брожения</span><input id="started-at" name="startedAt" type="datetime-local" required></label>
+          <label class="field"><span data-i18n="temperature">Температура жидкости, °C</span><input name="temperatureC" type="number" min="1" max="50" step="0.5" value="22" required></label>
+          <label class="field"><span data-i18n="closure">Чем закрыта банка</span><select name="seal"><option value="cloth" data-i18n="sealCloth">Ткань / марля</option><option value="loose" data-i18n="sealLoose">Неплотная крышка</option><option value="tight" data-i18n="sealTight">Плотная крышка</option></select></label>
+        </div>
+        <label class="switch-row"><input name="sunlight" type="checkbox"><span class="switch" aria-hidden="true"></span><span data-i18n="sunlight">Банка стоит на прямом солнце</span></label>
+        <button class="primary-button" type="submit"><span data-i18n="startButton">Начать сопровождение</span><span>→</span></button>
+      </form>
+    </section>
+
+    <section class="dashboard hidden" id="dashboard">
+      <div class="dashboard-head">
+        <div><p class="kicker" data-i18n="liveBatch">Живая партия</p><h2 id="dashboard-name"></h2></div>
+        <button class="icon-button" id="more-button" type="button" aria-label="Export batch">•••</button>
+      </div>
+
+      <article class="verdict-card" id="verdict-card" aria-live="polite">
+        <div class="verdict-top"><span class="status-dot"></span><span class="verdict-label" id="verdict-label"></span><span class="timestamp" id="last-updated"></span></div>
+        <h3 id="verdict-action"></h3>
+        <p id="verdict-detail"></p>
+        <div class="issue-list" id="issue-list"></div>
+      </article>
+
+      <div class="metrics-grid">
+        <article><span data-i18n="elapsed">Прошло</span><strong id="elapsed-value"></strong><small id="phase-value"></small></article>
+        <article><span data-i18n="temperatureShort">Жидкость</span><strong id="temperature-value"></strong><small id="temperature-note"></small></article>
+        <article><span data-i18n="nextCheck">Следующая проверка</span><strong id="next-check-value"></strong><small data-i18n="localTime">по местному времени</small></article>
+      </div>
+
+      <article class="journey-card">
+        <div class="journey-copy"><span class="step-number">02</span><div><h3 data-i18n="journeyTitle">Путь партии</h3><p id="journey-copy"></p></div></div>
+        <div class="progress-track"><span id="progress-bar"></span></div>
+        <div class="phase-labels"><span data-i18n="phaseFerment">Брожение</span><span data-i18n="phaseTaste">Проба</span><span data-i18n="phaseFinish">Холод</span></div>
+      </article>
+
+      <section class="checkin-panel panel">
+        <div class="panel-heading"><div><span class="step-number">03</span><h2 data-i18n="checkinTitle">Что видно сейчас?</h2></div><span class="checkin-count" id="checkin-count"></span></div>
+        <form id="checkin-form">
+          <div class="form-grid">
+            <label class="field"><span data-i18n="temperature">Температура жидкости, °C</span><input id="checkin-temperature" name="temperatureC" type="number" min="1" max="50" step="0.5" required></label>
+            <label class="field"><span data-i18n="surface">Поверхность</span><select id="checkin-surface" name="surface"><option value="clear" data-i18n="surfaceClear">Чистая</option><option value="foam" data-i18n="surfaceFoam">Обычная пена</option><option value="mold" data-i18n="surfaceMold">Плесень / пушок</option><option value="slime" data-i18n="surfaceSlime">Слизь / нити</option></select></label>
+            <label class="field"><span data-i18n="smell">Запах</span><select id="checkin-smell" name="smell"><option value="bread" data-i18n="smellBread">Хлебный</option><option value="sour" data-i18n="smellSour">Приятно кислый</option><option value="alcohol" data-i18n="smellAlcohol">Спиртовой</option><option value="rotten" data-i18n="smellRotten">Гнилой</option><option value="chemical" data-i18n="smellChemical">Химический</option></select></label>
+            <label class="field"><span data-i18n="taste">Вкус</span><select id="checkin-taste" name="taste"><option value="unknown" data-i18n="tasteUnknown">Не пробовал(а)</option><option value="sweet" data-i18n="tasteSweet">Сладкий</option><option value="balanced" data-i18n="tasteBalanced">Сбалансированный</option><option value="sour" data-i18n="tasteSour">Кислый</option></select></label>
+            <label class="field"><span data-i18n="closure">Чем закрыта банка</span><select id="checkin-seal" name="seal"><option value="cloth" data-i18n="sealCloth">Ткань / марля</option><option value="loose" data-i18n="sealLoose">Неплотная крышка</option><option value="tight" data-i18n="sealTight">Плотная крышка</option></select></label>
+            <label class="field wide"><span data-i18n="notes">Заметка</span><input name="notes" maxlength="160" data-i18n-placeholder="notesPlaceholder" placeholder="Например: пузырьки стали активнее"></label>
+          </div>
+          <label class="switch-row"><input id="checkin-sunlight" name="sunlight" type="checkbox"><span class="switch" aria-hidden="true"></span><span data-i18n="sunlight">Банка стоит на прямом солнце</span></label>
+          <button class="primary-button" type="submit"><span data-i18n="saveCheckin">Сохранить check-in</span><span>✓</span></button>
+        </form>
+      </section>
+
+      <section class="history-section">
+        <div class="section-heading"><div><span class="step-number">04</span><h2 data-i18n="history">История</h2></div><button class="text-button" id="share-button" type="button" data-i18n="shareAI">Поделиться с ИИ ↗</button></div>
+        <ol class="history-list" id="history-list"></ol>
+      </section>
+
+      <article class="brief-card" id="brief-card">
+        <div class="section-heading brief-heading">
+          <div><span class="step-number">05</span><div><h3 data-i18n="briefTitle">Почему такой совет?</h3><p data-i18n="briefIntro">Короткая трассировка решения: что увидел помощник и чего он не знает.</p></div></div>
+          <button class="text-button" id="brief-toggle" type="button" data-i18n="briefToggleOpen" aria-expanded="false" aria-controls="brief-content">Раскрыть объяснение</button>
+        </div>
+        <div class="brief-content hidden" id="brief-content">
+          <div class="brief-grid" id="brief-grid"></div>
+          <div class="brief-unknowns"><strong data-i18n="briefUnknowns">Что остаётся неизвестным</strong><ul id="brief-unknown-list"></ul><p data-i18n="briefUnknownCopy">Это бытовая оценка, не лабораторный диагноз.</p></div>
+          <button class="secondary-button" id="brief-share-button" type="button"><span data-i18n="briefShare">Скопировать AI safety brief ↗</span><span>⌘</span></button>
+        </div>
+      </article>
+
+      <aside class="trust-note"><span class="trust-icon">⌂</span><div><strong data-i18n="localTitle">Только твоя кухня</strong><p data-i18n="localCopy">Состояние хранится в этом браузере. Экспортируй JSON, если хочешь сохранить или передать его ИИ-агенту.</p></div></aside>
+      <button class="danger-button" id="reset-button" type="button" data-i18n="reset">Удалить эту партию</button>
+    </section>
+  </main>
+
+  <footer><span>КВАССИСТЕНТ · ЖИЖА</span><span data-i18n="footer">Бытовой помощник, не лаборатория</span></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
