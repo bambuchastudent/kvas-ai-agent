@@ -1,8 +1,8 @@
 {
   "name": "kvas-zhizha",
   "version": "1.1.1",
-  "kvassistentRelease": "1.1.1.1.1.1.1.1.1",
-  "onesCount": 9,
+  "kvassistentRelease": "1.1.1.1.1.1.1.1.1.1",
+  "onesCount": 10,
   "description": "КВАССИСТЕНТ: a private, offline-first household kvass companion with safety check-ins, multilingual guidance, and AI handoff.",
   "type": "module",
   "private": false,

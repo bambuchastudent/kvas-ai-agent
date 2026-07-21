@@ -131,7 +131,12 @@ jobs:
           grep -q 'resolvePreferredLanguage' live-verification/site/cloudflare-preferences.js
           curl --fail --location --retry 8 --retry-delay 5 "$PAGES_SITE/companion/sw.js" \
             --output live-verification/site/cloudflare-sw.js
-          grep -q 'kvassistent-live-v9' live-verification/site/cloudflare-sw.js
+          grep -q 'kvassistent-live-v10' live-verification/site/cloudflare-sw.js
+          curl --fail --location --retry 8 --retry-delay 5 "$PAGES_SITE/feedback/index.html" \
+            --output live-verification/site/cloudflare-feedback.html
+          grep -q 'formsubmit.co/kvassitent@gmail.com' live-verification/site/cloudflare-feedback.html
+          grep -q 'www.instagram.com/kvassistent' live-verification/site/cloudflare-feedback.html
+          grep -q 'www.tiktok.com/@kvassistent' live-verification/site/cloudflare-feedback.html
 
       - name: Write verification summary
         if: always()

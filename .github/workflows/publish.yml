@@ -137,6 +137,9 @@ jobs:
           test -s "$companion/icon-192.png"
           test -s "$companion/icon-512.png"
           test -s "$companion/sw.js"
+          test -s "dist/site/v${VERSION}/feedback/index.html"
+          test -s "dist/site/v${VERSION}/feedback/styles.css"
+          test -s "dist/site/v${VERSION}/feedback/thanks.html"
           grep -q '<h1>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ</h1>' "$landing"
           grep -q 'ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками.' "$landing"
           grep -q 'Лучшие инструкции для людей' "$landing"
@@ -154,9 +157,10 @@ jobs:
           grep -q 'option value="el"' "$companion/index.html"
           grep -q 'id="nearby-kvass"' "$companion/index.html"
           grep -q 'resolvePreferredLanguage' "$companion/preferences.js"
-          grep -q 'kvassistent-live-v9' "$companion/sw.js"
+          grep -q 'kvassistent-live-v10' "$companion/sw.js"
           grep -q 'self.skipWaiting()' "$companion/sw.js"
           grep -q 'kvassistent-live-batch-v1' "$companion/engine.js"
+          grep -q 'formsubmit.co/kvassitent@gmail.com' "dist/site/v${VERSION}/feedback/index.html"
           grep -q "kvassistent-${VERSION}-comic.svg" "$landing"
           grep -q 'id="for-people"' "$landing"
           grep -q 'id="for-ai-agents"' "$landing"
@@ -334,7 +338,12 @@ jobs:
               && grep -q 'resolvePreferredLanguage' /tmp/companion-preferences.js \
               && curl --fail --location --silent --show-error \
                  "$site/companion/sw.js" -o /tmp/companion-sw.js \
-              && grep -q 'kvassistent-live-v9' /tmp/companion-sw.js; then
+              && grep -q 'kvassistent-live-v10' /tmp/companion-sw.js \
+              && curl --fail --location --retry 3 --retry-delay 3 \
+                 "$site/feedback/index.html" -o /tmp/feedback.html \
+              && grep -q 'formsubmit.co/kvassitent@gmail.com' /tmp/feedback.html \
+              && grep -q 'www.instagram.com/kvassistent' /tmp/feedback.html \
+              && grep -q 'www.tiktok.com/@kvassistent' /tmp/feedback.html; then
               echo "Verified $site, comic asset, and live-batch companion"
               exit 0
             fi

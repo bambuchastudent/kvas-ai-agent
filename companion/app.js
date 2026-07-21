@@ -55,12 +55,12 @@ const privacyStrings = {
 for (const [lang, additions] of Object.entries(privacyStrings)) strings[lang] = { ...strings[lang], ...additions };
 
 const discoveryStrings = {
-  ru:{nearbyTitle:"Найти квас рядом",nearbyCopy:"Откроем поиск ближайших кафе в картах — только после твоего нажатия."},
-  en:{nearbyTitle:"Find kvass nearby",nearbyCopy:"Open a nearby café search in maps — only after you tap."},
-  es:{nearbyTitle:"Encontrar kvas cerca",nearbyCopy:"Abrir cafeterías cercanas en el mapa, solo cuando pulses."},
-  de:{nearbyTitle:"Kwas in der Nähe finden",nearbyCopy:"Cafés in der Nähe erst nach deinem Klick in Karten suchen."},
-  "zh-CN":{nearbyTitle:"查找附近的格瓦斯",nearbyCopy:"仅在你点击后，才会在地图中搜索附近咖啡馆。"},
-  el:{nearbyTitle:"Βρες κβας κοντά σου",nearbyCopy:"Άνοιξε αναζήτηση κοντινών καφέ στον χάρτη — μόνο αφού πατήσεις."}
+  ru:{nearbyTitle:"Найти квас рядом",nearbyCopy:"Откроем поиск ближайших кафе в картах — только после твоего нажатия.",feedbackLink:"Рассказать о своём напитке"},
+  en:{nearbyTitle:"Find kvass nearby",nearbyCopy:"Open a nearby café search in maps — only after you tap.",feedbackLink:"Share your drink"},
+  es:{nearbyTitle:"Encontrar kvas cerca",nearbyCopy:"Abrir cafeterías cercanas en el mapa, solo cuando pulses.",feedbackLink:"Comparte tu bebida"},
+  de:{nearbyTitle:"Kwas in der Nähe finden",nearbyCopy:"Cafés in der Nähe erst nach deinem Klick in Karten suchen.",feedbackLink:"Dein Getränk teilen"},
+  "zh-CN":{nearbyTitle:"查找附近的格瓦斯",nearbyCopy:"仅在你点击后，才会在地图中搜索附近咖啡馆。",feedbackLink:"分享你的饮品"},
+  el:{nearbyTitle:"Βρες κβας κοντά σου",nearbyCopy:"Άνοιξε αναζήτηση κοντινών καφέ στον χάρτη — μόνο αφού πατήσεις.",feedbackLink:"Μοιράσου το ποτό σου"}
 };
 for (const [lang, additions] of Object.entries(discoveryStrings)) strings[lang] = { ...strings[lang], ...additions };
 const nearbyQueries = {ru:"квас кафе",en:"kvass cafe",es:"kvas cafetería",de:"Kwas Café","zh-CN":"格瓦斯 咖啡馆",el:"κβας καφέ"};

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#17130d">
+  <meta name="description" content="Расскажите КВАССИСТЕНТУ о своём квасе, рецепте или идее.">
+  <title>Обратная связь · КВАССИСТЕНТ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="../"><span>К</span><strong>КВАССИСТЕНТ</strong></a>
+    <a class="quiet-link" href="../companion/">Живая партия →</a>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="kicker">Обратная связь · сообщество</p>
+      <h1>Расскажи нам<br><em>про свой напиток.</em></h1>
+      <p class="lead">Рецепт, фотография, история удачной партии, предложение или ошибка — всё попадёт команде КВАССИСТЕНТА на <a href="mailto:kvassitent@gmail.com">kvassitent@gmail.com</a>.</p>
+    </section>
+
+    <section class="layout">
+      <form action="https://formsubmit.co/kvassitent@gmail.com" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_subject" value="Новая история для КВАССИСТЕНТА">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" id="next-url" value="">
+        <input class="honey" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div class="form-heading"><span>01</span><div><h2>Что вы хотите прислать?</h2><p>Поля со звёздочкой обязательны.</p></div></div>
+        <label><span>Тема *</span><select name="Тема" required><option value="">Выберите</option><option>Мой квас или другой напиток</option><option>Рецепт для каталога</option><option>Предложение для КВАССИСТЕНТА</option><option>Ошибка на сайте или в PWA</option><option>Сотрудничество</option></select></label>
+        <div class="two">
+          <label><span>Ваше имя</span><input name="Имя" autocomplete="name" placeholder="Как к вам обращаться"></label>
+          <label><span>Email для ответа</span><input type="email" name="Email для ответа" autocomplete="email" placeholder="name@example.com"></label>
+        </div>
+        <div class="two">
+          <label><span>Название напитка</span><input name="Название напитка" placeholder="Например, Жижа с мятой"></label>
+          <label><span>Город / страна</span><input name="Место" autocomplete="country-name" placeholder="Откуда ваш рецепт"></label>
+        </div>
+        <label><span>История, рецепт или сообщение *</span><textarea name="Сообщение" required minlength="20" rows="8" placeholder="Ингредиенты, время, температура, что получилось и чем вы гордитесь…"></textarea></label>
+        <label><span>Ссылка на фото или видео</span><input type="url" name="Ссылка" placeholder="https://…"></label>
+        <label><span>Фотография (до 10 МБ)</span><input type="file" name="attachment" accept="image/jpeg,image/png,image/webp,image/heic"></label>
+        <label class="consent"><input type="checkbox" name="Согласие" value="Да" required><span>Я согласен(на), что введённые данные и файл будут переданы через FormSubmit на почту КВАССИСТЕНТА для обработки моего обращения. Публикацию материалов команда согласует отдельно. *</span></label>
+        <button type="submit">Отправить КВАССИСТЕНТУ <span>→</span></button>
+        <p class="privacy">Форма использует внешний сервис FormSubmit. Не отправляйте пароли, платёжные данные или другую чувствительную информацию. Можно также написать напрямую: <a href="mailto:kvassitent@gmail.com">kvassitent@gmail.com</a>.</p>
+      </form>
+
+      <aside>
+        <p class="kicker">Мы в соцсетях</p>
+        <h2>Канал от первой банки до лучшей партии.</h2>
+        <p>Короткие разборы рецептов, честные ошибки, истории сообщества и новые функции КВАССИСТЕНТА.</p>
+        <nav aria-label="Социальные сети">
+          <a href="https://www.instagram.com/kvassistent/" target="_blank" rel="noopener noreferrer"><strong>Instagram</strong><span>@kvassistent ↗</span></a>
+          <a href="https://www.tiktok.com/@kvassistent" target="_blank" rel="noopener noreferrer"><strong>TikTok</strong><span>@kvassistent ↗</span></a>
+          <a href="mailto:kvassitent@gmail.com"><strong>Email</strong><span>kvassitent@gmail.com ↗</span></a>
+        </nav>
+        <small>Аккаунты Instagram и TikTok появятся по этим адресам после регистрации.</small>
+      </aside>
+    </section>
+  </main>
+  <footer>КВАССИСТЕНТ · Твоя кухня, твоя история</footer>
+  <script>document.getElementById("next-url").value = new URL("thanks.html", location.href).href;</script>
+</body>
+</html>

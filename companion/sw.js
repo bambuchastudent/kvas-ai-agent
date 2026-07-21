@@ -1,4 +1,4 @@
-const CACHE = "kvassistent-live-v9";
+const CACHE = "kvassistent-live-v10";
 const ASSETS = ["./","index.html","styles.css","engine.js","preferences.js","app.js","manifest.webmanifest","icon.svg","icon-192.png","icon-512.png"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting())));
 self.addEventListener("activate", event => event.waitUntil(Promise.all([

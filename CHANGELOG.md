@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.1.1.1.1.1.1.1.1
+
+- Added a dedicated community feedback form for drink stories, recipes, photos, ideas, and bug reports.
+- Routed submissions to `kvassitent@gmail.com` through FormSubmit with explicit data-transfer consent and a direct-email fallback.
+- Prepared Instagram and TikTok channel links under the shared `@kvassistent` identity.
+- Connected feedback and social entry points from both the public landing page and the installed PWA.
+- Bumped the PWA cache generation so installed clients discover the new community links.
+
 ## 1.1.1.1.1.1.1.1.1
 
 - Made language resolution deterministic: a saved choice wins, then the closest supported device language, then English.

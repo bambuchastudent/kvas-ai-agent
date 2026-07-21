@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CORE = ROOT / "scripts/build-publication-safe.py"
 COMPANION = ROOT / "companion"
+FEEDBACK = ROOT / "feedback"
 
 
 def load_core():
@@ -44,6 +45,16 @@ def install_companion(version: str) -> Path:
     return target
 
 
+def install_feedback(version: str) -> Path:
+    required = ("index.html", "styles.css", "thanks.html")
+    missing = [name for name in required if not (FEEDBACK / name).is_file()]
+    if missing:
+        raise RuntimeError(f"Missing feedback assets: {missing}")
+    target = ROOT / f"dist/site/v{version}/feedback"
+    shutil.copytree(FEEDBACK, target, dirs_exist_ok=True)
+    return target
+
+
 def patch_landing(version: str) -> None:
     landing = ROOT / f"dist/site/v{version}/index.html"
     text = landing.read_text(encoding="utf-8")
@@ -75,6 +86,11 @@ def patch_landing(version: str) -> None:
 .companion-cta:hover { filter: brightness(1.06); transform: translateY(-1px); }
 .companion-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .companion-secondary { color: #f0bb45; font-weight: 750; }
+.community-release { margin: 30px 0; padding: clamp(26px,5vw,44px); border-radius: 24px; border: 2px solid #317054; background: linear-gradient(135deg,#effcf4,#fffdf7); }
+.community-release h2 { max-width: 760px; margin: 10px 0; font-size: clamp(34px,6vw,60px); line-height: 1; }
+.community-release p { max-width: 720px; }
+.community-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 22px; }
+.community-social { color: #22573f; font-weight: 800; text-decoration: none; }
 """
     text = text.replace("</style>", css + "</style>", 1)
 
@@ -90,6 +106,13 @@ def patch_landing(version: str) -> None:
     <article><strong>Передача ИИ</strong>Структурированный handoff сохраняет подтверждённые факты и неизвестные, а не выдуманный контекст.</article>
   </div>
   <div class="companion-actions"><a class="companion-cta" href="companion/">Открыть живую партию <span aria-hidden="true">→</span></a><a class="companion-secondary" href="ru/instructions/">Инструкция для ИИ-агента →</a></div>
+</section>
+
+<section class="community-release" id="community-feedback">
+  <div class="eyebrow">Сообщество КВАССИСТЕНТА</div>
+  <h2>Твой напиток может стать следующей историей</h2>
+  <p>Пришли рецепт, фото удачной партии, идею или сообщение об ошибке. Форма отправит обращение на <strong>kvassitent@gmail.com</strong>; публикацию материалов мы всегда согласуем отдельно.</p>
+  <div class="community-actions"><a class="button primary" href="feedback/">Рассказать о своём напитке →</a><a class="community-social" href="https://www.instagram.com/kvassistent/">Instagram</a><a class="community-social" href="https://www.tiktok.com/@kvassistent">TikTok</a></div>
 </section>
 
 <section class="heat-release" id="hot-fermentation">
@@ -124,6 +147,7 @@ def verify(version: str) -> None:
     landing = ROOT / f"dist/site/v{version}/index.html"
     comic = ROOT / f"dist/site/v{version}/assets/kvassistent-{version}-comic.svg"
     companion = ROOT / f"dist/site/v{version}/companion"
+    feedback = ROOT / f"dist/site/v{version}/feedback"
     text = landing.read_text(encoding="utf-8")
     required = [
         'id="live-batch"',
@@ -136,6 +160,9 @@ def verify(version: str) -> None:
         "При 28°C банку убрать с прямого солнца",
         f"kvassistent-{version}-comic.svg",
         "Реальная партия — в простом комиксе",
+        'id="community-feedback"',
+        'href="feedback/"',
+        "kvassitent@gmail.com",
     ]
     missing = [item for item in required if item not in text]
     if missing:
@@ -146,6 +173,13 @@ def verify(version: str) -> None:
     missing_companion = [name for name in companion_required if not (companion / name).is_file()]
     if missing_companion:
         raise RuntimeError(f"Companion assets were not copied: {missing_companion}")
+    feedback_required = ("index.html", "styles.css", "thanks.html")
+    missing_feedback = [name for name in feedback_required if not (feedback / name).is_file()]
+    if missing_feedback:
+        raise RuntimeError(f"Feedback assets were not copied: {missing_feedback}")
+    feedback_text = (feedback / "index.html").read_text(encoding="utf-8")
+    if "formsubmit.co/kvassitent@gmail.com" not in feedback_text or "www.instagram.com/kvassistent" not in feedback_text or "www.tiktok.com/@kvassistent" not in feedback_text:
+        raise RuntimeError("Feedback page misses email delivery or social channels")
     companion_text = (companion / "index.html").read_text(encoding="utf-8")
     if "Живая партия" not in companion_text or "Простой квас без догадок" not in companion_text:
         raise RuntimeError("Companion entry point misses the feature title")
@@ -154,7 +188,7 @@ def verify(version: str) -> None:
     if 'option value="el"' not in companion_text or 'id="nearby-kvass"' not in companion_text:
         raise RuntimeError("Companion entry point misses Greek or nearby-kvass discovery")
     service_worker = (companion / "sw.js").read_text(encoding="utf-8")
-    if "kvassistent-live-v9" not in service_worker or "self.skipWaiting()" not in service_worker:
+    if "kvassistent-live-v10" not in service_worker or "self.skipWaiting()" not in service_worker:
         raise RuntimeError("Companion service worker is not release-safe")
 
     manifest = json.loads((ROOT / "publication/manifest.json").read_text(encoding="utf-8"))
@@ -174,6 +208,7 @@ def main() -> None:
     core.main()
     install_comic(version)
     install_companion(version)
+    install_feedback(version)
     patch_landing(version)
     verify(version)
     print(f"Built КВАССИСТЕНТ {meta['display']} with live-batch companion, heat research, and comic guide")
