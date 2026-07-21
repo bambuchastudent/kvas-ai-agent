@@ -101,7 +101,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          expected_languages=(ru en es de zh-CN)
+          expected_languages=(ru en es de zh-CN el)
           expected_types=(summary instructions)
 
           for lang in "${expected_languages[@]}"; do
@@ -119,7 +119,7 @@ jobs:
           landing="dist/site/v${VERSION}/index.html"
           comic="dist/site/v${VERSION}/assets/kvassistent-${VERSION}-comic.svg"
           companion="dist/site/v${VERSION}/companion"
-          test "$(find dist/publication -maxdepth 1 -name '*.pdf' | wc -l)" -eq 10
+          test "$(find dist/publication -maxdepth 1 -name '*.pdf' | wc -l)" -eq 12
           test -s "dist/kvas-${VERSION}-publication.zip"
           test -s "dist/kvas-${VERSION}-publication.tar.gz"
           test -s "dist/kvassistent-${VERSION}-website.zip"
@@ -165,10 +165,12 @@ jobs:
           grep -q 'Abrir guía para personas' "$landing"
           grep -q 'Anleitung für Menschen' "$landing"
           grep -q '打开用户指南' "$landing"
+          grep -q 'Άνοιγμα οδηγού για ανθρώπους' "$landing"
           grep -q 'AI agent instructions' "$landing"
           grep -q 'Instrucciones para agente de IA' "$landing"
           grep -q 'Anleitung für KI-Agenten' "$landing"
           grep -q 'AI 智能体说明' "$landing"
+          grep -q 'Οδηγίες πράκτορα AI' "$landing"
           grep -q "единиц: ${ONES_COUNT}" "$landing"
           grep -q 'beer-background' "$landing"
           grep -q 'Галерея успешных напитков' "$landing"

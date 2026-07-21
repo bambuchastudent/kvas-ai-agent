@@ -9,6 +9,7 @@
 - Added 192 px and 512 px install icons plus stronger web-app manifest metadata.
 - Expanded automated checks for language preference, consent, PWA assets, and the live Cloudflare deployment.
 - Added Greek to the companion and made Simplified Chinese the target for Chinese device locales.
+- Added Greek human and AI-agent publication pages plus both versioned PDFs to the main language gallery.
 - Added an explicit, privacy-preserving nearby-café map search for finding kvass outside the home.
 
 ## 1.1.1.1.1.1.1.1

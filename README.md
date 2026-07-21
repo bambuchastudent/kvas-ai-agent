@@ -96,7 +96,7 @@ Schema: [`agent-instructions/state.schema.json`](agent-instructions/state.schema
 - [Живая партия](https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1/companion/)
 - [Комикс на сайте](https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1/assets/kvassistent-1.1.1.1.1.1.1.1.1-comic.svg)
 
-Для русского, английского, испанского, немецкого и китайского создаются одинаково структурированные summary и instructions, PDF и веб-страницы.
+Для русского, английского, испанского, немецкого, упрощённого китайского и греческого создаются одинаково структурированные summary и instructions, PDF и веб-страницы.
 
 ## Версии
 

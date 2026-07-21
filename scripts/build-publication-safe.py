@@ -54,6 +54,12 @@ CARD_COPY = {
         "agent_description": "批次状态、回复格式、安全、可复现性以及智能体之间的交接。",
         "agent_button": "AI 智能体说明",
     },
+    "el": {
+        "human_description": "Σύντομη συνταγή, βήματα παρασκευής και κανόνες ασφάλειας για ανθρώπους.",
+        "human_button": "Άνοιγμα οδηγού για ανθρώπους",
+        "agent_description": "Κατάσταση παρτίδας, μορφή απάντησης, ασφάλεια, αναπαραγωγιμότητα και παράδοση μεταξύ πρακτόρων.",
+        "agent_button": "Οδηγίες πράκτορα AI",
+    },
 }
 
 
@@ -113,7 +119,7 @@ def generated_card(path: Path) -> None:
     draw.text((92, 140), PROJECT_NAME, font=title, fill=(255, 250, 237))
     draw.text((95, 255), "ИИ УПРАВЛЯЕТ · ТЫ ГОТОВИШЬ", font=subtitle, fill=(238, 181, 63))
     draw.text((95, 335), "КВАС «ЖИЖА» СВОИМИ РУКАМИ", font=small, fill=(255, 250, 237))
-    draw.text((95, 430), "PDF + WEB  ·  RU  EN  ES  DE  ZH-CN", font=small, fill=(215, 199, 174))
+    draw.text((95, 430), "PDF + WEB  ·  RU  EN  ES  DE  ZH-CN  EL", font=small, fill=(215, 199, 174))
     draw.text((95, 495), DISPLAY_VERSION, font=small, fill=(238, 181, 63))
 
     path.parent.mkdir(parents=True, exist_ok=True)

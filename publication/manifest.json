@@ -41,6 +41,13 @@
       "label": "简体中文",
       "summary": "publication/releases/1.1.1.1.1/zh-CN/summary.md",
       "instructions": "publication/releases/1.1.1.1.1/zh-CN/instructions.md"
+    },
+    {
+      "code": "el",
+      "html_lang": "el",
+      "label": "Ελληνικά",
+      "summary": "publication/releases/1.1.1.1.1/el/summary.md",
+      "instructions": "publication/releases/1.1.1.1.1/el/instructions.md"
     }
   ]
 }

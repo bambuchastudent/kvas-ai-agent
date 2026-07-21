@@ -79,7 +79,7 @@ def read_source(root: Path, rel_path: str, lang: str, doc_type: str) -> SourceDo
 
 def validate_parity(docs: list[SourceDoc], languages: list[dict[str, str]]) -> None:
     expected_langs = [item["code"] for item in languages]
-    if expected_langs != ["ru", "en", "es", "de", "zh-CN"]:
+    if expected_langs != ["ru", "en", "es", "de", "zh-CN", "el"]:
         raise ValueError(f"Unexpected language order: {expected_langs}")
 
     for doc_type in DOC_TYPES:
