@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.1.1.1.1.1.1.1.1.1.1.1.1
+
+- Replaced the flat launch board with a dedicated spherical globe game.
+- Added a standalone `companion/game/` page with a glossy globe, six launch sites, and bottle rockets flying outward from the sphere.
+- Added automatic launches every 10 seconds and manual launches from every continent marker.
+- Added one persistent total counter plus six per-continent counters stored locally with `localStorage`.
+- Added pause, reset, manual-launch, and optional sound controls.
+- Updated the public landing page with a version-14 globe preview and a direct **Играть на глобусе** action.
+- Preserved the maximum-carbonation-without-alcohol game mode while clarifying the real-drink safety interpretation.
+- Added a new versioned spherical-globe SVG poster and release validation for the game assets.
+
 ## 1.1.1.1.1.1.1.1.1.1.1.1.1
 
 - Added a six-continent launch board: North America, South America, Europe, Africa, Asia, and Oceania.
@@ -71,7 +82,7 @@
 
 ## 1.1.1
 
-- Renamed the visible product identity to **КВАССИСТЕНТ** in uppercase.
+- Renamed the visible project identity to **КВАССИСТЕНТ** in uppercase.
 - Reworked the landing page so the best concise instructions for people appear first.
 - Split the landing page into separate **Для людей** and **Для ИИ-агентов** sections.
 - Kept human summaries and AI-agent instructions as separate multilingual PDF and web documents.
