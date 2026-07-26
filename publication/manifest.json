@@ -1,11 +1,11 @@
 {
-  "version": "1.1.1.1.1.1.1.1.1.1.1",
+  "version": "1.1.1.1.1.1.1.1.1.1.1.1",
   "source_version": "1.1.1.1.1",
-  "ones_count": 11,
+  "ones_count": 12,
   "project": "КВАССИСТЕНТ",
   "brand": "Жижа",
-  "research_topic": "strained wort, primary fermentation, PET bottle conditioning, carbonation safety",
-  "visual_guide": "share/kvassistent-1.1.1.1.1.1.1.1.1.1.1-comic.svg",
+  "research_topic": "strained wort, primary fermentation, PET bottle conditioning, clickable bottle-rocket launch counter",
+  "visual_guide": "share/kvassistent-1.1.1.1.1.1.1.1.1.1.1.1-comic.svg",
   "languages": [
     {
       "code": "ru",
