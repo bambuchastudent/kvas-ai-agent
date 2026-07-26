@@ -9,21 +9,25 @@ function batchWith(overrides = {}) {
   return makeBatch({name:"Test",volumeL:3,sugarG:110,startedAt:started,temperatureC:22,surface:"clear",smell:"bread",taste:"sweet",seal:"cloth",...overrides},now);
 }
 
-assert.equal(assessBatch(batchWith()).verdict,"on_track");
-assert.equal(assessBatch(batchWith({surface:"mold"})).verdict,"stop");
-assert.equal(assessBatch(batchWith({smell:"rotten"})).verdict,"stop");
-assert.equal(assessBatch(batchWith({temperatureC:35})).verdict,"stop");
-assert.equal(assessBatch(batchWith({temperatureC:28,sunlight:true})).verdict,"act_now");
-assert.equal(assessBatch(batchWith({seal:"tight"})).action,"release_pressure");
-assert.equal(assessBatch(batchWith({taste:"balanced"})).verdict,"ready");
+function assess(overrides = {}) {
+  return assessBatch(batchWith(overrides), now);
+}
 
-const hotTrace = decisionTrace(batchWith({temperatureC:28,sunlight:true}));
+assert.equal(assess().verdict,"on_track");
+assert.equal(assess({surface:"mold"}).verdict,"stop");
+assert.equal(assess({smell:"rotten"}).verdict,"stop");
+assert.equal(assess({temperatureC:35}).verdict,"stop");
+assert.equal(assess({temperatureC:28,sunlight:true}).verdict,"act_now");
+assert.equal(assess({seal:"tight"}).action,"release_pressure");
+assert.equal(assess({taste:"balanced"}).verdict,"ready");
+
+const hotTrace = decisionTrace(batchWith({temperatureC:28,sunlight:true}), now);
 assert.equal(hotTrace.status,"danger");
 assert.equal(hotTrace.signals.find(signal => signal.key === "temperature").status,"watch");
 assert.equal(hotTrace.signals.find(signal => signal.key === "sunlight").status,"danger");
 assert.deepEqual(hotTrace.unknowns,["microbiological_safety","starter_activity"]);
-assert.equal(agentHandoff(batchWith({temperatureC:28,sunlight:true})).decision_trace.signals.length,6);
-assert.equal("alcohol_estimate" in agentHandoff(batchWith()),false);
+assert.equal(agentHandoff(batchWith({temperatureC:28,sunlight:true}), now).decision_trace.signals.length,6);
+assert.equal("alcohol_estimate" in agentHandoff(batchWith(), now),false);
 
 assert.equal(resolvePreferredLanguage("ru", ["de-DE"]), "ru");
 assert.equal(resolvePreferredLanguage(null, ["es-MX", "en-US"]), "es");
@@ -39,4 +43,4 @@ assert.equal(normalizeConsent("essential"), "essential");
 assert.equal(normalizeConsent("all"), "all");
 assert.equal(normalizeConsent("maybe"), null);
 
-console.log("KVASSISTENT companion: 29 rule, language, and consent checks passed");
+console.log("KVASSISTENT companion: 29 deterministic rule, language, and consent checks passed");
