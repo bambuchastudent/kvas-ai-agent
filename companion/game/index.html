@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071020">
+  <meta name="description" content="КВАССИСТЕНТ 14: игра с глобусом, шестью континентами и бутылками-ракетами.">
+  <title>КВАССИСТЕНТ 14 · Глобальные запуски</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar"><a class="back" href="../">← К ЖИВОЙ ПАРТИИ</a><div class="version">ВЕРСИЯ 14</div><button class="icon-btn" id="sound" type="button" aria-pressed="false">Звук: выкл.</button></header>
+    <section class="hero"><h1>КВАССИСТЕНТ</h1><p>Глобальная игра на сфере: запускай бутылки-ракеты с шести континентов, накапливай результат локально и лови максимум газиков без разгона алкоголя.</p></section>
+    <section class="hud" aria-label="Статистика игры">
+      <article class="hud-card gold"><span>Запущено бутылок</span><strong id="total">0</strong></article>
+      <article class="hud-card"><span>Автозапуск</span><strong>10 сек</strong></article>
+      <article class="hud-card ok"><span>Накопление</span><strong>локально</strong></article>
+      <article class="hud-card"><span>Режим</span><strong>6 континентов</strong></article>
+    </section>
+
+    <main class="game-shell" id="game">
+      <div class="countdown">Следующий пуск через <b id="countdown">10</b> сек.</div>
+      <div class="counter"><span>Запущено бутылок</span><strong id="corner-total">0</strong></div>
+      <div class="globe-stage">
+        <div class="orbit">
+          <div class="globe" id="globe">
+            <div class="sphere">
+              <svg class="world-map" viewBox="0 0 800 800" aria-hidden="true">
+                <path class="ice" d="M194 80l70-32 110 15 70-22 99 35-49 42-106 12-93-15z"/>
+                <path class="land" d="M93 205l65-73 92-22 87 37 13 61-48 45-29 68-73 12-49-49-59-24z"/>
+                <path class="land alt" d="M261 365l56 22 31 70-17 64 26 55-45 108-43-38-3-83-37-57 11-77z"/>
+                <path class="land" d="M377 193l44-34 71 6 38 31-20 34-57 8-38-17z"/>
+                <path class="land alt" d="M412 276l72-37 60 35 30 76-28 76-16 110-58 73-36-71-14-72-35-67 19-58z"/>
+                <path class="land" d="M497 170l116-58 96 23 45 67-17 76-79 36-42 77-73-21-31-78-74-44z"/>
+                <path class="land alt" d="M641 493l64-28 48 25-9 57-55 32-49-34z"/>
+                <path class="cloud" d="M108 300c70-32 118-8 176 10M458 117c91-25 154 2 219 33M462 652c80 21 142 12 210-18"/>
+              </svg>
+              <div class="grid-lines"></div>
+            </div>
+
+            <button class="site" data-id="north-america" aria-label="Запустить из Северной Америки"><span>СЕВ. АМЕРИКА <small>0</small></span></button>
+            <button class="site" data-id="south-america" aria-label="Запустить из Южной Америки"><span>ЮЖ. АМЕРИКА <small>0</small></span></button>
+            <button class="site" data-id="europe" aria-label="Запустить из Европы"><span>ЕВРОПА <small>0</small></span></button>
+            <button class="site" data-id="africa" aria-label="Запустить из Африки"><span>АФРИКА <small>0</small></span></button>
+            <button class="site" data-id="asia" aria-label="Запустить из Азии"><span>АЗИЯ <small>0</small></span></button>
+            <button class="site" data-id="oceania" aria-label="Запустить из Океании"><span>ОКЕАНИЯ <small>0</small></span></button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="controls"><button class="control primary" id="launch-now" type="button">ЗАПУСТИТЬ СЕЙЧАС</button><button class="control" id="pause" type="button">Пауза</button><button class="control" id="reset" type="button">Сбросить локальный счётчик</button></div>
+    <section class="continent-stats" id="continent-stats" aria-label="Запуски по континентам"></section>
+    <section class="safety">
+      <article class="panel"><h2>Максимальная газированность без алкоголя</h2><div class="carbonation-meter"><i></i></div><p><strong>Игровой режим:</strong> максимум пузырьков. Для реального напитка это означает короткий контролируемый набор газа в пищевой ПЭТ и немедленное охлаждение, а не долгое тёплое дображивание.</p></article>
+      <article class="panel"><h2>Сфера, а не плоская карта</h2><p>Все шесть точек запуска закреплены прямо на глобусе. Нажимай на любую светящуюся площадку или дождись автоматического запуска каждые десять секунд.</p></article>
+    </section>
+  </div>
+
+  <script src="game.js" defer></script>
+</body>
+</html>
