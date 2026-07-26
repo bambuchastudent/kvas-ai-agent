@@ -64,11 +64,14 @@ def patch_landing(version: str) -> None:
 
     css = """
 .heat-release,
-.comic-release { margin: 30px 0; padding: 26px; border-radius: 18px; }
+.comic-release,
+.rocket-launch-release { margin: 30px 0; padding: 26px; border-radius: 18px; }
 .heat-release { border: 2px solid #d48a18; background: #fff5dc; }
 .comic-release { border: 2px solid #493a8a; background: #f6f3ff; }
+.rocket-launch-release { border: 2px solid #20315f; background: linear-gradient(180deg,#eef5ff,#f7fbff); }
 .heat-release h2,
-.comic-release h2 { margin-top: 0; }
+.comic-release h2,
+.rocket-launch-release h2 { margin-top: 0; }
 .heat-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 12px; }
 .heat-grid article { padding: 14px; border-radius: 12px; background: #fffdf7; border: 1px solid #e7c98d; }
 .heat-danger { margin-top: 15px; padding: 14px; border-left: 5px solid #a52b20; background: #fff0ea; }
@@ -91,6 +94,61 @@ def patch_landing(version: str) -> None:
 .community-release p { max-width: 720px; }
 .community-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 22px; }
 .community-social { color: #22573f; font-weight: 800; text-decoration: none; }
+.launch-hangar { position: relative; min-height: 450px; margin-top: 22px; border: 1px solid rgba(32,49,95,.18); border-radius: 24px; overflow: hidden; background: radial-gradient(circle at 20% 18%,rgba(255,255,255,.95),transparent 1.5%),radial-gradient(circle at 83% 24%,rgba(255,255,255,.9),transparent 1.8%),radial-gradient(circle at 59% 14%,rgba(255,255,255,.85),transparent 1.4%),linear-gradient(180deg,#122047,#08111f 68%,#34445f 68%,#1c2738 100%); }
+.launch-counter { position: absolute; top: 14px; right: 14px; z-index: 20; padding: 10px 14px; border-radius: 16px; background: rgba(7,12,23,.82); color: #fff8e8; border: 1px solid rgba(240,187,69,.65); font-weight: 800; font-size: .95rem; }
+.launch-counter strong { color: #f0bb45; font-size: 1.08rem; }
+.launch-status { position: absolute; top: 16px; left: 16px; z-index: 20; padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,.12); color: #e8f0ff; border: 1px solid rgba(255,255,255,.24); font-weight: 750; }
+.rocket-bottle { position: absolute; bottom: 58px; width: 96px; height: 255px; border: 0; padding: 0; background: none; cursor: pointer; transform-origin: 50% 100%; transition: transform .15s ease, filter .15s ease; }
+.rocket-bottle:hover { transform: translateY(-4px) scale(1.03); filter: drop-shadow(0 18px 25px rgba(0,0,0,.25)); }
+.rocket-bottle:focus-visible { outline: 3px solid #f0bb45; outline-offset: 6px; border-radius: 20px; }
+.rocket-bottle[data-direction="left"] { left: 12%; --dx: -200px; --dy: -360px; --rot: -28deg; }
+.rocket-bottle[data-direction="center"] { left: calc(50% - 48px); --dx: 0px; --dy: -430px; --rot: -6deg; }
+.rocket-bottle[data-direction="right"] { right: 12%; --dx: 200px; --dy: -360px; --rot: 28deg; }
+.rocket-core { position: absolute; inset: 0; }
+.rocket-body { position: absolute; left: 8px; right: 8px; bottom: 0; top: 42px; border: 4px solid #d8ecff; border-radius: 18px 18px 28px 28px; background: linear-gradient(90deg,rgba(255,255,255,.35),rgba(167,222,255,.16) 38%,rgba(255,255,255,.08)); box-shadow: inset 0 -96px 0 rgba(112,61,24,.92), inset 0 -106px 0 #dca84b; }
+.rocket-body::after { content: "ЖИЖА"; position: absolute; left: 10px; right: 10px; bottom: 38px; padding: 6px 0; border-radius: 8px; background: #f0bb45; color: #18110b; font-weight: 950; font-size: 12px; letter-spacing: .06em; }
+.rocket-neck { position: absolute; left: 33px; top: 11px; width: 30px; height: 45px; border: 4px solid #d8ecff; border-bottom: 0; border-radius: 9px 9px 0 0; background: rgba(255,255,255,.18); }
+.rocket-cap { position: absolute; left: 28px; top: 0; width: 40px; height: 14px; border-radius: 5px 5px 3px 3px; background: #e65444; border: 3px solid #7a231c; }
+.rocket-fin { position: absolute; bottom: 10px; width: 30px; height: 58px; background: #e65444; border: 3px solid #6b211b; }
+.rocket-fin.left { left: -16px; clip-path: polygon(100% 0,100% 100%,0 100%); }
+.rocket-fin.right { right: -16px; clip-path: polygon(0 0,100% 100%,0 100%); }
+.rocket-arm { position: absolute; top: 110px; width: 22px; height: 70px; border-radius: 12px; background: #dfe8f3; border: 3px solid #6d829f; }
+.rocket-arm.left { left: -26px; transform: rotate(-18deg); }
+.rocket-arm.right { right: -26px; transform: rotate(18deg); }
+.rocket-flame { position: absolute; left: 36px; bottom: -72px; width: 24px; height: 74px; opacity: 0; border-radius: 50% 50% 45% 45%; background: linear-gradient(#fff6b2,#ffa139 48%,#ea4729 75%,transparent); filter: drop-shadow(0 0 16px #ff9d2e); transform-origin: 50% 0; }
+.rocket-bottle .launch-bubbles span { position: absolute; display: block; bottom: 32px; width: 10px; height: 10px; border: 2px solid rgba(255,255,255,.74); border-radius: 50%; opacity: 0; }
+.rocket-bottle .launch-bubbles span:nth-child(1) { left: 18px; }
+.rocket-bottle .launch-bubbles span:nth-child(2) { left: 44px; width: 14px; height: 14px; }
+.rocket-bottle .launch-bubbles span:nth-child(3) { left: 66px; width: 8px; height: 8px; }
+.rocket-bottle.launched { pointer-events: none; animation: rocket-fly 1.8s cubic-bezier(.22,.61,.18,1) forwards; }
+.rocket-bottle.launched .rocket-flame { opacity: 1; animation: rocket-flame .14s ease-in-out infinite alternate; }
+.rocket-bottle.launched .launch-bubbles span { animation: launch-bubble .7s ease-out infinite; }
+.rocket-bottle.is-done { opacity: .1; }
+.launch-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.launch-reset { border: 0; border-radius: 999px; background: #20315f; color: #fff8e8; padding: 12px 18px; font-weight: 800; cursor: pointer; }
+.launch-reset:hover { filter: brightness(1.08); }
+.launch-note { color: var(--muted); font-size: .98rem; align-self: center; }
+@keyframes rocket-fly { 0% { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; } 14% { transform: translate(0,-18px) rotate(1deg) scale(1.03); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(.88); opacity: 0; } }
+@keyframes rocket-flame { from { transform: scaleY(.78); } to { transform: scaleY(1.22); } }
+@keyframes launch-bubble { 0% { transform: translateY(10px) scale(.4); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(-90px) scale(1.1); opacity: 0; } }
+@media (max-width: 760px) {
+  .launch-hangar { min-height: 520px; }
+  .rocket-bottle[data-direction="left"] { left: 6%; }
+  .rocket-bottle[data-direction="right"] { right: 6%; }
+  .launch-counter { top: auto; bottom: 14px; }
+}
+@media (max-width: 520px) {
+  .launch-hangar { min-height: 620px; }
+  .rocket-bottle[data-direction="left"] { left: calc(50% - 145px); bottom: 88px; }
+  .rocket-bottle[data-direction="center"] { bottom: 188px; }
+  .rocket-bottle[data-direction="right"] { right: calc(50% - 145px); bottom: 88px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rocket-bottle,
+  .rocket-bottle.launched,
+  .rocket-bottle.launched .rocket-flame,
+  .rocket-bottle.launched .launch-bubbles span { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+}
 """
     text = text.replace("</style>", css + "</style>", 1)
 
@@ -128,18 +186,114 @@ def patch_landing(version: str) -> None:
   <div class="heat-danger"><strong>Сейчас:</strong> убрать банку с солнца, прикрыть чистой тканью или неплотной крышкой и измерить температуру жидкости.</div>
 </section>
 
+<section class="rocket-launch-release" id="rocket-launch">
+  <div class="eyebrow">Версия {version} · кликабельные ракеты-бутылки</div>
+  <h2>Нажми на бутылку-ракету — и она улетит в свою сторону</h2>
+  <p>Теперь каждая бутылка запускается отдельно. Левая уходит влево, центральная летит почти строго вверх, правая — вправо. Маленький счётчик в углу считает, сколько бутылок уже запущено.</p>
+  <div class="launch-hangar" id="launch-hangar" aria-label="Интерактивная площадка запуска бутылок-ракет">
+    <div class="launch-status" id="launch-status">Выбирай бутылку для запуска</div>
+    <div class="launch-counter" id="launch-counter">Запущено бутылок: <strong>0</strong></div>
+
+    <button class="rocket-bottle" type="button" data-direction="left" aria-label="Запустить левую бутылку-ракету">
+      <span class="rocket-core">
+        <span class="rocket-cap"></span><span class="rocket-neck"></span><span class="rocket-body"></span>
+        <span class="rocket-fin left"></span><span class="rocket-fin right"></span>
+        <span class="rocket-arm left"></span><span class="rocket-arm right"></span>
+        <span class="rocket-flame"></span>
+        <span class="launch-bubbles"><span></span><span></span><span></span></span>
+      </span>
+    </button>
+
+    <button class="rocket-bottle" type="button" data-direction="center" aria-label="Запустить центральную бутылку-ракету">
+      <span class="rocket-core">
+        <span class="rocket-cap"></span><span class="rocket-neck"></span><span class="rocket-body"></span>
+        <span class="rocket-fin left"></span><span class="rocket-fin right"></span>
+        <span class="rocket-arm left"></span><span class="rocket-arm right"></span>
+        <span class="rocket-flame"></span>
+        <span class="launch-bubbles"><span></span><span></span><span></span></span>
+      </span>
+    </button>
+
+    <button class="rocket-bottle" type="button" data-direction="right" aria-label="Запустить правую бутылку-ракету">
+      <span class="rocket-core">
+        <span class="rocket-cap"></span><span class="rocket-neck"></span><span class="rocket-body"></span>
+        <span class="rocket-fin left"></span><span class="rocket-fin right"></span>
+        <span class="rocket-arm left"></span><span class="rocket-arm right"></span>
+        <span class="rocket-flame"></span>
+        <span class="launch-bubbles"><span></span><span></span><span></span></span>
+      </span>
+    </button>
+  </div>
+  <div class="launch-actions">
+    <button class="launch-reset" id="launch-reset" type="button">Сбросить пуски</button>
+    <div class="launch-note">Каждая бутылка считается только один раз, пока ты не нажмёшь сброс.</div>
+  </div>
+</section>
+
 <section class="comic-release" id="comic-guide">
   <div class="eyebrow">Версия {version} · визуальная инструкция</div>
   <h2>Реальная партия — в простом комиксе</h2>
   <p>Схема собрана по фотогалерее этой партии: подготовка сухарей, замачивание, перелив в бутыль, открытое брожение под тканью и проверка примерно через сутки при 28°C.</p>
   <p><strong>Главная мысль:</strong> не закупоривать первичное брожение, не держать бутыль на прямом солнце и перед розливом проверить запах, поверхность и вкус.</p>
   <figure>
-    <a href="assets/{comic_name}"><img src="assets/{comic_name}" alt="Схематический комикс КВАССИСТЕНТА: шесть этапов приготовления кваса" loading="lazy"></a>
-    <figcaption>Векторная SVG-схема остаётся чёткой на телефоне и при увеличении. Нажми, чтобы открыть отдельно.</figcaption>
+    <a href="assets/{comic_name}"><img src="assets/{comic_name}" alt="Схематический комикс КВАССИСТЕНТА: ракеты-бутылки и счётчик запусков" loading="lazy"></a>
+    <figcaption>В новой версии комикс поддерживает тему отдельных запусков: бутылки расходятся по разным траекториям, а счётчик в углу показывает прогресс.</figcaption>
   </figure>
 </section>
 """
     text = text.replace(marker, section + marker, 1)
+
+    script = """
+<script>
+(() => {
+  const hangar = document.getElementById('launch-hangar');
+  const counter = document.getElementById('launch-counter');
+  const counterValue = counter ? counter.querySelector('strong') : null;
+  const status = document.getElementById('launch-status');
+  const reset = document.getElementById('launch-reset');
+  const rockets = Array.from(document.querySelectorAll('.rocket-bottle[data-direction]'));
+  if (!hangar || !counterValue || !status || !reset || !rockets.length) return;
+
+  const labels = { left: 'Левая ракета ушла влево', center: 'Центральная ракета ушла вверх', right: 'Правая ракета ушла вправо' };
+  let launched = 0;
+
+  function updateCounter() {
+    counterValue.textContent = String(launched);
+    if (launched === rockets.length) {
+      status.textContent = 'Все бутылки запущены';
+    }
+  }
+
+  function launchRocket(rocket) {
+    if (rocket.dataset.launched === 'true') return;
+    rocket.dataset.launched = 'true';
+    rocket.classList.add('launched');
+    launched += 1;
+    status.textContent = labels[rocket.dataset.direction] || 'Бутылка запущена';
+    updateCounter();
+    window.setTimeout(() => rocket.classList.add('is-done'), 1750);
+  }
+
+  rockets.forEach((rocket) => {
+    rocket.addEventListener('click', () => launchRocket(rocket));
+  });
+
+  reset.addEventListener('click', () => {
+    launched = 0;
+    counterValue.textContent = '0';
+    status.textContent = 'Выбирай бутылку для запуска';
+    rockets.forEach((rocket) => {
+      rocket.dataset.launched = 'false';
+      rocket.classList.remove('launched', 'is-done');
+      rocket.style.animation = 'none';
+      void rocket.offsetWidth;
+      rocket.style.animation = '';
+    });
+  });
+})();
+</script>
+"""
+    text = text.replace("</body>", script + "</body>", 1)
     landing.write_text(text, encoding="utf-8")
 
 
@@ -156,6 +310,14 @@ def verify(version: str) -> None:
         'href="ru/instructions/"',
         "Простой рецепт",
         'id="hot-fermentation"',
+        'id="rocket-launch"',
+        'id="launch-counter"',
+        "Запущено бутылок:",
+        'data-direction="left"',
+        'data-direction="center"',
+        'data-direction="right"',
+        'id="launch-reset"',
+        "Все бутылки запущены",
         'id="comic-guide"',
         "При 28°C банку убрать с прямого солнца",
         f"kvassistent-{version}-comic.svg",
@@ -183,7 +345,7 @@ def verify(version: str) -> None:
     companion_text = (companion / "index.html").read_text(encoding="utf-8")
     if "Живая партия" not in companion_text or "Простой квас без догадок" not in companion_text:
         raise RuntimeError("Companion entry point misses the feature title")
-    if "consent-card" not in companion_text or "data-consent=\"essential\"" not in companion_text:
+    if "consent-card" not in companion_text or 'data-consent="essential"' not in companion_text:
         raise RuntimeError("Companion entry point misses privacy consent controls")
     if 'option value="el"' not in companion_text or 'id="nearby-kvass"' not in companion_text:
         raise RuntimeError("Companion entry point misses Greek or nearby-kvass discovery")
@@ -211,7 +373,7 @@ def main() -> None:
     install_feedback(version)
     patch_landing(version)
     verify(version)
-    print(f"Built КВАССИСТЕНТ {meta['display']} with live-batch companion, heat research, and comic guide")
+    print(f"Built КВАССИСТЕНТ {meta['display']} with clickable bottle rockets, launch counter, and comic guide")
 
 
 if __name__ == "__main__":
