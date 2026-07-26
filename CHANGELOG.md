@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.1.1.1.1.1.1.1.1.1
+
+- Added a complete PET-bottle carbonation stage instead of ending the recipe after primary fermentation.
+- Standardized priming at 4 g sugar per litre, 10–15% headspace, pressure checks, and 8–12 hours of chilling.
+- Added hot-weather pressure guidance: at 28°C, check the PET bottle every hour from the first hour.
+- Explicitly excluded glass bottles from the household carbonation protocol.
+- Rebuilt the visual comic as an eight-step guide that reaches a genuinely carbonated result.
+- Added two synchronized bottle-rocket launches with retracting launch arms, scroll activation, replay control, and reduced-motion support.
+- Made companion tests deterministic by passing their fixed clock into every assessment.
+
 ## 1.1.1.1.1.1.1.1.1.1
 
 - Added a dedicated community feedback form for drink stories, recipes, photos, ideas, and bug reports.
