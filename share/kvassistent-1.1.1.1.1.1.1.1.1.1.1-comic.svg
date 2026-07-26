@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="2600" viewBox="0 0 1200 2600" role="img" aria-labelledby="title desc">
+  <title id="title">КВАССИСТЕНТ — как получить квас с газиками</title>
+  <desc id="desc">Семь шагов: сухари, настой, процеживание, закваска, основное брожение, карбонизация в ПЭТ и охлаждение. В финале три нарисованные бутылки-ракеты одновременно взлетают.</desc>
+  <defs>
+    <style>
+      .title{font:900 68px "DejaVu Sans",sans-serif;fill:#211a14}.subtitle{font:700 27px "DejaVu Sans",sans-serif;fill:#7b4215}.panel-title{font:800 29px "DejaVu Sans",sans-serif;fill:#211a14}.body{font:500 21px "DejaVu Sans",sans-serif;fill:#332a24}.small{font:600 19px "DejaVu Sans",sans-serif;fill:#332a24}.n{font:900 29px "DejaVu Sans",sans-serif;fill:#211a14}.line{stroke:#211a14;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}.thin{stroke:#211a14;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.bubble{animation:bubble 2.8s linear infinite;transform-box:fill-box;transform-origin:center}.b2{animation-delay:-.9s}.b3{animation-delay:-1.7s}.rocket{animation:launch 6s cubic-bezier(.7,0,.85,.45) 2.6s infinite;transform-box:fill-box;transform-origin:center}.rocket-b{animation-delay:2.6s}.rocket-c{animation-delay:2.6s}.flame{animation:flame .16s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:top}.arm{animation:wave .55s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}.countdown{animation:count 6s linear infinite}.star{animation:twinkle 1.1s ease-in-out infinite alternate}.s2{animation-delay:-.4s}.s3{animation-delay:-.8s}@keyframes bubble{0%{transform:translateY(35px) scale(.55);opacity:0}15%{opacity:1}90%{opacity:.85}100%{transform:translateY(-115px) scale(1.1);opacity:0}}@keyframes launch{0%,43%{transform:translateY(0)}48%{transform:translateY(12px)}58%{transform:translateY(-80px)}76%{transform:translateY(-620px)}77%,100%{transform:translateY(-620px);opacity:0}}@keyframes flame{from{transform:scaleY(.72)}to{transform:scaleY(1.25)}}@keyframes wave{from{transform:rotate(-10deg)}to{transform:rotate(12deg)}}@keyframes count{0%,8%{opacity:1}9%,16%{opacity:.4}17%,24%{opacity:1}25%,32%{opacity:.4}33%,43%{opacity:1}44%,100%{opacity:.15}}@keyframes twinkle{from{opacity:.25;transform:scale(.75)}to{opacity:1;transform:scale(1.2)}}@media(prefers-reduced-motion:reduce){.bubble,.rocket,.flame,.arm,.countdown,.star{animation:none!important}}
+    </style>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="11" refY="5" orient="auto"><path d="M0,0 L12,5 L0,10 z" fill="#3a342f"/></marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="8" dy="10" stdDeviation="0" flood-color="#c8b78f"/></filter>
+    <linearGradient id="kvass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d99a36"/><stop offset="1" stop-color="#70401e"/></linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#11182c"/><stop offset="1" stop-color="#253b67"/></linearGradient>
+  </defs>
+
+  <rect width="1200" height="2600" fill="#f8efd7"/>
+  <rect x="45" y="35" width="1110" height="205" rx="34" fill="#fff2bf" class="line"/>
+  <text x="600" y="115" text-anchor="middle" class="title">КВАССИСТЕНТ</text>
+  <text x="600" y="172" text-anchor="middle" class="subtitle">КВАС С ГАЗИКАМИ · 1.1.1.1.1.1.1.1.1.1.1</text>
+  <text x="600" y="212" text-anchor="middle" class="small">Хлеб даёт сусло. Газ появляется после процеживания и дображивания.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="55" y="295" width="520" height="480" rx="28" fill="#fff" class="line"/>
+    <rect x="625" y="295" width="520" height="480" rx="28" fill="#fff" class="line"/>
+    <rect x="55" y="825" width="520" height="480" rx="28" fill="#fff" class="line"/>
+    <rect x="625" y="825" width="520" height="480" rx="28" fill="#fff" class="line"/>
+    <rect x="55" y="1355" width="520" height="480" rx="28" fill="#fff" class="line"/>
+    <rect x="625" y="1355" width="520" height="480" rx="28" fill="#fff" class="line"/>
+  </g>
+
+  <circle cx="105" cy="345" r="36" fill="#ffdb61" class="thin"/><text x="105" y="356" text-anchor="middle" class="n">1</text>
+  <path d="M170 470 Q315 365 460 470 L440 570 Q315 625 190 570 Z" fill="#8c5a32" class="line"/>
+  <path d="M190 455 Q315 405 440 455 L430 530 Q315 565 200 530 Z" fill="#6b391f"/>
+  <path d="M165 610 H465" class="thin"/><path d="M210 650 H420" class="thin"/>
+  <rect x="80" y="650" width="470" height="95" rx="18" fill="#ffdc65" class="thin"/>
+  <text x="105" y="692" class="panel-title">Подсушить хлеб</text><text x="105" y="725" class="small">Лучше ржаной/бородинский, без горелой корки.</text>
+
+  <circle cx="675" cy="345" r="36" fill="#ffa946" class="thin"/><text x="675" y="356" text-anchor="middle" class="n">2</text>
+  <path d="M720 430 Q885 375 1050 430 L1025 620 Q885 685 745 620 Z" fill="#1f466e" class="line"/>
+  <path d="M748 485 Q885 445 1022 485 L1015 610 Q885 650 755 610 Z" fill="#b96e31"/>
+  <g fill="#e9ad5f" class="thin"><path d="M770 440l70-12 35 45-55 42-62-28z"/><path d="M875 425l72 8 26 55-64 25-48-38z"/><path d="M955 470l62 15-10 66-68 4-13-55z"/></g>
+  <path d="M1040 370 q32 42 0 85" fill="none" stroke="#e39b5a" stroke-width="8"/><path d="M1080 360 q35 50 0 100" fill="none" stroke="#e39b5a" stroke-width="8"/>
+  <rect x="650" y="650" width="470" height="95" rx="18" fill="#ffa946" class="thin"/>
+  <text x="675" y="692" class="panel-title">Залить горячей водой</text><text x="675" y="725" class="small">Настоять, затем остудить ниже 30°C.</text>
+
+  <path d="M585 540 H615" class="line" fill="none" marker-end="url(#arrow)"/><path d="M600 785 V815" class="line" fill="none" marker-end="url(#arrow)"/>
+
+  <circle cx="105" cy="875" r="36" fill="#ff7f50" class="thin"/><text x="105" y="886" text-anchor="middle" class="n">3</text>
+  <path d="M175 970 H455 L420 1095 Q315 1140 210 1095 Z" fill="#ddd" class="line"/><path d="M195 985 H435" class="thin"/>
+  <g fill="#9c6235"><circle cx="240" cy="1020" r="25"/><circle cx="310" cy="1045" r="29"/><circle cx="380" cy="1018" r="23"/></g>
+  <path d="M315 1130 V1200" class="line" marker-end="url(#arrow)"/><path d="M255 1205 Q315 1170 375 1205 L365 1240 Q315 1260 265 1240 Z" fill="url(#kvass)" class="thin"/>
+  <rect x="80" y="1180" width="470" height="95" rx="18" fill="#ff7f50" class="thin"/>
+  <text x="105" y="1222" class="panel-title">Процедить сусло</text><text x="105" y="1255" class="small">Хлеб отжать и убрать — в бутылке его не оставляют.</text>
+
+  <circle cx="675" cy="875" r="36" fill="#8dd3c7" class="thin"/><text x="675" y="886" text-anchor="middle" class="n">4</text>
+  <path d="M760 950 L760 920 Q885 885 1010 920 L1010 950 Q1040 980 1040 1060 L1025 1170 Q885 1215 745 1170 L730 1060 Q730 980 760 950 Z" fill="#f4d39d" class="line"/>
+  <path d="M750 1035 Q885 1005 1020 1035 L1015 1160 Q885 1190 755 1160 Z" fill="url(#kvass)"/>
+  <path d="M742 930 Q885 880 1028 930" fill="none" stroke="#b8c7cf" stroke-width="12" stroke-dasharray="18 12"/>
+  <circle cx="790" cy="1075" r="8" fill="#fff"/><circle cx="860" cy="1120" r="7" fill="#fff"/><circle cx="950" cy="1060" r="10" fill="#fff"/>
+  <rect x="650" y="1180" width="470" height="95" rx="18" fill="#8dd3c7" class="thin"/>
+  <text x="675" y="1222" class="panel-title">Добавить сахар и закваску</text><text x="675" y="1255" class="small">12–24 ч под тканью; дрожжи — только в тёплое сусло.</text>
+
+  <path d="M585 1070 H615" class="line" fill="none" marker-end="url(#arrow)"/><path d="M600 1315 V1345" class="line" fill="none" marker-end="url(#arrow)"/>
+
+  <circle cx="105" cy="1405" r="36" fill="#90bff8" class="thin"/><text x="105" y="1416" text-anchor="middle" class="n">5</text>
+  <path d="M220 1465 h190 v45 q35 22 35 80 v145 q-65 55-130 55t-130-55v-145q0-58 35-80z" fill="#e8d9b8" class="line"/>
+  <path d="M205 1590 Q315 1565 425 1590 V1725 Q315 1760 205 1725 Z" fill="url(#kvass)"/>
+  <rect x="248" y="1450" width="134" height="45" rx="12" fill="#2b78b5" class="thin"/>
+  <g><circle class="bubble" cx="250" cy="1670" r="9" fill="#fff"/><circle class="bubble b2" cx="315" cy="1695" r="7" fill="#fff"/><circle class="bubble b3" cx="380" cy="1650" r="11" fill="#fff"/></g>
+  <text x="455" y="1530" class="small" text-anchor="end">+ 1 ч. л. сахара/л</text><text x="455" y="1560" class="small" text-anchor="end">или 2–3 изюмины/л</text>
+  <rect x="80" y="1710" width="470" height="95" rx="18" fill="#90bff8" class="thin"/>
+  <text x="105" y="1752" class="panel-title">Разлить в ПЭТ</text><text x="105" y="1785" class="small">Оставить 5–8 см воздуха. Плотно закрыть.</text>
+
+  <circle cx="675" cy="1405" r="36" fill="#c49af4" class="thin"/><text x="675" y="1416" text-anchor="middle" class="n">6</text>
+  <path d="M765 1465 h240 v50 q35 25 35 82 v130 q-75 55-155 55t-155-55v-130q0-57 35-82z" fill="#e8d9b8" class="line"/>
+  <path d="M750 1590 Q885 1560 1020 1590 V1715 Q885 1755 750 1715 Z" fill="url(#kvass)"/>
+  <rect x="810" y="1450" width="150" height="45" rx="12" fill="#b84038" class="thin"/>
+  <path d="M735 1615 q-55 45-10 95" fill="none" class="line"/><path d="M1035 1615 q55 45 10 95" fill="none" class="line"/>
+  <text x="885" y="1540" text-anchor="middle" class="panel-title">8–18 часов</text><text x="885" y="1575" text-anchor="middle" class="small">Бутылка стала твёрдой → в холодильник</text>
+  <rect x="650" y="1710" width="470" height="95" rx="18" fill="#c49af4" class="thin"/>
+  <text x="675" y="1752" class="panel-title">Набрать газ и охладить</text><text x="675" y="1785" class="small">Не стекло. Проверять ПЭТ каждые 2–4 часа.</text>
+
+  <path d="M585 1600 H615" class="line" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="55" y="1885" width="1090" height="565" rx="34" fill="url(#sky)" class="line"/>
+  <text x="600" y="1955" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="34" font-weight="900" fill="#fff2bf">7 · ГАЗИКИ ЕСТЬ — РАКЕТЫ ПОШЛИ!</text>
+  <text x="600" y="2000" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="600" fill="#dbe7ff">Анимация шутит. Настоящие бутылки не запускаем — охлаждаем.</text>
+  <g fill="#fff2bf"><circle class="star" cx="130" cy="2050" r="6"/><circle class="star s2" cx="1050" cy="2105" r="8"/><circle class="star s3" cx="560" cy="2040" r="5"/><circle class="star s2" cx="335" cy="2160" r="7"/><circle class="star" cx="860" cy="2165" r="5"/></g>
+  <text class="countdown" x="600" y="2110" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="58" font-weight="900" fill="#ffdc65">3 · 2 · 1 · ПУСК!</text>
+
+  <g class="rocket rocket-a" transform="translate(205 2150)">
+    <path d="M55 0 h90 v32 q25 18 25 58 v155 q-35 42-70 42t-70-42V90q0-40 25-58z" fill="#e7eef6" class="thin"/><path d="M42 120 Q100 100 158 120 V235 Q100 255 42 235 Z" fill="url(#kvass)"/><rect x="70" y="-18" width="60" height="32" rx="8" fill="#3f78b7" class="thin"/>
+    <g class="arm"><path d="M35 125 q-42-28-48-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/><circle cx="-15" cy="50" r="11" fill="#fff"/></g><g class="arm"><path d="M165 125 q42-28 48-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/><circle cx="215" cy="50" r="11" fill="#fff"/></g>
+    <path d="M60 280 l40 95 40-95z" fill="#ff8d33" class="flame"/><path d="M78 280 l22 65 22-65z" fill="#ffe15a" class="flame"/>
+  </g>
+  <g class="rocket rocket-b" transform="translate(500 2190)">
+    <path d="M55 0 h90 v32 q25 18 25 58 v155 q-35 42-70 42t-70-42V90q0-40 25-58z" fill="#e7eef6" class="thin"/><path d="M42 120 Q100 100 158 120 V235 Q100 255 42 235 Z" fill="url(#kvass)"/><rect x="70" y="-18" width="60" height="32" rx="8" fill="#b84038" class="thin"/>
+    <g class="arm"><path d="M35 125 q-42-28-48-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/><circle cx="-15" cy="50" r="11" fill="#fff"/></g><g class="arm"><path d="M165 125 q42-28 48-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/><circle cx="215" cy="50" r="11" fill="#fff"/></g>
+    <path d="M60 280 l40 95 40-95z" fill="#ff8d33" class="flame"/><path d="M78 280 l22 65 22-65z" fill="#ffe15a" class="flame"/>
+  </g>
+  <g class="rocket rocket-c" transform="translate(795 2150)">
+    <path d="M55 0 h90 v32 q25 18 25 58 v155 q-35 42-70 42t-70-42V90q0-40 25-58z" fill="#e7eef6" class="thin"/><path d="M42 120 Q100 100 158 120 V235 Q100 255 42 235 Z" fill="url(#kvass)"/><rect x="70" y="-18" width="60" height="32" rx="8" fill="#7c58b3" class="thin"/>
+    <g class="arm"><path d="M35 125 q-42-28-48-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/><circle cx="-15" cy="50" r="11" fill="#fff"/></g><g class="arm"><path d="M165 125 q42-28 48-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/><circle cx="215" cy="50" r="11" fill="#fff"/></g>
+    <path d="M60 280 l40 95 40-95z" fill="#ff8d33" class="flame"/><path d="M78 280 l22 65 22-65z" fill="#ffe15a" class="flame"/>
+  </g>
+
+  <rect x="55" y="2480" width="1090" height="80" rx="24" fill="#ffe7df" stroke="#8d271e" stroke-width="6"/>
+  <text x="600" y="2515" text-anchor="middle" class="small" fill="#8d271e">ВАЖНО: твёрдая ПЭТ, сильное шипение или выпуклое дно → сразу охладить.</text>
+  <text x="600" y="2547" text-anchor="middle" class="small" fill="#8d271e">Открывать только холодной, медленно, над раковиной. Плесень или гнилостный запах → вылить.</text>
+</svg>
