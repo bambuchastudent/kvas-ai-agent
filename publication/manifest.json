@@ -1,11 +1,11 @@
 {
-  "version": "1.1.1.1.1.1.1.1.1.1",
+  "version": "1.1.1.1.1.1.1.1.1.1.1",
   "source_version": "1.1.1.1.1",
-  "ones_count": 10,
+  "ones_count": 11,
   "project": "КВАССИСТЕНТ",
   "brand": "Жижа",
-  "research_topic": "hot fermentation at 28C, direct sunlight, alcohol boundaries",
-  "visual_guide": "share/kvassistent-1.1.1.1.1.1.1.1.1.1-comic.svg",
+  "research_topic": "safe PET carbonation, priming sugar, hot fermentation at 28C, direct sunlight, alcohol boundaries",
+  "visual_guide": "share/kvassistent-1.1.1.1.1.1.1.1.1.1.1-comic.svg",
   "languages": [
     {
       "code": "ru",
