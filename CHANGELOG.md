@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.1.1.1.1.1.1.1.1.1.1.1
+
+- Added a six-continent launch board: North America, South America, Europe, Africa, Asia, and Oceania.
+- Added automatic bottle-rocket launches every 10 seconds, rotating across all six continents.
+- Added a persistent local counter labeled `Запущено бутылок`, stored with `localStorage` so launches accumulate on the same device.
+- Added a local reset action that clears the stored counter but keeps the timed launch system running.
+- Added a dedicated release block for **maximum carbonation without alcohol**, emphasizing short PET carbonation, fast checks, and immediate chilling.
+- Updated the versioned comic to show the six global launch points, local accumulation, and the no-alcohol max-carbonation path.
+- Extended release verification so the build now requires six continents, the 10-second cadence text, local accumulation, and the no-alcohol carbonation block.
+
 ## 1.1.1.1.1.1.1.1.1.1.1.1
 
 - Added a dedicated interactive launch pad with three clickable bottle rockets.
