@@ -1,0 +1,39 @@
+name: Validate KVASSISTENT release sources
+
+on:
+  pull_request:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile release Python
+        run: python -m py_compile scripts/build-release.py scripts/build-publication-safe.py scripts/build-publication.py
+      - name: Validate version metadata and SVG
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          meta = json.loads(Path('release/version.json').read_text())
+          assert meta['ones_count'] == 11
+          assert meta['current'].split('.') == ['1'] * 11
+          assert meta['next'].split('.') == ['1'] * 12
+          manifest = json.loads(Path('publication/manifest.json').read_text())
+          assert manifest['version'] == meta['current']
+          assert manifest['ones_count'] == 11
+          comic = Path(manifest['visual_guide'])
+          assert comic.is_file() and comic.stat().st_size > 1000
+          ET.parse(comic)
+          release = Path(f"release/RELEASE-{meta['current']}.md")
+          assert release.is_file()
+          print('Release sources valid:', meta['display'])
+          PY
