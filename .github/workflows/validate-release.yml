@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   validate:
@@ -37,3 +38,49 @@ jobs:
           assert release.is_file()
           print('Release sources valid:', meta['display'])
           PY
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-publication.txt
+      - name: Install publication dependencies
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends fonts-noto-core fonts-noto-cjk fonts-noto-mono poppler-utils >/dev/null
+          python -m pip install --quiet -r requirements-publication.txt
+      - name: Reproduce build and capture diagnostic
+        id: diagnose
+        shell: bash
+        run: |
+          set +e
+          node scripts/test-companion.mjs > release-diagnostic.log 2>&1
+          node_status=$?
+          if [ "$node_status" -eq 0 ]; then
+            python scripts/build-release.py >> release-diagnostic.log 2>&1
+            build_status=$?
+          else
+            build_status=$node_status
+          fi
+          tail -n 100 release-diagnostic.log > release-diagnostic-tail.txt
+          echo "status=$build_status" >> "$GITHUB_OUTPUT"
+          cat release-diagnostic-tail.txt
+          exit 0
+      - name: Comment diagnostic on pull request
+        if: steps.diagnose.outputs.status != '0' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          {
+            echo '### Release build diagnostic'
+            echo
+            echo '```text'
+            cat release-diagnostic-tail.txt
+            echo '```'
+          } > release-diagnostic-comment.md
+          gh pr comment "$PR_NUMBER" --body-file release-diagnostic-comment.md
+      - name: Fail if diagnostic build failed
+        if: steps.diagnose.outputs.status != '0'
+        run: exit 1
