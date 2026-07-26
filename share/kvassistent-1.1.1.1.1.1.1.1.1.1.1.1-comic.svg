@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1800" viewBox="0 0 1200 1800" role="img" aria-labelledby="title desc">
+  <title id="title">КВАССИСТЕНТ 12 единиц — кликабельные бутылки-ракеты и счётчик запусков</title>
+  <desc id="desc">Плакат-иллюстрация с тремя бутылками-ракетами, разлетающимися в разные стороны, и маленьким счётчиком в углу с надписью количества запущенных бутылок.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#101b3f"/>
+      <stop offset="100%" stop-color="#050814"/>
+    </linearGradient>
+    <linearGradient id="kvass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d89b35"/>
+      <stop offset="100%" stop-color="#6a351b"/>
+    </linearGradient>
+    <style>
+      .t{font:900 58px DejaVu Sans,sans-serif;fill:#201913}.s{font:700 24px DejaVu Sans,sans-serif;fill:#6e3c15}.h{font:800 29px DejaVu Sans,sans-serif;fill:#201913}.p{font:600 20px DejaVu Sans,sans-serif;fill:#342b25}.n{font:900 24px DejaVu Sans,sans-serif;fill:#fffaf0}.ln{stroke:#201913;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.th{stroke:#201913;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="1200" height="1800" fill="#f7efd8"/>
+  <rect x="50" y="40" width="1100" height="190" rx="32" fill="#fff1bc" class="ln"/>
+  <text x="600" y="110" text-anchor="middle" class="t">КВАССИСТЕНТ</text>
+  <text x="600" y="168" text-anchor="middle" class="s">1.1.1.1.1.1.1.1.1.1.1.1 · единиц: 12</text>
+  <text x="600" y="208" text-anchor="middle" class="p">Нажимай на бутылки-ракеты, а счётчик в углу считает каждый запуск.</text>
+
+  <rect x="70" y="280" width="1060" height="540" rx="30" fill="url(#sky)" class="ln"/>
+  <rect x="840" y="310" width="250" height="82" rx="18" fill="#0b1020" stroke="#f0bb45" stroke-width="5"/>
+  <text x="965" y="347" text-anchor="middle" class="p" fill="#fff8e8">Запущено бутылок</text>
+  <text x="965" y="380" text-anchor="middle" class="h" fill="#f0bb45">0 → 1 → 2 → 3</text>
+  <circle cx="170" cy="340" r="3" fill="#fff"/>
+  <circle cx="1030" cy="450" r="4" fill="#fff"/>
+  <circle cx="920" cy="530" r="2" fill="#fff"/>
+  <circle cx="220" cy="600" r="3" fill="#fff"/>
+
+  <g transform="translate(180 590) rotate(-28)">
+    <path d="M45 250q-18 55 0 92q18-28 0-92" fill="#ff8f2b"/>
+    <rect x="22" y="0" width="46" height="48" rx="9" fill="#dfeeff" class="th"/>
+    <rect x="0" y="38" width="90" height="215" rx="28" fill="#eef8ff" fill-opacity=".72" class="ln"/>
+    <path d="M10 135h70v100H10z" fill="url(#kvass)"/>
+    <rect x="14" y="158" width="62" height="44" rx="8" fill="#f0bb45"/>
+    <text x="45" y="186" text-anchor="middle" font-family="DejaVu Sans" font-size="16" font-weight="900">ЖИЖА</text>
+    <path d="M0 182l-30 52H0zM90 182l30 52H90z" fill="#e65444" stroke="#6d231b" stroke-width="4"/>
+  </g>
+  <g transform="translate(540 540) rotate(-5)">
+    <path d="M45 250q-18 55 0 92q18-28 0-92" fill="#ff8f2b"/>
+    <rect x="22" y="0" width="46" height="48" rx="9" fill="#dfeeff" class="th"/>
+    <rect x="0" y="38" width="90" height="215" rx="28" fill="#eef8ff" fill-opacity=".72" class="ln"/>
+    <path d="M10 135h70v100H10z" fill="url(#kvass)"/>
+    <rect x="14" y="158" width="62" height="44" rx="8" fill="#f0bb45"/>
+    <text x="45" y="186" text-anchor="middle" font-family="DejaVu Sans" font-size="16" font-weight="900">ЖИЖА</text>
+    <path d="M0 182l-30 52H0zM90 182l30 52H90z" fill="#e65444" stroke="#6d231b" stroke-width="4"/>
+  </g>
+  <g transform="translate(840 590) rotate(26)">
+    <path d="M45 250q-18 55 0 92q18-28 0-92" fill="#ff8f2b"/>
+    <rect x="22" y="0" width="46" height="48" rx="9" fill="#dfeeff" class="th"/>
+    <rect x="0" y="38" width="90" height="215" rx="28" fill="#eef8ff" fill-opacity=".72" class="ln"/>
+    <path d="M10 135h70v100H10z" fill="url(#kvass)"/>
+    <rect x="14" y="158" width="62" height="44" rx="8" fill="#f0bb45"/>
+    <text x="45" y="186" text-anchor="middle" font-family="DejaVu Sans" font-size="16" font-weight="900">ЖИЖА</text>
+    <path d="M0 182l-30 52H0zM90 182l30 52H90z" fill="#e65444" stroke="#6d231b" stroke-width="4"/>
+  </g>
+
+  <rect x="90" y="890" width="1020" height="250" rx="26" fill="#fff" class="ln"/>
+  <text x="130" y="960" class="h">Что добавлено в версии 12</text>
+  <text x="130" y="1010" class="p">• каждая бутылка-ракета кликается отдельно;</text>
+  <text x="130" y="1050" class="p">• после нажатия она улетает по своей траектории — влево, вверх или вправо;</text>
+  <text x="130" y="1090" class="p">• в углу есть маленький счётчик с подписью «Запущено бутылок»;</text>
+  <text x="130" y="1130" class="p">• счётчик увеличивается только один раз для каждой бутылки.</text>
+
+  <rect x="90" y="1180" width="1020" height="480" rx="26" fill="#fff8e8" class="ln"/>
+  <text x="130" y="1250" class="h">Поведение на странице</text>
+  <text x="130" y="1300" class="p">1. Пользователь нажимает на левую, центральную или правую бутылку.</text>
+  <text x="130" y="1340" class="p">2. У выбранной ракеты загорается пламя, включается анимация полёта и она исчезает с площадки.</text>
+  <text x="130" y="1380" class="p">3. Счётчик в правом верхнем углу обновляется: 1, 2, затем 3.</text>
+  <text x="130" y="1420" class="p">4. После трёх пусков можно нажать «Сбросить пуски» и повторить анимацию снова.</text>
+  <text x="130" y="1480" class="h">Безопасность</text>
+  <text x="130" y="1520" class="p">Это веб-анимация. Реальные бутылки не запускать и не использовать стекло для дображивания.</text>
+  <text x="130" y="1580" class="p">Для настоящего кваса — только пищевая ПЭТ, контроль давления и охлаждение после набора газиков.</text>
+</svg>
