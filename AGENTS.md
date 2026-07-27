@@ -1,3 +1,21 @@
+## Shared AI contract: Codex, Gemini, and Claude Code
+
+Read [`HUMAN_MANIFESTO.md`](HUMAN_MANIFESTO.md) before changing project identity, landing-page storytelling, Devpost copy, or release presentation.
+
+The manifesto is canonical human-authored content. Preserve it verbatim, including mixed Russian/English language, capitalization, humour, spelling, and references to AI tools. A translation or polished explanation may be placed beside it, never instead of it. Do not silently correct, shorten, reorder, hide, or delete it.
+
+KVASSISTENT is human-first AI for manual craft: the person performs the physical work and reports observations; AI remembers state, explains risks, requests evidence, and refuses to invent sensory facts.
+
+Release rules:
+- Every release appends one `.1` segment.
+- `ones_count` must match the version.
+- `/` and short feature URLs point to latest.
+- `/v<version>/` remains immutable.
+- Telegram tokens and webhook secrets must never enter the repository, issues, PRs, screenshots, or logs.
+- Before release validation run `python scripts/prepare-release.py`; after `python scripts/build-release.py`, run `python scripts/enhance-release.py`.
+
+Tool-specific companion files: [`CLAUDE.md`](CLAUDE.md) and [`GEMINI.md`](GEMINI.md). Codex follows this `AGENTS.md` directly.
+
 ## KVASSISTENT kitchen-agent entry point
 
 If the user asks for help making, checking, or rescuing kvass rather than changing this repository, read [`AI_AGENT_START.md`](AI_AGENT_START.md) before responding. Follow its one-batch, confirmation-first, safety-first protocol.
