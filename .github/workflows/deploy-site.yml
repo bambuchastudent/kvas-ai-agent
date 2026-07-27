@@ -14,14 +14,15 @@ concurrency:
 
 jobs:
   deploy:
-    name: Build and publish latest website
+    name: Prepare, build and publish latest website
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Read release metadata
         shell: bash
@@ -52,25 +53,25 @@ jobs:
           sudo apt-get install -y -qq --no-install-recommends \
             fonts-noto-core \
             fonts-noto-cjk \
-            fonts-noto-mono \
-            poppler-utils
+            fonts-noto-mono
           python -m pip install --upgrade --quiet pip
           python -m pip install --quiet -r requirements-publication.txt
           fc-cache -f >/dev/null
 
-      - name: Test rules and localization
+      - name: Prepare, test, build and enhance release
         shell: bash
         run: |
           set -euo pipefail
-          python -m py_compile scripts/build-release.py scripts/next-ones-version.py
+          python scripts/prepare-release.py
+          python -m py_compile \
+            scripts/build-release.py \
+            scripts/prepare-release.py \
+            scripts/enhance-release.py \
+            scripts/next-ones-version.py
           node scripts/test-companion.mjs
           node scripts/test-localization.mjs
-
-      - name: Build immutable release and latest aliases
-        shell: bash
-        run: |
-          set -euo pipefail
           python scripts/build-release.py
+          python scripts/enhance-release.py
 
       - name: Verify release and short URLs
         shell: bash
@@ -84,10 +85,14 @@ jobs:
           grep -Fq "v${VERSION}" "$landing"
           grep -Fq 'href="/game/"' "$landing"
           grep -Fq 'href="/companion/"' "$landing"
+          grep -Fq 'href="/telegram/"' "$landing"
           grep -Fq 'id="header-language-select"' "$landing"
           grep -Fq 'id="globe-game"' "$landing"
           grep -Fq 'id="all-links"' "$landing"
           grep -Fq 'id="localization"' "$landing"
+          grep -Fq 'id="human-manifesto"' "$landing"
+          grep -Fq 'kvass-space-layer' "$landing"
+          grep -Fq 'ЭТО ТВОЙ КВАС делай с ним что хочешь' "$landing"
           grep -Fq "VERSION ${ONES_COUNT}" "$game"
           grep -Fq 'id="game-language"' "$game"
           test "$(grep -o 'class="site"' "$game" | wc -l)" -eq 6
@@ -96,9 +101,12 @@ jobs:
           test -s dist/site/game/index.html
           test -s dist/site/companion/index.html
           test -s dist/site/feedback/index.html
+          test -s dist/site/telegram/index.html
+          test -s "dist/site/v${VERSION}/telegram/index.html"
           test -s dist/site/ru/summary/index.html
           test -s dist/site/en/summary/index.html
           test -s dist/site/latest-version.json
+          grep -Fq '"telegram": "/telegram/"' dist/site/latest-version.json
 
           python - <<'PY'
           from pathlib import Path
