@@ -10,12 +10,11 @@ META = json.loads((ROOT / "release/version.json").read_text(encoding="utf-8"))
 ONES = int(META["ones_count"])
 VERSION = str(META["current"])
 
-TARGETS = (
+TEXT_TARGETS = (
     ROOT / "scripts/build-release.py",
     ROOT / "companion/game/index.html",
     ROOT / "companion/game/i18n.js",
     ROOT / "companion/sw.js",
-    ROOT / "gallery/drinks.json",
 )
 
 PATTERNS = (
@@ -28,18 +27,26 @@ PATTERNS = (
     (r"release\s+\d+\s+content", f"release {ONES} content"),
 )
 
-for path in TARGETS:
+for path in TEXT_TARGETS:
     if not path.is_file():
         continue
     before = path.read_text(encoding="utf-8")
     after = before
     for pattern, replacement in PATTERNS:
         after = re.sub(pattern, replacement, after)
-    if path.name == "drinks.json":
-        after = re.sub(r'("version"\s*:\s*)\d+', rf'\g<1>{ONES}', after)
-        after = re.sub(r'("release"\s*:\s*")[^"]+("\s*)', rf'\g<1>{VERSION}\2', after)
     if after != before:
         path.write_text(after, encoding="utf-8")
         print(f"prepared {path.relative_to(ROOT)} for version {ONES}")
+
+gallery_path = ROOT / "gallery/drinks.json"
+if gallery_path.is_file():
+    gallery = json.loads(gallery_path.read_text(encoding="utf-8"))
+    if gallery.get("version") != VERSION:
+        gallery["version"] = VERSION
+        gallery_path.write_text(
+            json.dumps(gallery, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        print(f"prepared {gallery_path.relative_to(ROOT)} for v{VERSION}")
 
 print(f"KVASSISTENT release {ONES}: v{VERSION}")
