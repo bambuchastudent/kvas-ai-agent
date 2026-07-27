@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1
+
+- Added stable latest URLs at `/`, `/game/`, `/companion/`, and `/feedback/`; these paths now publish the current release without requiring the long version path.
+- Kept `/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/` as the immutable address for release 16.
+- Changed the Russian version copy to `Версия 16, потому что в ней единиц вот столько: 16. Пересчитай: v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1` and linked the explicit version string.
+- Changed the game heading to **Глобальная игра на сфере** and kept the flat-screen joke separate from the real spherical game concept.
+- Added complete globe-game localization for Russian, English, Spanish, German, Simplified Chinese, and Greek.
+- Declared Russian and English as canonical knowledge sources and aligned all 12 human/AI publication documents by sections, quantities, risks, alcohol language, and URLs.
+- Made English the universal fallback for non-Russian interfaces; Russian is no longer used as static fallback text in Spanish, German, Chinese, or Greek views.
+- Changed the universal Live Batch HTML shell to English so non-Russian locales never flash Russian copy before JavaScript applies the selected locale.
+- Added deterministic localization checks, Russian-leak detection, and release-build validation for all short latest aliases.
+- Refreshed the PWA cache and included localized game assets for offline use.
+
 ## 1.1.1.1.1.1.1.1.1.1.1.1.1.1.1
 
 - Moved the spherical globe game to the very top of the public landing page.
