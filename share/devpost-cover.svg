@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <defs>
+    <radialGradient id="space" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#12224a"/>
+      <stop offset="55%" stop-color="#050820"/>
+      <stop offset="100%" stop-color="#02040c"/>
+    </radialGradient>
+    <radialGradient id="nebula1" cx="0%" cy="0%" r="60%">
+      <stop offset="0%" stop-color="#8352ff" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#8352ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nebula2" cx="100%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#27aaff" stop-opacity=".45"/>
+      <stop offset="100%" stop-color="#27aaff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nebula3" cx="60%" cy="100%" r="60%">
+      <stop offset="0%" stop-color="#ffa82d" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#ffa82d" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="planet" cx="35%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#e8b26a"/>
+      <stop offset="55%" stop-color="#7a3e14"/>
+      <stop offset="100%" stop-color="#3a1a06"/>
+    </radialGradient>
+    <radialGradient id="flame" cx="50%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#fff090"/>
+      <stop offset="45%" stop-color="#ff7820" stop-opacity=".85"/>
+      <stop offset="100%" stop-color="#ff3800" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bottle" x1="0" x2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".35"/>
+      <stop offset="45%" stop-color="#6e3a0c"/>
+      <stop offset="100%" stop-color="#1a0d04"/>
+    </linearGradient>
+    <g id="rocket">
+      <ellipse cx="0" cy="55" rx="9" ry="30" fill="url(#flame)"/>
+      <rect x="-11" y="-45" width="22" height="14" rx="4" fill="#6b2f0b" stroke="#ffe7a6" stroke-width="1.6"/>
+      <rect x="-13" y="-32" width="26" height="70" rx="9" fill="url(#bottle)" stroke="#ffe7a6" stroke-width="1.6"/>
+      <rect x="-10" y="-3" width="20" height="14" rx="3" fill="#f2c05c"/>
+      <text x="0" y="7" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="9" fill="#201005">КВАС</text>
+    </g>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#space)"/>
+  <rect width="1200" height="800" fill="url(#nebula1)"/>
+  <rect width="1200" height="800" fill="url(#nebula2)"/>
+  <rect width="1200" height="800" fill="url(#nebula3)"/>
+
+  <!-- stars -->
+  <g fill="#ffffff">
+    <circle cx="70" cy="120" r="1.4"/><circle cx="180" cy="60" r="1"/><circle cx="260" cy="180" r="1.6"/>
+    <circle cx="340" cy="90" r="1"/><circle cx="450" cy="150" r="1.2"/><circle cx="560" cy="70" r="1.6"/>
+    <circle cx="680" cy="140" r="1"/><circle cx="820" cy="60" r="1.4"/><circle cx="940" cy="130" r="1"/>
+    <circle cx="1060" cy="80" r="1.6"/><circle cx="1140" cy="180" r="1"/>
+    <circle cx="90" cy="320" r="1"/><circle cx="200" cy="420" r="1.2"/><circle cx="130" cy="560" r="1.6"/>
+    <circle cx="60" cy="690" r="1"/><circle cx="220" cy="720" r="1.4"/><circle cx="360" cy="640" r="1"/>
+    <circle cx="480" cy="710" r="1.6"/><circle cx="620" cy="670" r="1"/><circle cx="760" cy="720" r="1.2"/>
+    <circle cx="900" cy="660" r="1.6"/><circle cx="1040" cy="710" r="1"/><circle cx="1150" cy="620" r="1.4"/>
+    <circle cx="1080" cy="440" r="1"/><circle cx="1150" cy="320" r="1.6"/><circle cx="1000" cy="260" r="1"/>
+  </g>
+  <g fill="#ffe7a6" opacity=".8">
+    <circle cx="150" cy="240" r="2"/><circle cx="900" cy="220" r="2.2"/>
+    <circle cx="1080" cy="560" r="2"/><circle cx="240" cy="600" r="2.2"/>
+  </g>
+
+  <!-- orbit rings -->
+  <g fill="none" stroke="#ffe7a6" stroke-opacity=".12" stroke-dasharray="2 6">
+    <ellipse cx="820" cy="470" rx="240" ry="150"/>
+    <ellipse cx="820" cy="470" rx="330" ry="210"/>
+    <ellipse cx="820" cy="470" rx="150" ry="95"/>
+  </g>
+
+  <!-- planet ЖИЖА -->
+  <g transform="translate(820 470)">
+    <circle r="150" fill="url(#planet)"/>
+    <ellipse rx="150" ry="34" fill="none" stroke="#ffe7a6" stroke-opacity=".25" stroke-width="2"/>
+    <text y="14" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="80" fill="#fff8df" letter-spacing="6">ЖИЖА</text>
+    <text y="52" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#ffe7a6" opacity=".7" letter-spacing="4">HOMEBREW · KVAS</text>
+  </g>
+
+  <!-- rocket-bottles around planet -->
+  <g transform="translate(1060 470) rotate(-25)"><use href="#rocket"/></g>
+  <g transform="translate(580 470) rotate(155) scale(.85)"><use href="#rocket"/></g>
+  <g transform="translate(820 260) rotate(-95) scale(.75)"><use href="#rocket"/></g>
+  <g transform="translate(1150 620) rotate(-45) scale(.9)"><use href="#rocket"/></g>
+  <g transform="translate(670 660) rotate(115) scale(.7)"><use href="#rocket"/></g>
+
+  <!-- title -->
+  <g transform="translate(70 130)">
+    <text font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="88" fill="#fff8df" letter-spacing="2">KVASSISTENT</text>
+    <text y="46" font-family="Arial,sans-serif" font-size="20" fill="#ffd778" letter-spacing="6">HUMAN-FIRST AI FOR REAL KVASS</text>
+  </g>
+
+  <!-- tagline -->
+  <g transform="translate(70 340)">
+    <text font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="#f8f3df">Turn stale bread</text>
+    <text y="42" font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="#f8f3df">into real kvass.</text>
+    <text y="94" font-family="Arial,sans-serif" font-size="22" fill="#a9bce6">AI guides. <tspan fill="#ffd778" font-weight="900">You brew.</tspan></text>
+    <text y="122" font-family="Arial,sans-serif" font-size="22" fill="#a9bce6">Manual craft, remembered.</text>
+  </g>
+
+  <!-- pills -->
+  <g transform="translate(70 560)">
+    <g>
+      <rect width="200" height="46" rx="23" fill="#0d1a3a" stroke="#4da9e9" stroke-width="1.6"/>
+      <text x="100" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#eef8ff" font-weight="700">PWA · offline</text>
+    </g>
+    <g transform="translate(212 0)">
+      <rect width="200" height="46" rx="23" fill="#1a1030" stroke="#a077ff" stroke-width="1.6"/>
+      <text x="100" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#f0e9ff" font-weight="700">i18n · RU / EN</text>
+    </g>
+    <g transform="translate(0 60)">
+      <rect width="200" height="46" rx="23" fill="#2a1608" stroke="#ffb64d" stroke-width="1.6"/>
+      <text x="100" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#fff2d6" font-weight="700">17 released versions</text>
+    </g>
+    <g transform="translate(212 60)">
+      <rect width="200" height="46" rx="23" fill="#062218" stroke="#4dd190" stroke-width="1.6"/>
+      <text x="100" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#dcffee" font-weight="700">open source</text>
+    </g>
+  </g>
+
+  <!-- URL -->
+  <text x="70" y="750" font-family="Arial,sans-serif" font-size="20" fill="#ffe7a6" font-weight="700">kvassistent.pages.dev</text>
+  <text x="1130" y="750" text-anchor="end" font-family="Arial,sans-serif" font-size="16" fill="#a9bce6">github.com/bambuchastudent/kvas-ai-agent</text>
+</svg>
