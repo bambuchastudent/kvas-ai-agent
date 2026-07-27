@@ -1,27 +1,32 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#071020">
-  <meta name="description" content="КВАССИСТЕНТ 15: игра с глобусом, шестью континентами и бутылками-ракетами.">
-  <title>КВАССИСТЕНТ 15 · Глобальные запуски</title>
+  <meta name="description" content="KVASSISTENT 16: a globe game with six continents and bottle rockets.">
+  <title>KVASSISTENT 16 · Global launches</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app">
-    <header class="topbar"><a class="back" href="../">← К ЖИВОЙ ПАРТИИ</a><div class="version">ВЕРСИЯ 15</div><button class="icon-btn" id="sound" type="button" aria-pressed="false">Звук: выкл.</button></header>
-    <section class="hero"><h1>КВАССИСТЕНТ</h1><p>Глобальная игра на сфере: запускай бутылки-ракеты с шести континентов, накапливай результат локально и лови максимум газиков без разгона алкоголя.</p></section>
-    <section class="hud" aria-label="Статистика игры">
-      <article class="hud-card gold"><span>Запущено бутылок</span><strong id="total">0</strong></article>
-      <article class="hud-card"><span>Автозапуск</span><strong>10 сек</strong></article>
-      <article class="hud-card ok"><span>Накопление</span><strong>локально</strong></article>
-      <article class="hud-card"><span>Режим</span><strong>6 континентов</strong></article>
+    <header class="topbar">
+      <a class="back" href="../../" data-game-i18n="back">← HOME</a>
+      <div class="version" data-game-i18n="versionLabel">VERSION 16</div>
+      <label class="game-language"><span data-game-i18n="language">Language</span><select id="game-language" aria-label="Language"><option value="ru">RU</option><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option><option value="zh-CN">简体中文</option><option value="el">ΕΛ</option></select></label>
+      <button class="icon-btn" id="sound" type="button" aria-pressed="false">Sound: off</button>
+    </header>
+    <section class="hero"><h1>KVASSISTENT</h1><p data-game-i18n="heroLead">A global game on a sphere — flat only because your screen has not learned to be round yet. Launch bottles from six continents and keep the score on this device.</p></section>
+    <section class="hud" aria-label="Game statistics">
+      <article class="hud-card gold"><span data-game-i18n="statTotal">Bottles launched</span><strong id="total">0</strong></article>
+      <article class="hud-card"><span data-game-i18n="statAuto">Auto launch</span><strong data-game-i18n="autoValue">10 sec</strong></article>
+      <article class="hud-card ok"><span data-game-i18n="statStorage">Storage</span><strong data-game-i18n="localValue">local</strong></article>
+      <article class="hud-card"><span data-game-i18n="statMode">Mode</span><strong data-game-i18n="modeValue">6 continents</strong></article>
     </section>
 
     <main class="game-shell" id="game">
-      <div class="countdown">Следующий пуск через <b id="countdown">10</b> сек.</div>
-      <div class="counter"><span>Запущено бутылок</span><strong id="corner-total">0</strong></div>
+      <div class="countdown"><span data-game-i18n="nextLaunchPrefix">Next launch in</span> <b id="countdown">10</b> <span data-game-i18n="nextLaunchSuffix">sec.</span></div>
+      <div class="counter"><span data-game-i18n="statTotal">Bottles launched</span><strong id="corner-total">0</strong></div>
       <div class="globe-stage">
         <div class="orbit">
           <div class="globe" id="globe">
@@ -39,25 +44,25 @@
               <div class="grid-lines"></div>
             </div>
 
-            <button class="site" data-id="north-america" aria-label="Запустить из Северной Америки"><span>СЕВ. АМЕРИКА <small>0</small></span></button>
-            <button class="site" data-id="south-america" aria-label="Запустить из Южной Америки"><span>ЮЖ. АМЕРИКА <small>0</small></span></button>
-            <button class="site" data-id="europe" aria-label="Запустить из Европы"><span>ЕВРОПА <small>0</small></span></button>
-            <button class="site" data-id="africa" aria-label="Запустить из Африки"><span>АФРИКА <small>0</small></span></button>
-            <button class="site" data-id="asia" aria-label="Запустить из Азии"><span>АЗИЯ <small>0</small></span></button>
-            <button class="site" data-id="oceania" aria-label="Запустить из Океании"><span>ОКЕАНИЯ <small>0</small></span></button>
+            <button class="site" data-id="north-america"><span><b data-continent-label="north-america">N. AMERICA</b> <small>0</small></span></button>
+            <button class="site" data-id="south-america"><span><b data-continent-label="south-america">S. AMERICA</b> <small>0</small></span></button>
+            <button class="site" data-id="europe"><span><b data-continent-label="europe">EUROPE</b> <small>0</small></span></button>
+            <button class="site" data-id="africa"><span><b data-continent-label="africa">AFRICA</b> <small>0</small></span></button>
+            <button class="site" data-id="asia"><span><b data-continent-label="asia">ASIA</b> <small>0</small></span></button>
+            <button class="site" data-id="oceania"><span><b data-continent-label="oceania">OCEANIA</b> <small>0</small></span></button>
           </div>
         </div>
       </div>
     </main>
 
-    <div class="controls"><button class="control primary" id="launch-now" type="button">ЗАПУСТИТЬ СЕЙЧАС</button><button class="control" id="pause" type="button">Пауза</button><button class="control" id="reset" type="button">Сбросить локальный счётчик</button></div>
-    <section class="continent-stats" id="continent-stats" aria-label="Запуски по континентам"></section>
+    <div class="controls"><button class="control primary" id="launch-now" type="button" data-game-i18n="launchNow">LAUNCH NOW</button><button class="control" id="pause" type="button" data-game-i18n="pause">Pause</button><button class="control" id="reset" type="button" data-game-i18n="reset">Reset local counter</button></div>
+    <section class="continent-stats" id="continent-stats" aria-label="Launches by continent"></section>
     <section class="safety">
-      <article class="panel"><h2>Максимальная газированность без алкоголя</h2><div class="carbonation-meter"><i></i></div><p><strong>Игровой режим:</strong> максимум пузырьков. Для реального напитка это означает короткий контролируемый набор газа в пищевой ПЭТ и немедленное охлаждение, а не долгое тёплое дображивание.</p></article>
-      <article class="panel"><h2>Сфера, а не плоская карта</h2><p>Все шесть точек запуска закреплены прямо на глобусе. Нажимай на любую светящуюся площадку или дождись автоматического запуска каждые десять секунд.</p></article>
+      <article class="panel"><h2 data-game-i18n="maxCarbonationTitle">Maximum carbonation without claiming 0.0%</h2><div class="carbonation-meter"><i></i></div><p><strong data-game-i18n="gameModeLabel">Game mode:</strong> <span data-game-i18n="maxCarbonationCopy">maximum bubbles. For the real drink, use short conditioning in food-grade PET, frequent pressure checks, and immediate chilling.</span></p></article>
+      <article class="panel"><h2 data-game-i18n="sphereTitle">A sphere that only looks flat on a screen</h2><p data-game-i18n="sphereCopy">Six launch sites are fixed to the globe. Tap a site or wait for the automatic launch every ten seconds.</p></article>
     </section>
   </div>
 
-  <script src="game.js" defer></script>
+  <script type="module" src="game.js"></script>
 </body>
 </html>
