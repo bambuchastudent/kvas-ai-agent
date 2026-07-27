@@ -20,26 +20,54 @@ def creator_text() -> str:
 
 
 SPACE_CSS = r"""
-body{position:relative;background:#03050d!important;color:#f8f3df}
-body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:
-radial-gradient(circle at 18% 22%,rgba(128,82,255,.28),transparent 31%),
-radial-gradient(circle at 82% 18%,rgba(39,170,255,.18),transparent 28%),
-radial-gradient(circle at 54% 78%,rgba(255,168,45,.12),transparent 32%),
-radial-gradient(circle,#fff 0 1px,transparent 1.5px);background-size:auto,auto,auto,74px 74px}
-main,footer{position:relative;z-index:2}.kvass-space-layer{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
-.kvass-satellite{position:absolute;width:34px;height:92px;border:2px solid rgba(255,231,166,.8);border-radius:11px 11px 15px 15px;background:linear-gradient(90deg,rgba(255,255,255,.28),rgba(110,58,12,.88) 38%,rgba(30,15,5,.95));box-shadow:0 0 24px rgba(255,186,72,.38);animation:kvass-float 14s ease-in-out infinite}
-.kvass-satellite::before{content:"";position:absolute;left:8px;top:-22px;width:14px;height:24px;border:2px solid rgba(255,231,166,.8);border-bottom:0;border-radius:5px 5px 0 0;background:#6b2f0b}
-.kvass-satellite::after{content:"КВАС";position:absolute;left:4px;right:4px;top:39px;padding:3px 0;border-radius:4px;background:#f2c05c;color:#201005;font:900 8px/1 sans-serif;text-align:center;letter-spacing:.5px}
-.kvass-satellite:nth-child(1){left:5%;top:15%;transform:rotate(-18deg);animation-delay:-3s}.kvass-satellite:nth-child(2){right:8%;top:24%;transform:rotate(21deg) scale(.8);animation-delay:-8s}.kvass-satellite:nth-child(3){left:12%;bottom:9%;transform:rotate(12deg) scale(.7);animation-delay:-11s}.kvass-satellite:nth-child(4){right:18%;bottom:12%;transform:rotate(-24deg) scale(.62);animation-delay:-5s}.kvass-satellite:nth-child(5){left:51%;top:4%;transform:rotate(7deg) scale(.55);animation-delay:-1s}
-@keyframes kvass-float{0%,100%{translate:0 0}50%{translate:18px -28px}}
+body{position:relative;background:#03050d!important;color:#f8f3df;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:-10%;z-index:0;pointer-events:none;background:
+radial-gradient(1200px 800px at 15% 20%,rgba(128,82,255,.32),transparent 55%),
+radial-gradient(900px 700px at 85% 15%,rgba(39,170,255,.22),transparent 55%),
+radial-gradient(1000px 900px at 60% 92%,rgba(255,168,45,.15),transparent 55%),
+radial-gradient(circle at center,#0a0f22 0%,#03050d 65%)}
+body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:
+radial-gradient(circle,#fff 0 1px,transparent 1.5px) 0 0/54px 54px,
+radial-gradient(circle,rgba(255,255,255,.55) 0 1px,transparent 1.5px) 27px 27px/94px 94px,
+radial-gradient(circle,rgba(255,255,255,.35) 0 .8px,transparent 1.4px) 13px 41px/140px 140px;
+animation:kvass-twinkle 6s ease-in-out infinite}
+main,footer{position:relative;z-index:2}
+.kvass-space-layer{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.kvass-orbit{position:absolute;top:50%;left:50%;width:0;height:0;animation:kvass-spin linear infinite}
+.kvass-orbit:nth-child(1){animation-duration:38s}
+.kvass-orbit:nth-child(2){animation-duration:52s;animation-direction:reverse}
+.kvass-orbit:nth-child(3){animation-duration:44s;animation-delay:-12s}
+.kvass-orbit:nth-child(4){animation-duration:66s;animation-direction:reverse;animation-delay:-22s}
+.kvass-orbit:nth-child(5){animation-duration:30s;animation-delay:-4s}
+.kvass-orbit:nth-child(6){animation-duration:74s;animation-direction:reverse;animation-delay:-30s}
+.kvass-satellite{position:absolute;left:0;top:0;width:26px;height:70px;transform-origin:center center;
+border:2px solid rgba(255,231,166,.85);border-radius:9px 9px 13px 13px;
+background:linear-gradient(90deg,rgba(255,255,255,.28),rgba(110,58,12,.9) 38%,rgba(30,15,5,.98));
+box-shadow:0 0 22px rgba(255,186,72,.42),0 0 46px rgba(255,120,32,.22)}
+.kvass-orbit:nth-child(1) .kvass-satellite{translate:340px -35px;rotate:90deg}
+.kvass-orbit:nth-child(2) .kvass-satellite{translate:470px -35px;rotate:90deg;scale:.9}
+.kvass-orbit:nth-child(3) .kvass-satellite{translate:230px -35px;rotate:90deg;scale:.75}
+.kvass-orbit:nth-child(4) .kvass-satellite{translate:560px -35px;rotate:90deg;scale:.85}
+.kvass-orbit:nth-child(5) .kvass-satellite{translate:150px -35px;rotate:90deg;scale:.6}
+.kvass-orbit:nth-child(6) .kvass-satellite{translate:640px -35px;rotate:90deg;scale:.7}
+.kvass-satellite::before{content:"";position:absolute;left:6px;top:-18px;width:12px;height:20px;
+border:2px solid rgba(255,231,166,.85);border-bottom:0;border-radius:5px 5px 0 0;background:#6b2f0b}
+.kvass-satellite::after{content:"КВАС";position:absolute;left:3px;right:3px;top:29px;padding:3px 0;
+border-radius:4px;background:#f2c05c;color:#201005;font:900 8px/1 sans-serif;text-align:center;letter-spacing:.5px}
+.kvass-flame{position:absolute;left:50%;bottom:-30px;width:10px;height:34px;translate:-50% 0;
+background:radial-gradient(ellipse at top,rgba(255,240,120,.95),rgba(255,120,32,.75) 40%,transparent 78%);
+filter:blur(2px);border-radius:50%;animation:kvass-flicker .18s steps(2) infinite}
+@keyframes kvass-spin{to{rotate:360deg}}
+@keyframes kvass-flicker{0%{opacity:.7;scale:1 .9}100%{opacity:1;scale:1.15 1.15}}
+@keyframes kvass-twinkle{0%,100%{opacity:.85}50%{opacity:1}}
 .human-manifesto-release,.telegram-release{margin:30px 0;padding:clamp(22px,5vw,44px);border-radius:28px;position:relative;overflow:hidden}
 .human-manifesto-release{border:2px solid rgba(255,207,98,.72);background:linear-gradient(145deg,rgba(22,13,44,.96),rgba(7,19,48,.96));color:#fff8df;box-shadow:0 24px 70px rgba(0,0,0,.35)}
 .human-manifesto-release::before{content:"ORIGINAL HUMAN SIGNAL";position:absolute;right:18px;top:15px;color:rgba(255,222,143,.5);font:900 11px/1 sans-serif;letter-spacing:2px}
 .manifesto-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(250px,.8fr);gap:20px;margin-top:22px}.manifesto-original,.manifesto-explained{padding:20px;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14)}
 .manifesto-original pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;color:#fff8df;font:700 clamp(14px,2vw,18px)/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}.manifesto-explained p{color:#d8e4ff}.manifesto-explained strong{color:#ffd778}.manifesto-kicker{color:#ffd778;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
 .telegram-release{border:2px solid #4da9e9;background:linear-gradient(135deg,#07182d,#0b3150);color:#eef8ff}.telegram-release h2{color:#fff}.telegram-release p{color:#c8e6f7}.telegram-release a{display:inline-flex;padding:13px 18px;border-radius:999px;background:#55acee;color:#06111d;text-decoration:none;font-weight:950}
-@media(max-width:760px){.manifesto-grid{grid-template-columns:1fr}.kvass-satellite:nth-child(n+4){display:none}}
-@media(prefers-reduced-motion:reduce){.kvass-satellite{animation:none}}
+@media(max-width:760px){.manifesto-grid{grid-template-columns:1fr}.kvass-orbit:nth-child(n+4){display:none}}
+@media(prefers-reduced-motion:reduce){.kvass-orbit,.kvass-satellite,.kvass-flame,body::after{animation:none}}
 """
 
 
@@ -70,8 +98,9 @@ def manifesto_section() -> str:
 
 
 def space_layer() -> str:
-    bottles = "".join('<span class="kvass-satellite"></span>' for _ in range(5))
-    return f'<div class="kvass-space-layer" aria-hidden="true">{bottles}</div>'
+    orbit = '<div class="kvass-orbit"><span class="kvass-satellite"><i class="kvass-flame"></i></span></div>'
+    orbits = "".join(orbit for _ in range(6))
+    return f'<div class="kvass-space-layer" aria-hidden="true">{orbits}</div>'
 
 
 def patch_landing(path: Path) -> None:
