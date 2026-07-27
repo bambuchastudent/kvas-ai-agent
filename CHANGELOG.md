@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.1.1.1.1.1.1.1.1.1.1.1.1.1
+
+- Moved the spherical globe game to the very top of the public landing page.
+- Added a sticky header with quick links to the game, all links, human guides, AI guides, live batch, feedback, gallery, and GitHub.
+- Added a header language chooser with direct actions for the selected human guide and AI-agent guide.
+- Added a dedicated **Все ссылки сразу** section that exposes all major entry points from one screen.
+- Changed the main version copy to `Версия 15, потому что в ней единиц вот столько: 15`.
+- Updated the standalone globe game page to version 15 so the release number matches the landing page.
+- Extended release verification for the landing-first game position, the top navigation, the header language switcher, and the new version phrase.
+
 ## 1.1.1.1.1.1.1.1.1.1.1.1.1.1
 
 - Replaced the flat launch board with a dedicated spherical globe game.
@@ -82,7 +92,7 @@
 
 ## 1.1.1
 
-- Renamed the visible project identity to **КВАССИСТЕНТ** in uppercase.
+- Renamed the visible product identity to **КВАССИСТЕНТ** in uppercase.
 - Reworked the landing page so the best concise instructions for people appear first.
 - Split the landing page into separate **Для людей** and **Для ИИ-агентов** sections.
 - Kept human summaries and AI-agent instructions as separate multilingual PDF and web documents.
