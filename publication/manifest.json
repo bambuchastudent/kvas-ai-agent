@@ -1,11 +1,11 @@
 {
-  "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+  "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
   "source_version": "1.1.1.1.1",
-  "ones_count": 14,
+  "ones_count": 15,
   "project": "КВАССИСТЕНТ",
   "brand": "Жижа",
-  "research_topic": "strained wort, primary fermentation, PET bottle conditioning, spherical globe game, six continent launches, local accumulation, maximum carbonation without alcohol",
-  "visual_guide": "share/kvassistent-1.1.1.1.1.1.1.1.1.1.1.1.1.1-comic.svg",
+  "research_topic": "strained wort, primary fermentation, PET bottle conditioning, spherical globe game, top header language chooser, all-links landing page, local accumulation, maximum carbonation without alcohol",
+  "visual_guide": "share/kvassistent-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1-comic.svg",
   "languages": [
     {
       "code": "ru",
