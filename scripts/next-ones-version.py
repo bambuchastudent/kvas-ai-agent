@@ -11,6 +11,7 @@ MANIFEST_FILE = ROOT / "publication/manifest.json"
 GALLERY_FILE = ROOT / "gallery/drinks.json"
 PACKAGE_FILE = ROOT / "package.json"
 VERSION_MD = ROOT / "release/version.md"
+PUBLIC_BASE = "https://kvassistent.pages.dev"
 
 
 def read_json(path: Path) -> dict:
@@ -28,23 +29,29 @@ def count_ones(version: str) -> int:
     return sum(part == "1" for part in parts)
 
 
+def russian_display(version: str, ones_count: int) -> str:
+    return f"Версия {ones_count}, потому что в ней единиц вот столько: {ones_count}. Пересчитай: v{version}"
+
+
 def main() -> None:
     meta = read_json(VERSION_FILE)
     current = str(meta["current"])
-    if current == "1.1.0":
-        next_version = "1.1.1"
-    else:
-        next_version = f"{current}.1"
-
+    next_version = "1.1.1" if current == "1.1.0" else f"{current}.1"
     ones_count = count_ones(next_version)
     following = f"{next_version}.1"
+    immutable_url = f"{PUBLIC_BASE}/v{next_version}/"
 
     meta.update(
         {
             "previous": current,
             "current": next_version,
             "ones_count": ones_count,
-            "display": f"{next_version} · единиц: {ones_count}",
+            "display": f"v{next_version}",
+            "display_ru": russian_display(next_version, ones_count),
+            "latest_url": f"{PUBLIC_BASE}/",
+            "immutable_url": immutable_url,
+            "game_url": f"{PUBLIC_BASE}/game/",
+            "companion_url": f"{PUBLIC_BASE}/companion/",
             "next": following,
         }
     )
@@ -53,6 +60,12 @@ def main() -> None:
     manifest = read_json(MANIFEST_FILE)
     manifest["version"] = next_version
     manifest["ones_count"] = ones_count
+    manifest["latest_urls"] = {
+        "home": f"{PUBLIC_BASE}/",
+        "game": f"{PUBLIC_BASE}/game/",
+        "companion": f"{PUBLIC_BASE}/companion/",
+        "feedback": f"{PUBLIC_BASE}/feedback/",
+    }
     visual_guide = manifest.get("visual_guide")
     if isinstance(visual_guide, str) and visual_guide:
         source_guide = ROOT / visual_guide
@@ -74,9 +87,12 @@ def main() -> None:
 
     VERSION_MD.write_text(
         "# Version\n\n"
-        f"Current release: {next_version}\n\n"
-        f"Display: {next_version} · единиц: {ones_count}\n\n"
-        f"Next release: {following}\n",
+        f"Current immutable release: `v{next_version}`\n\n"
+        f"> {russian_display(next_version, ones_count)}\n\n"
+        f"Latest: `{PUBLIC_BASE}/`\n\n"
+        f"Game: `{PUBLIC_BASE}/game/`\n\n"
+        f"Live batch: `{PUBLIC_BASE}/companion/`\n\n"
+        f"Next immutable release: `v{following}`\n",
         encoding="utf-8",
     )
 
@@ -84,13 +100,15 @@ def main() -> None:
     if not release_notes.exists():
         release_notes.write_text(
             f"# КВАССИСТЕНТ {next_version}\n\n"
-            f"Единиц в версии: **{ones_count}**.\n\n"
+            f"**{russian_display(next_version, ones_count)}**\n\n"
             "## Изменения\n\n"
             "- Заполнить перед публикацией.\n",
             encoding="utf-8",
         )
 
-    print(meta["display"])
+    print(meta["display_ru"])
+    print(f"Latest: {meta['latest_url']}")
+    print(f"Immutable: {meta['immutable_url']}")
     print(f"Next: {following}")
 
 

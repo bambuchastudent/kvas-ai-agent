@@ -23,7 +23,6 @@ jobs:
     outputs:
       version: ${{ steps.release-meta.outputs.version }}
       ones_count: ${{ steps.release-meta.outputs.ones_count }}
-      display: ${{ steps.release-meta.outputs.display }}
       artifact_name: ${{ steps.release-meta.outputs.artifact_name }}
 
     steps:
@@ -41,7 +40,6 @@ jobs:
           meta = json.loads(Path("release/version.json").read_text(encoding="utf-8"))
           print(f"version={meta['current']}")
           print(f"ones_count={meta['ones_count']}")
-          print(f"display={meta['display']}")
           print(f"artifact_name=kvassistent-{meta['current']}-publication-build")
           PY
           VERSION="$(python -c 'import json; print(json.load(open("release/version.json"))["current"])')"
@@ -49,6 +47,11 @@ jobs:
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "TAG=v$VERSION" >> "$GITHUB_ENV"
           echo "ONES_COUNT=$ONES_COUNT" >> "$GITHUB_ENV"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -71,11 +74,18 @@ jobs:
           python -m pip install --quiet -r requirements-publication.txt
           fc-cache -f >/dev/null
 
-      - name: Build multilingual publication and comic website
+      - name: Test rules, language fallback, and build scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/build-release.py scripts/next-ones-version.py
+          node scripts/test-companion.mjs
+          node scripts/test-localization.mjs
+
+      - name: Build multilingual publication and latest website
         shell: bash
         run: |
           set -o pipefail
-          node scripts/test-companion.mjs
           python scripts/build-release.py 2>&1 | tee publication-build.log
 
       - name: Upload publication builder log
@@ -91,13 +101,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          (
-            cd dist/site
-            zip -qr "../kvassistent-${VERSION}-website.zip" .
-          )
+          (cd dist/site && zip -qr "../kvassistent-${VERSION}-website.zip" .)
           tar -C dist/site -czf "dist/kvassistent-${VERSION}-website.tar.gz" .
 
-      - name: Verify publication outputs, homepage and comic
+      - name: Verify immutable release and stable latest URLs
         shell: bash
         run: |
           set -euo pipefail
@@ -107,79 +114,80 @@ jobs:
           for lang in "${expected_languages[@]}"; do
             for type in "${expected_types[@]}"; do
               pdf="dist/publication/kvas-${type}-${lang}-${VERSION}.pdf"
-              web="dist/site/v${VERSION}/${lang}/${type}/index.html"
+              immutable_web="dist/site/v${VERSION}/${lang}/${type}/index.html"
+              latest_web="dist/site/${lang}/${type}/index.html"
               test -s "$pdf"
-              test -s "$web"
+              test -s "$immutable_web"
+              test -s "$latest_web"
               pdfinfo "$pdf" | grep -q '^Pages:'
               pdftoppm -f 1 -singlefile -png -r 72 "$pdf" "/tmp/${type}-${lang}" >/dev/null
               test -s "/tmp/${type}-${lang}.png"
             done
           done
 
-          landing="dist/site/v${VERSION}/index.html"
-          comic="dist/site/v${VERSION}/assets/kvassistent-${VERSION}-comic.svg"
-          companion="dist/site/v${VERSION}/companion"
+          immutable="dist/site/v${VERSION}"
+          landing="$immutable/index.html"
+          game="$immutable/companion/game/index.html"
+          companion="$immutable/companion/index.html"
+          comic="$immutable/assets/kvassistent-${VERSION}-comic.svg"
+
           test "$(find dist/publication -maxdepth 1 -name '*.pdf' | wc -l)" -eq 12
           test -s "dist/kvas-${VERSION}-publication.zip"
           test -s "dist/kvas-${VERSION}-publication.tar.gz"
           test -s "dist/kvassistent-${VERSION}-website.zip"
           test -s "dist/kvassistent-${VERSION}-website.tar.gz"
-          test -s "dist/site/v${VERSION}/manifest.json"
-          test -s "dist/site/v${VERSION}/version.json"
+          test -s "$immutable/manifest.json"
+          test -s "$immutable/version.json"
           test -s "$landing"
+          test -s "$game"
+          test -s "$companion"
           test -s "$comic"
-          test -s "$companion/index.html"
-          test -s "$companion/app.js"
-          test -s "$companion/engine.js"
-          test -s "$companion/preferences.js"
-          test -s "$companion/styles.css"
-          test -s "$companion/manifest.webmanifest"
-          test -s "$companion/icon-192.png"
-          test -s "$companion/icon-512.png"
-          test -s "$companion/sw.js"
-          test -s "dist/site/v${VERSION}/feedback/index.html"
-          test -s "dist/site/v${VERSION}/feedback/styles.css"
-          test -s "dist/site/v${VERSION}/feedback/thanks.html"
-          grep -q '<h1>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ</h1>' "$landing"
-          grep -q 'ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками.' "$landing"
-          grep -q 'Лучшие инструкции для людей' "$landing"
-          grep -q 'id="hot-fermentation"' "$landing"
-          grep -q 'id="comic-guide"' "$landing"
-          grep -q 'Реальная партия — в простом комиксе' "$landing"
-          grep -q 'id="live-batch"' "$landing"
-          grep -q 'href="companion/"' "$landing"
-          grep -q 'Один ИИ-агент — одна понятная партия кваса' "$landing"
-          grep -q 'href="ru/instructions/"' "$landing"
-          grep -q 'Живая партия' "$companion/index.html"
-          grep -q 'Простой квас без догадок' "$companion/index.html"
-          grep -q 'id="consent-card"' "$companion/index.html"
-          grep -q 'data-consent="essential"' "$companion/index.html"
-          grep -q 'option value="el"' "$companion/index.html"
-          grep -q 'id="nearby-kvass"' "$companion/index.html"
-          grep -q 'resolvePreferredLanguage' "$companion/preferences.js"
-          grep -q 'kvassistent-live-v10' "$companion/sw.js"
-          grep -q 'self.skipWaiting()' "$companion/sw.js"
-          grep -q 'kvassistent-live-batch-v1' "$companion/engine.js"
-          grep -q 'formsubmit.co/kvassitent@gmail.com' "dist/site/v${VERSION}/feedback/index.html"
-          grep -q "kvassistent-${VERSION}-comic.svg" "$landing"
-          grep -q 'id="for-people"' "$landing"
-          grep -q 'id="for-ai-agents"' "$landing"
-          grep -q 'Для ИИ-агентов' "$landing"
-          grep -q 'Open human guide' "$landing"
-          grep -q 'Abrir guía para personas' "$landing"
-          grep -q 'Anleitung für Menschen' "$landing"
-          grep -q '打开用户指南' "$landing"
-          grep -q 'Άνοιγμα οδηγού για ανθρώπους' "$landing"
-          grep -q 'AI agent instructions' "$landing"
-          grep -q 'Instrucciones para agente de IA' "$landing"
-          grep -q 'Anleitung für KI-Agenten' "$landing"
-          grep -q 'AI 智能体说明' "$landing"
-          grep -q 'Οδηγίες πράκτορα AI' "$landing"
-          grep -q "единиц: ${ONES_COUNT}" "$landing"
-          grep -q 'beer-background' "$landing"
-          grep -q 'Галерея успешных напитков' "$landing"
-          grep -q 'prefers-reduced-motion' "$landing"
-          grep -q "\"ones_count\": ${ONES_COUNT}" "dist/site/v${VERSION}/manifest.json"
+
+          grep -Fq "Версия ${ONES_COUNT}, потому что в ней единиц вот столько: ${ONES_COUNT}. Пересчитай:" "$landing"
+          grep -Fq "v${VERSION}" "$landing"
+          grep -Fq 'id="site-topbar"' "$landing"
+          grep -Fq 'id="header-language-select"' "$landing"
+          grep -Fq 'id="globe-game"' "$landing"
+          grep -Fq 'id="all-links"' "$landing"
+          grep -Fq 'id="localization"' "$landing"
+          grep -Fq 'href="/game/"' "$landing"
+          grep -Fq 'href="/companion/"' "$landing"
+          grep -Fq 'href="/feedback/"' "$landing"
+          grep -Fq 'Глобальная игра на сфере' "$landing"
+          grep -Fq 'Она выглядит плоской только потому' "$landing"
+          grep -Fq "kvassistent-${VERSION}-comic.svg" "$landing"
+
+          grep -Fq "VERSION ${ONES_COUNT}" "$game"
+          grep -Fq 'id="game-language"' "$game"
+          test "$(grep -o 'class="site"' "$game" | wc -l)" -eq 6
+          grep -Fq 'resolveGameLanguage' "$immutable/companion/game/game.js"
+          grep -Fq 'zh-CN' "$immutable/companion/game/i18n.js"
+          grep -Fq 'ΕΚΔΟΣΗ 16' "$immutable/companion/game/i18n.js"
+
+          grep -Fq 'Live batch' "$companion"
+          grep -Fq 'Straightforward kvass' "$companion"
+          grep -Fq 'id="consent-card"' "$companion"
+          grep -Fq 'data-consent="essential"' "$companion"
+          grep -Fq 'option value="el"' "$companion"
+          grep -Fq 'kvassistent-live-v16' "$immutable/companion/sw.js"
+          grep -Fq 'formsubmit.co/kvassitent@gmail.com' "$immutable/feedback/index.html"
+
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('dist/site/v' + __import__('os').environ['VERSION'] + '/companion/index.html').read_text(encoding='utf-8')
+          assert not any(('А' <= ch <= 'я') or ch in 'Ёё' for ch in text), 'Russian leaked into universal companion shell'
+          PY
+
+          test -s dist/site/index.html
+          test -s dist/site/game/index.html
+          test -s dist/site/companion/index.html
+          test -s dist/site/feedback/index.html
+          test -s dist/site/latest-version.json
+          grep -Fq "\"version\": \"${VERSION}\"" dist/site/latest-version.json
+          grep -Fq 'href="/game/"' dist/site/index.html
+          grep -Fq 'id="game-language"' dist/site/game/index.html
+          grep -Fq 'Live batch' dist/site/companion/index.html
+          grep -Fq "\"ones_count\": ${ONES_COUNT}" "$immutable/manifest.json"
 
       - name: Upload verified publication build
         uses: actions/upload-artifact@v4
@@ -213,7 +221,7 @@ jobs:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
 
-      - name: Point release tag to the verified commit
+      - name: Point release tag to verified commit
         continue-on-error: true
         shell: bash
         run: |
@@ -255,8 +263,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    env:
-      VERSION: ${{ needs.build.outputs.version }}
 
     steps:
       - name: Checkout
@@ -284,7 +290,7 @@ jobs:
           cp -a /tmp/kvassistent-site/. .
           touch .nojekyll
           git add -A
-          git commit -m "Publish КВАССИСТЕНТ ${VERSION} multilingual website"
+          git commit -m "Publish KVASSISTENT ${{ needs.build.outputs.version }} website"
           git push origin HEAD:gh-pages --force
 
   verify-cloudflare-pages:
@@ -299,56 +305,34 @@ jobs:
       ONES_COUNT: ${{ needs.build.outputs.ones_count }}
 
     steps:
-      - name: Wait for KVASSISTENT deployment
+      - name: Wait for immutable and latest URLs
         shell: bash
         run: |
           set -euo pipefail
-          site="https://kvassistent.pages.dev/v${VERSION}"
+          root="https://kvassistent.pages.dev"
+          immutable="$root/v${VERSION}"
           for attempt in $(seq 1 30); do
-            if curl --fail --location --silent --show-error \
-                 "$site/manifest.json" -o /tmp/manifest.json \
-              && grep -q "\"version\": \"${VERSION}\"" /tmp/manifest.json \
-              && grep -q "\"ones_count\": ${ONES_COUNT}" /tmp/manifest.json \
-              && curl --fail --location --silent --show-error \
-                 "$site/ru/summary/index.html" -o /tmp/ru-summary.html \
-              && grep -q "Version ${VERSION}" /tmp/ru-summary.html \
-              && curl --fail --location --silent --show-error \
-                 "$site/index.html" -o /tmp/landing.html \
-              && grep -q '<h1>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ</h1>' /tmp/landing.html \
-              && grep -q 'id="comic-guide"' /tmp/landing.html \
-              && grep -q 'Реальная партия — в простом комиксе' /tmp/landing.html \
-              && grep -q "единиц: ${ONES_COUNT}" /tmp/landing.html \
-              && curl --fail --location --silent --show-error \
-                 "$site/assets/kvassistent-${VERSION}-comic.svg" -o /tmp/comic.svg \
-              && grep -q '<svg' /tmp/comic.svg \
-              && grep -q 'КВАССИСТЕНТ' /tmp/comic.svg \
-              && curl --fail --location --silent --show-error \
-                 "$site/companion/index.html" -o /tmp/companion.html \
-              && grep -q 'Живая партия' /tmp/companion.html \
-              && grep -q 'Простой квас без догадок' /tmp/companion.html \
-              && grep -q 'id="consent-card"' /tmp/companion.html \
-              && grep -q 'data-consent="essential"' /tmp/companion.html \
-              && grep -q 'option value="el"' /tmp/companion.html \
-              && grep -q 'id="nearby-kvass"' /tmp/companion.html \
-              && curl --fail --location --silent --show-error \
-                 "$site/companion/engine.js" -o /tmp/companion-engine.js \
-              && grep -q 'kvassistent-live-batch-v1' /tmp/companion-engine.js \
-              && curl --fail --location --silent --show-error \
-                 "$site/companion/preferences.js" -o /tmp/companion-preferences.js \
-              && grep -q 'resolvePreferredLanguage' /tmp/companion-preferences.js \
-              && curl --fail --location --silent --show-error \
-                 "$site/companion/sw.js" -o /tmp/companion-sw.js \
-              && grep -q 'kvassistent-live-v10' /tmp/companion-sw.js \
-              && curl --fail --location --retry 3 --retry-delay 3 \
-                 "$site/feedback/index.html" -o /tmp/feedback.html \
-              && grep -q 'formsubmit.co/kvassitent@gmail.com' /tmp/feedback.html \
-              && grep -q 'www.instagram.com/kvassistent' /tmp/feedback.html \
-              && grep -q 'www.tiktok.com/@kvassistent' /tmp/feedback.html; then
-              echo "Verified $site, comic asset, and live-batch companion"
+            if curl --fail --location --silent --show-error "$root/manifest.json" -o /tmp/latest-manifest.json \
+              && grep -Fq "\"version\": \"${VERSION}\"" /tmp/latest-manifest.json \
+              && grep -Fq "\"ones_count\": ${ONES_COUNT}" /tmp/latest-manifest.json \
+              && curl --fail --location --silent --show-error "$root/" -o /tmp/latest.html \
+              && grep -Fq "v${VERSION}" /tmp/latest.html \
+              && grep -Fq 'href="/game/"' /tmp/latest.html \
+              && curl --fail --location --silent --show-error "$root/game/" -o /tmp/game.html \
+              && grep -Fq "VERSION ${ONES_COUNT}" /tmp/game.html \
+              && grep -Fq 'id="game-language"' /tmp/game.html \
+              && curl --fail --location --silent --show-error "$root/companion/" -o /tmp/companion.html \
+              && grep -Fq 'Live batch' /tmp/companion.html \
+              && grep -Fq 'id="consent-card"' /tmp/companion.html \
+              && curl --fail --location --silent --show-error "$immutable/manifest.json" -o /tmp/immutable-manifest.json \
+              && grep -Fq "\"version\": \"${VERSION}\"" /tmp/immutable-manifest.json \
+              && curl --fail --location --silent --show-error "$immutable/" -o /tmp/immutable.html \
+              && grep -Fq "v${VERSION}" /tmp/immutable.html; then
+              echo "Verified latest short URLs and immutable release $VERSION"
               exit 0
             fi
             echo "Waiting for Cloudflare Pages ($attempt/30)..."
             sleep 10
           done
-          echo "Cloudflare Pages did not publish version ${VERSION} in time." >&2
+          echo "Cloudflare Pages did not publish release ${VERSION} and latest aliases in time." >&2
           exit 1
