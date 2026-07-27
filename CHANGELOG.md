@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1
+
+- Preserved the creator-authored mixed-language manifesto verbatim in `HUMAN_MANIFESTO.md` and placed the professional explanation beside it rather than replacing it.
+- Added a cosmic landing-page treatment with stars, orbit lines, animated kvass bottle satellites, and reduced-motion support.
+- Added a version-17 cosmic SVG poster built around **ЭТО ТВОЙ КВАС**, **HUMAN-AUTHORED COMES FIRST**, and **HUMANS BREW. AI GUIDES.**
+- Added a secure Telegram webhook-bot scaffold and `/telegram/` entry page without committing a bot token or webhook secret.
+- Aligned Codex, Gemini, and Claude Code with the same human-content, release, safety, and secret-management contract.
+- Added dynamic release preparation and post-build enhancement so version-specific game, cache, landing, and latest metadata no longer depend on hardcoded release 16 values.
+- Consolidated duplicate website pipelines into one build whose verified artifact is reused for the GitHub Release and `gh-pages` publication.
+- Extended release and Cloudflare verification to cover the manifesto, cosmic layer, Telegram entry, latest metadata, and immutable version 17 URL.
+
 ## 1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1
 
 - Added stable latest URLs at `/`, `/game/`, `/companion/`, and `/feedback/`; these paths now publish the current release without requiring the long version path.
