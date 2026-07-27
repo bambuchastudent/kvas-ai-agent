@@ -4,7 +4,7 @@ export const GAME_I18N = Object.freeze({
   ru: {
     htmlLang: "ru", locale: "ru-RU", pageTitle: "КВАССИСТЕНТ 16 · Глобальные запуски",
     description: "КВАССИСТЕНТ 16: игра с глобусом, шестью континентами и бутылками-ракетами.",
-    back: "← НА ГЛАВНУЮ", versionLabel: "ВЕРСИЯ 16", language: "Язык", soundOn: "Звук: вкл.", soundOff: "Звук: выкл.",
+    back: "← НА ГЛАВНУЮ", versionLabel: "ВЕРСИЯ 18", language: "Язык", soundOn: "Звук: вкл.", soundOff: "Звук: выкл.",
     heroLead: "Глобальная игра на сфере — плоская только потому, что экран пока не умеет быть шаром. Запускай бутылки с шести континентов и копи результат локально.",
     statTotal: "Запущено бутылок", statAuto: "Автозапуск", statStorage: "Накопление", statMode: "Режим", autoValue: "10 сек", localValue: "локально", modeValue: "6 континентов",
     nextLaunchPrefix: "Следующий пуск через", nextLaunchSuffix: "сек.", launchNow: "ЗАПУСТИТЬ СЕЙЧАС", pause: "Пауза", resume: "Продолжить", reset: "Сбросить локальный счётчик",
@@ -18,7 +18,7 @@ export const GAME_I18N = Object.freeze({
   en: {
     htmlLang: "en", locale: "en-GB", pageTitle: "KVASSISTENT 16 · Global launches",
     description: "KVASSISTENT 16: a globe game with six continents and bottle rockets.",
-    back: "← HOME", versionLabel: "VERSION 16", language: "Language", soundOn: "Sound: on", soundOff: "Sound: off",
+    back: "← HOME", versionLabel: "VERSION 18", language: "Language", soundOn: "Sound: on", soundOff: "Sound: off",
     heroLead: "A global game on a sphere — flat only because your screen has not learned to be round yet. Launch bottles from six continents and keep the score on this device.",
     statTotal: "Bottles launched", statAuto: "Auto launch", statStorage: "Storage", statMode: "Mode", autoValue: "10 sec", localValue: "local", modeValue: "6 continents",
     nextLaunchPrefix: "Next launch in", nextLaunchSuffix: "sec.", launchNow: "LAUNCH NOW", pause: "Pause", resume: "Resume", reset: "Reset local counter",
@@ -32,7 +32,7 @@ export const GAME_I18N = Object.freeze({
   es: {
     htmlLang: "es", locale: "es-ES", pageTitle: "KVASSISTENT 16 · Lanzamientos globales",
     description: "KVASSISTENT 16: juego con globo, seis continentes y botellas cohete.",
-    back: "← INICIO", versionLabel: "VERSIÓN 16", language: "Idioma", soundOn: "Sonido: sí", soundOff: "Sonido: no",
+    back: "← INICIO", versionLabel: "VERSIÓN 18", language: "Idioma", soundOn: "Sonido: sí", soundOff: "Sonido: no",
     heroLead: "Un juego global sobre una esfera: solo se ve plano porque la pantalla aún no sabe ser redonda. Lanza botellas desde seis continentes y guarda el resultado en este dispositivo.",
     statTotal: "Botellas lanzadas", statAuto: "Lanzamiento auto", statStorage: "Acumulación", statMode: "Modo", autoValue: "10 s", localValue: "local", modeValue: "6 continentes",
     nextLaunchPrefix: "Siguiente lanzamiento en", nextLaunchSuffix: "s", launchNow: "LANZAR AHORA", pause: "Pausa", resume: "Continuar", reset: "Reiniciar contador local",
@@ -46,7 +46,7 @@ export const GAME_I18N = Object.freeze({
   de: {
     htmlLang: "de", locale: "de-DE", pageTitle: "KVASSISTENT 16 · Globale Starts",
     description: "KVASSISTENT 16: Globusspiel mit sechs Kontinenten und Flaschenraketen.",
-    back: "← STARTSEITE", versionLabel: "VERSION 16", language: "Sprache", soundOn: "Ton: an", soundOff: "Ton: aus",
+    back: "← STARTSEITE", versionLabel: "VERSION 18", language: "Sprache", soundOn: "Ton: an", soundOff: "Ton: aus",
     heroLead: "Ein globales Spiel auf einer Kugel – flach nur, weil dein Bildschirm noch nicht rund sein kann. Starte Flaschen von sechs Kontinenten und speichere den Zähler lokal.",
     statTotal: "Gestartete Flaschen", statAuto: "Autostart", statStorage: "Speicher", statMode: "Modus", autoValue: "10 Sek.", localValue: "lokal", modeValue: "6 Kontinente",
     nextLaunchPrefix: "Nächster Start in", nextLaunchSuffix: "Sek.", launchNow: "JETZT STARTEN", pause: "Pause", resume: "Fortsetzen", reset: "Lokalen Zähler löschen",
@@ -74,7 +74,7 @@ export const GAME_I18N = Object.freeze({
   el: {
     htmlLang: "el", locale: "el-GR", pageTitle: "KVASSISTENT 16 · Παγκόσμιες εκτοξεύσεις",
     description: "KVASSISTENT 16: παιχνίδι με υδρόγειο, έξι ηπείρους και μπουκάλια-πυραύλους.",
-    back: "← ΑΡΧΙΚΗ", versionLabel: "ΕΚΔΟΣΗ 16", language: "Γλώσσα", soundOn: "Ήχος: ναι", soundOff: "Ήχος: όχι",
+    back: "← ΑΡΧΙΚΗ", versionLabel: "ΕΚΔΟΣΗ 18", language: "Γλώσσα", soundOn: "Ήχος: ναι", soundOff: "Ήχος: όχι",
     heroLead: "Παγκόσμιο παιχνίδι πάνω σε σφαίρα — φαίνεται επίπεδο μόνο επειδή η οθόνη δεν έγινε ακόμη μπάλα. Εκτόξευσε μπουκάλια από έξι ηπείρους και κράτησε το σκορ τοπικά.",
     statTotal: "Μπουκάλια που εκτοξεύτηκαν", statAuto: "Αυτόματη εκτόξευση", statStorage: "Αποθήκευση", statMode: "Λειτουργία", autoValue: "10 δευτ.", localValue: "τοπικά", modeValue: "6 ήπειροι",
     nextLaunchPrefix: "Επόμενη εκτόξευση σε", nextLaunchSuffix: "δευτ.", launchNow: "ΕΚΤΟΞΕΥΣΗ ΤΩΡΑ", pause: "Παύση", resume: "Συνέχεια", reset: "Μηδενισμός τοπικού μετρητή",

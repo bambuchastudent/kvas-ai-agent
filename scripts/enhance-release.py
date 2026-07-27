@@ -20,7 +20,8 @@ def creator_text() -> str:
 
 
 SPACE_CSS = r"""
-body{position:relative;background:#03050d!important;color:#f8f3df;overflow-x:hidden}
+body.landing-page,body{position:relative;background:#03050d!important;overflow-x:hidden}
+body.landing-page .beer-background{display:none!important}
 body::before{content:"";position:fixed;inset:-10%;z-index:0;pointer-events:none;background:
 radial-gradient(1200px 800px at 15% 20%,rgba(128,82,255,.32),transparent 55%),
 radial-gradient(900px 700px at 85% 15%,rgba(39,170,255,.22),transparent 55%),
@@ -32,6 +33,18 @@ radial-gradient(circle,rgba(255,255,255,.55) 0 1px,transparent 1.5px) 27px 27px/
 radial-gradient(circle,rgba(255,255,255,.35) 0 .8px,transparent 1.4px) 13px 41px/140px 140px;
 animation:kvass-twinkle 6s ease-in-out infinite}
 main,footer{position:relative;z-index:2}
+.cover,.people-quickstart,.audience-section,.gallery,.language-card,.quick-card,.role-chip,.safety-callout{color:#2a2118}
+.cover{background:linear-gradient(145deg,#fffdf7,#f8efdd)!important;box-shadow:0 24px 70px rgba(0,0,0,.5)!important;border:2px solid rgba(238,181,63,.85)!important}
+.people-quickstart,.audience-section,.gallery{background:rgba(255,253,247,.97)!important;box-shadow:0 24px 70px rgba(0,0,0,.55)!important;border:1px solid rgba(238,181,63,.55)!important}
+.language-card,.quick-card{background:#fffaf0!important;color:#2a2118}
+.role-chip{background:rgba(255,250,237,.98)!important;color:#3a2410!important;border:1px solid rgba(180,119,24,.6)!important}
+.role-chip strong{color:#8c5600!important}
+.safety-callout{background:#fff0e9!important;color:#4a1408!important;border-left:5px solid #9f2d20!important}
+.eyebrow,.section-kicker{color:#8c5600!important}
+.section-lead,.subtitle,.gallery-intro{color:#4a3d2b!important}
+.button.primary{background:#8c5600!important;border-color:#8c5600!important;color:#fffdf7!important}
+.button{background:#fffaf0!important;color:#2a2118!important;border:1px solid #b47718!important}
+.button:hover{background:#f7e6b8!important}
 .kvass-space-layer{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .kvass-orbit{position:absolute;top:50%;left:50%;width:0;height:0;animation:kvass-spin linear infinite}
 .kvass-orbit:nth-child(1){animation-duration:38s}
@@ -103,11 +116,91 @@ def space_layer() -> str:
     return f'<div class="kvass-space-layer" aria-hidden="true">{orbits}</div>'
 
 
+def seo_head() -> str:
+    keywords = (
+        "kvassistent, \u041a\u0412\u0410\u0421\u0421\u0418\u0421\u0422\u0415\u041d\u0422, \u043a\u0432\u0430\u0441 \u0416\u0438\u0436\u0430, "
+        "homemade kvass, homemade kvas, russian kvass recipe, ai fermentation assistant, "
+        "agent-native instructions, human-first ai, ai kitchen assistant, offline pwa fermentation, "
+        "AI_AGENT_START.md, openai codex, codex agent, live batch companion, "
+        "\u0434\u043e\u043c\u0430\u0448\u043d\u0438\u0439 \u043a\u0432\u0430\u0441, \u0440\u0435\u0446\u0435\u043f\u0442 \u043a\u0432\u0430\u0441\u0430, \u0416\u0418\u0416\u0410"
+    )
+    description_en = (
+        "KVASSISTENT is a human-first AI agent that guides you to brew real kvass \u00abZhizha\u00bb "
+        "from stale bread. Offline PWA, 6 languages, JSON handoff for other AI agents."
+    )
+    description_ru = (
+        "\u041a\u0412\u0410\u0421\u0421\u0418\u0421\u0422\u0415\u041d\u0422 \u2014 \u0418\u0418-\u0430\u0433\u0435\u043d\u0442, \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u0432\u0435\u0434\u0451\u0442 \u0447\u0435\u043b\u043e\u0432\u0435\u043a\u0430 \u043e\u0442 \u0441\u0443\u0445\u0430\u0440\u0435\u0439 \u0434\u043e \u043d\u0430\u0441\u0442\u043e\u044f\u0449\u0435\u0433\u043e \u0434\u043e\u043c\u0430\u0448\u043d\u0435\u0433\u043e "
+        "\u043a\u0432\u0430\u0441\u0430 \u00ab\u0416\u0438\u0436\u0430\u00bb. Offline PWA, \u0448\u0435\u0441\u0442\u044c \u044f\u0437\u044b\u043a\u043e\u0432, JSON-\u043f\u0435\u0440\u0435\u0434\u0430\u0447\u0430 \u0434\u0440\u0443\u0433\u0438\u043c \u0418\u0418-\u0430\u0433\u0435\u043d\u0442\u0430\u043c."
+    )
+    ld = json.dumps({
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "SoftwareApplication",
+                "name": "KVASSISTENT",
+                "alternateName": ["\u041a\u0412\u0410\u0421\u0421\u0418\u0421\u0422\u0415\u041d\u0422", "Kvas AI Agent"],
+                "applicationCategory": "LifestyleApplication",
+                "operatingSystem": "Any (PWA)",
+                "url": "https://kvassistent.pages.dev/",
+                "softwareVersion": f"v{VERSION}",
+                "description": description_en,
+                "inLanguage": ["ru", "en", "es", "de", "zh-CN", "el"],
+                "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+                "author": {"@type": "Person", "name": "Dmitrii Kashirin", "url": "https://github.com/bambuchastudent"},
+                "codeRepository": "https://github.com/bambuchastudent/kvas-ai-agent",
+                "license": "https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/LICENSE",
+                "screenshot": "https://kvassistent.pages.dev/share/devpost-cover.png"
+            },
+            {
+                "@type": "HowTo",
+                "name": "Brew homemade kvass Zhizha with KVASSISTENT",
+                "description": "Guided 3-litre first batch: dry the bread, brew the wort, ferment, carbonate, chill.",
+                "totalTime": "PT18H",
+                "supply": [
+                    {"@type": "HowToSupply", "name": "3 L water"},
+                    {"@type": "HowToSupply", "name": "180-220 g fully dried bread"},
+                    {"@type": "HowToSupply", "name": "100-120 g sugar"},
+                    {"@type": "HowToSupply", "name": "0.5-1 g dry yeast for first batch"}
+                ],
+                "step": [
+                    {"@type": "HowToStep", "name": "Assemble", "text": "Gather water, dried bread, sugar and starter."},
+                    {"@type": "HowToStep", "name": "Infuse", "text": "Toast bread dark-gold, pour boiling water, steep 4-8 h, strain."},
+                    {"@type": "HowToStep", "name": "Ferment", "text": "Cool to 25-35C, add starter, cover with cloth, 8-12 h."},
+                    {"@type": "HowToStep", "name": "Carbonate and chill", "text": "Bottle in PET, wait 2-6 h for firm bottle, then chill 8+ h."}
+                ]
+            }
+        ]
+    }, ensure_ascii=False, separators=(",", ":"))
+    return (
+        '<meta name="description" content="' + description_ru + '">'
+        '<meta name="keywords" content="' + keywords + '">'
+        '<meta name="author" content="Dmitrii Kashirin">'
+        '<meta name="robots" content="index,follow,max-image-preview:large">'
+        '<meta name="googlebot" content="index,follow">'
+        '<link rel="canonical" href="https://kvassistent.pages.dev/">'
+        '<meta property="og:site_name" content="KVASSISTENT">'
+        '<meta property="og:locale" content="ru_RU">'
+        '<meta property="og:locale:alternate" content="en_US">'
+        '<meta property="og:description" content="' + description_en + '">'
+        '<meta name="twitter:title" content="KVASSISTENT \u2014 human-first AI for real kvass">'
+        '<meta name="twitter:description" content="' + description_en + '">'
+        '<link rel="alternate" hreflang="ru" href="https://kvassistent.pages.dev/ru/summary/">'
+        '<link rel="alternate" hreflang="en" href="https://kvassistent.pages.dev/en/summary/">'
+        '<link rel="alternate" hreflang="es" href="https://kvassistent.pages.dev/es/summary/">'
+        '<link rel="alternate" hreflang="de" href="https://kvassistent.pages.dev/de/summary/">'
+        '<link rel="alternate" hreflang="zh-CN" href="https://kvassistent.pages.dev/zh-CN/summary/">'
+        '<link rel="alternate" hreflang="el" href="https://kvassistent.pages.dev/el/summary/">'
+        '<link rel="alternate" hreflang="x-default" href="https://kvassistent.pages.dev/">'
+        '<script type="application/ld+json">' + ld + '</script>'
+    )
+
+
 def patch_landing(path: Path) -> None:
     text = path.read_text(encoding="utf-8")
     if "human-manifesto-release" in text:
         return
     text = text.replace("</style>", SPACE_CSS + "\n</style>", 1) if "</style>" in text else text.replace("</head>", f"<style>{SPACE_CSS}</style></head>", 1)
+    text = text.replace("</head>", seo_head() + "</head>", 1)
     text = text.replace("<body>", "<body>\n" + space_layer(), 1)
     marker = '<section class="globe-game-release"'
     if marker in text:
@@ -131,6 +224,39 @@ def write_telegram(root: Path) -> None:
     target.write_text(telegram_page(), encoding="utf-8")
 
 
+def write_seo_files(root: Path) -> None:
+    base = "https://kvassistent.pages.dev"
+    langs = ["ru", "en", "es", "de", "zh-CN", "el"]
+    urls = [
+        (base + "/", "1.0", "weekly"),
+        (base + "/companion/", "0.9", "weekly"),
+        (base + "/game/", "0.7", "monthly"),
+        (base + "/telegram/", "0.6", "monthly"),
+    ]
+    for lang in langs:
+        urls.append((f"{base}/{lang}/summary/", "0.8", "monthly"))
+        urls.append((f"{base}/{lang}/instructions/", "0.7", "monthly"))
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+             'xmlns:xhtml="http://www.w3.org/1999/xhtml">']
+    for loc, priority, changefreq in urls:
+        lines.append("<url>")
+        lines.append(f"<loc>{loc}</loc>")
+        lines.append(f"<changefreq>{changefreq}</changefreq>")
+        lines.append(f"<priority>{priority}</priority>")
+        if loc == base + "/":
+            for lang in langs:
+                lines.append(f'<xhtml:link rel="alternate" hreflang="{lang}" href="{base}/{lang}/summary/"/>')
+            lines.append(f'<xhtml:link rel="alternate" hreflang="x-default" href="{base}/"/>')
+        lines.append("</url>")
+    lines.append("</urlset>")
+    (root / "sitemap.xml").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (root / "robots.txt").write_text(
+        "User-agent: *\nAllow: /\n\nSitemap: " + base + "/sitemap.xml\n",
+        encoding="utf-8",
+    )
+
+
 version_root = SITE / f"v{VERSION}"
 for landing in (version_root / "index.html", SITE / "index.html"):
     if not landing.is_file():
@@ -139,13 +265,24 @@ for landing in (version_root / "index.html", SITE / "index.html"):
 
 write_telegram(version_root)
 write_telegram(SITE)
+write_seo_files(SITE)
 latest = SITE / "latest-version.json"
 if latest.is_file():
     data = json.loads(latest.read_text(encoding="utf-8"))
     data["telegram"] = "/telegram/"
     latest.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-for required in ("human-manifesto-release", "kvass-space-layer", 'href="/telegram/"'):
+for required in (
+    "human-manifesto-release",
+    "kvass-space-layer",
+    'href="/telegram/"',
+    'application/ld+json',
+    'name="keywords"',
+    'rel="canonical"',
+):
     if required not in (SITE / "index.html").read_text(encoding="utf-8"):
         raise RuntimeError(f"Release enhancement missing: {required}")
+for required_file in ("sitemap.xml", "robots.txt"):
+    if not (SITE / required_file).is_file():
+        raise RuntimeError(f"SEO artifact missing: {required_file}")
 print(f"enhanced KVASSISTENT version {ONES}: v{VERSION}")

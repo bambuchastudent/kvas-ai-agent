@@ -216,13 +216,13 @@ def verify(version: str, ones_count: int) -> None:
     ]
     missing = [value for value in required if value not in text]
     if missing:
-        raise RuntimeError(f"Landing page misses release 16 content: {missing}")
+        raise RuntimeError(f"Landing page misses release 18 content: {missing}")
 
     game_dir = version_root / "companion/game"
     game_html = (game_dir / "index.html").read_text(encoding="utf-8")
     game_js = (game_dir / "game.js").read_text(encoding="utf-8")
     game_i18n = (game_dir / "i18n.js").read_text(encoding="utf-8")
-    if game_html.count('class="site"') != 6 or "VERSION 16" not in game_html:
+    if game_html.count('class="site"') != 6 or "VERSION 18" not in game_html:
         raise RuntimeError("Globe game release or launch sites are incorrect")
     for code in ("ru", "en", "es", "de", "zh-CN", "el"):
         if code not in game_i18n:
