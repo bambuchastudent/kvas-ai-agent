@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Build and publish static website
+    name: Build and publish latest website
     runs-on: ubuntu-latest
 
     steps:
@@ -31,6 +31,11 @@ jobs:
           ONES_COUNT="$(python -c 'import json; print(json.load(open("release/version.json"))["ones_count"])')"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "ONES_COUNT=$ONES_COUNT" >> "$GITHUB_ENV"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -53,14 +58,21 @@ jobs:
           python -m pip install --quiet -r requirements-publication.txt
           fc-cache -f >/dev/null
 
-      - name: Build versioned website
+      - name: Test rules and localization
         shell: bash
         run: |
           set -euo pipefail
+          python -m py_compile scripts/build-release.py scripts/next-ones-version.py
           node scripts/test-companion.mjs
+          node scripts/test-localization.mjs
+
+      - name: Build immutable release and latest aliases
+        shell: bash
+        run: |
+          set -euo pipefail
           python scripts/build-release.py
 
-      - name: Verify version 15 landing and globe game
+      - name: Verify release and short URLs
         shell: bash
         run: |
           set -euo pipefail
@@ -68,13 +80,31 @@ jobs:
           game="dist/site/v${VERSION}/companion/game/index.html"
           test -s "$landing"
           test -s "$game"
-          grep -Fq "Версия ${ONES_COUNT}, потому что в ней единиц вот столько: ${ONES_COUNT}" "$landing"
-          grep -Fq 'id="site-topbar"' "$landing"
+          grep -Fq "Версия ${ONES_COUNT}, потому что в ней единиц вот столько: ${ONES_COUNT}. Пересчитай:" "$landing"
+          grep -Fq "v${VERSION}" "$landing"
+          grep -Fq 'href="/game/"' "$landing"
+          grep -Fq 'href="/companion/"' "$landing"
           grep -Fq 'id="header-language-select"' "$landing"
           grep -Fq 'id="globe-game"' "$landing"
           grep -Fq 'id="all-links"' "$landing"
-          grep -Fq "ВЕРСИЯ ${ONES_COUNT}" "$game"
+          grep -Fq 'id="localization"' "$landing"
+          grep -Fq "VERSION ${ONES_COUNT}" "$game"
+          grep -Fq 'id="game-language"' "$game"
           test "$(grep -o 'class="site"' "$game" | wc -l)" -eq 6
+
+          test -s dist/site/index.html
+          test -s dist/site/game/index.html
+          test -s dist/site/companion/index.html
+          test -s dist/site/feedback/index.html
+          test -s dist/site/ru/summary/index.html
+          test -s dist/site/en/summary/index.html
+          test -s dist/site/latest-version.json
+
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('dist/site/companion/index.html').read_text(encoding='utf-8')
+          assert not any(('А' <= ch <= 'я') or ch in 'Ёё' for ch in text), 'Russian leaked into universal companion fallback'
+          PY
 
       - name: Publish gh-pages branch
         shell: bash
@@ -91,5 +121,5 @@ jobs:
           cp -a /tmp/kvassistent-site/. .
           touch .nojekyll
           git add -A
-          git commit -m "Publish КВАССИСТЕНТ ${VERSION} website"
+          git commit -m "Publish KVASSISTENT ${VERSION} website"
           git push origin HEAD:gh-pages --force
