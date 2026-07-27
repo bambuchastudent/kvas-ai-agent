@@ -16,8 +16,9 @@ concurrency:
 
 jobs:
   build:
-    name: Build and verify publication
+    name: Build and verify publication once
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
     outputs:
@@ -28,6 +29,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Read release metadata
         id: release-meta
@@ -74,28 +77,20 @@ jobs:
           python -m pip install --quiet -r requirements-publication.txt
           fc-cache -f >/dev/null
 
-      - name: Test rules, language fallback, and build scripts
+      - name: Prepare, test, build and enhance
         shell: bash
         run: |
           set -euo pipefail
-          python -m py_compile scripts/build-release.py scripts/next-ones-version.py
+          python scripts/prepare-release.py
+          python -m py_compile \
+            scripts/build-release.py \
+            scripts/prepare-release.py \
+            scripts/enhance-release.py \
+            scripts/next-ones-version.py
           node scripts/test-companion.mjs
           node scripts/test-localization.mjs
-
-      - name: Build multilingual publication and latest website
-        shell: bash
-        run: |
-          set -o pipefail
           python scripts/build-release.py 2>&1 | tee publication-build.log
-
-      - name: Upload publication builder log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kvassistent-${{ steps.release-meta.outputs.version }}-publication-log
-          path: publication-build.log
-          if-no-files-found: warn
-          retention-days: 7
+          python scripts/enhance-release.py
 
       - name: Package generated website
         shell: bash
@@ -142,6 +137,7 @@ jobs:
           test -s "$game"
           test -s "$companion"
           test -s "$comic"
+          test -s "$immutable/telegram/index.html"
 
           grep -Fq "Версия ${ONES_COUNT}, потому что в ней единиц вот столько: ${ONES_COUNT}. Пересчитай:" "$landing"
           grep -Fq "v${VERSION}" "$landing"
@@ -150,11 +146,13 @@ jobs:
           grep -Fq 'id="globe-game"' "$landing"
           grep -Fq 'id="all-links"' "$landing"
           grep -Fq 'id="localization"' "$landing"
+          grep -Fq 'id="human-manifesto"' "$landing"
+          grep -Fq 'kvass-space-layer' "$landing"
+          grep -Fq 'ЭТО ТВОЙ КВАС делай с ним что хочешь' "$landing"
           grep -Fq 'href="/game/"' "$landing"
           grep -Fq 'href="/companion/"' "$landing"
           grep -Fq 'href="/feedback/"' "$landing"
-          grep -Fq 'Глобальная игра на сфере' "$landing"
-          grep -Fq 'Она выглядит плоской только потому' "$landing"
+          grep -Fq 'href="/telegram/"' "$landing"
           grep -Fq "kvassistent-${VERSION}-comic.svg" "$landing"
 
           grep -Fq "VERSION ${ONES_COUNT}" "$game"
@@ -162,19 +160,20 @@ jobs:
           test "$(grep -o 'class="site"' "$game" | wc -l)" -eq 6
           grep -Fq 'resolveGameLanguage' "$immutable/companion/game/game.js"
           grep -Fq 'zh-CN' "$immutable/companion/game/i18n.js"
-          grep -Fq 'ΕΚΔΟΣΗ 16' "$immutable/companion/game/i18n.js"
+          grep -Fq "ΕΚΔΟΣΗ ${ONES_COUNT}" "$immutable/companion/game/i18n.js"
 
           grep -Fq 'Live batch' "$companion"
           grep -Fq 'Straightforward kvass' "$companion"
           grep -Fq 'id="consent-card"' "$companion"
           grep -Fq 'data-consent="essential"' "$companion"
           grep -Fq 'option value="el"' "$companion"
-          grep -Fq 'kvassistent-live-v16' "$immutable/companion/sw.js"
+          grep -Fq "kvassistent-live-v${ONES_COUNT}" "$immutable/companion/sw.js"
           grep -Fq 'formsubmit.co/kvassitent@gmail.com' "$immutable/feedback/index.html"
 
           python - <<'PY'
+          import os
           from pathlib import Path
-          text = Path('dist/site/v' + __import__('os').environ['VERSION'] + '/companion/index.html').read_text(encoding='utf-8')
+          text = Path('dist/site/v' + os.environ['VERSION'] + '/companion/index.html').read_text(encoding='utf-8')
           assert not any(('А' <= ch <= 'я') or ch in 'Ёё' for ch in text), 'Russian leaked into universal companion shell'
           PY
 
@@ -182,12 +181,23 @@ jobs:
           test -s dist/site/game/index.html
           test -s dist/site/companion/index.html
           test -s dist/site/feedback/index.html
+          test -s dist/site/telegram/index.html
           test -s dist/site/latest-version.json
           grep -Fq "\"version\": \"${VERSION}\"" dist/site/latest-version.json
-          grep -Fq 'href="/game/"' dist/site/index.html
+          grep -Fq '"telegram": "/telegram/"' dist/site/latest-version.json
+          grep -Fq 'id="human-manifesto"' dist/site/index.html
           grep -Fq 'id="game-language"' dist/site/game/index.html
           grep -Fq 'Live batch' dist/site/companion/index.html
           grep -Fq "\"ones_count\": ${ONES_COUNT}" "$immutable/manifest.json"
+
+      - name: Upload builder log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kvassistent-${{ steps.release-meta.outputs.version }}-publication-log
+          path: publication-build.log
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Upload verified publication build
         uses: actions/upload-artifact@v4
@@ -210,7 +220,7 @@ jobs:
       TAG: v${{ needs.build.outputs.version }}
 
     steps:
-      - name: Checkout
+      - name: Checkout release metadata
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -221,17 +231,7 @@ jobs:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
 
-      - name: Point release tag to verified commit
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -f "$TAG" "$GITHUB_SHA"
-          git push origin "refs/tags/$TAG" --force
-
-      - name: Create or update GitHub Release
+      - name: Create or update tag and GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -241,6 +241,10 @@ jobs:
           title="КВАССИСТЕНТ ${VERSION} · единиц: ${ONES_COUNT}"
           test -s "$notes"
           test -s "share/kvassistent-${VERSION}-comic.svg"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -f "$TAG" "$GITHUB_SHA"
+          git push origin "refs/tags/$TAG" --force
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release edit "$TAG" --title "$title" --notes-file "$notes"
           else
@@ -257,7 +261,7 @@ jobs:
             --clobber
 
   gh-pages-branch:
-    name: Publish website to gh-pages branch
+    name: Publish the already verified website
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
@@ -265,10 +269,10 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout
+      - name: Checkout for branch publication
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Download verified publication
         uses: actions/download-artifact@v4
@@ -294,7 +298,7 @@ jobs:
           git push origin HEAD:gh-pages --force
 
   verify-cloudflare-pages:
-    name: Verify automatic Cloudflare Pages deployment
+    name: Verify Cloudflare Pages deployment
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: [build, gh-pages-branch]
     runs-on: ubuntu-latest
@@ -311,28 +315,29 @@ jobs:
           set -euo pipefail
           root="https://kvassistent.pages.dev"
           immutable="$root/v${VERSION}"
-          for attempt in $(seq 1 30); do
-            if curl --fail --location --silent --show-error "$root/manifest.json" -o /tmp/latest-manifest.json \
-              && grep -Fq "\"version\": \"${VERSION}\"" /tmp/latest-manifest.json \
-              && grep -Fq "\"ones_count\": ${ONES_COUNT}" /tmp/latest-manifest.json \
+          for attempt in $(seq 1 24); do
+            if curl --fail --location --silent --show-error "$root/latest-version.json" -o /tmp/latest-version.json \
+              && grep -Fq "\"version\": \"${VERSION}\"" /tmp/latest-version.json \
+              && grep -Fq '"telegram": "/telegram/"' /tmp/latest-version.json \
               && curl --fail --location --silent --show-error "$root/" -o /tmp/latest.html \
               && grep -Fq "v${VERSION}" /tmp/latest.html \
-              && grep -Fq 'href="/game/"' /tmp/latest.html \
+              && grep -Fq 'id="human-manifesto"' /tmp/latest.html \
+              && grep -Fq 'kvass-space-layer' /tmp/latest.html \
               && curl --fail --location --silent --show-error "$root/game/" -o /tmp/game.html \
               && grep -Fq "VERSION ${ONES_COUNT}" /tmp/game.html \
-              && grep -Fq 'id="game-language"' /tmp/game.html \
               && curl --fail --location --silent --show-error "$root/companion/" -o /tmp/companion.html \
               && grep -Fq 'Live batch' /tmp/companion.html \
-              && grep -Fq 'id="consent-card"' /tmp/companion.html \
+              && curl --fail --location --silent --show-error "$root/telegram/" -o /tmp/telegram.html \
+              && grep -Fq 'Telegram-бот подготовлен' /tmp/telegram.html \
               && curl --fail --location --silent --show-error "$immutable/manifest.json" -o /tmp/immutable-manifest.json \
               && grep -Fq "\"version\": \"${VERSION}\"" /tmp/immutable-manifest.json \
               && curl --fail --location --silent --show-error "$immutable/" -o /tmp/immutable.html \
-              && grep -Fq "v${VERSION}" /tmp/immutable.html; then
-              echo "Verified latest short URLs and immutable release $VERSION"
+              && grep -Fq 'id="human-manifesto"' /tmp/immutable.html; then
+              echo "Verified KVASSISTENT ${VERSION}: latest, Telegram, game, companion and immutable release"
               exit 0
             fi
-            echo "Waiting for Cloudflare Pages ($attempt/30)..."
+            echo "Waiting for Cloudflare Pages ($attempt/24)..."
             sleep 10
           done
-          echo "Cloudflare Pages did not publish release ${VERSION} and latest aliases in time." >&2
+          echo "Cloudflare Pages did not publish release ${VERSION} in time." >&2
           exit 1
