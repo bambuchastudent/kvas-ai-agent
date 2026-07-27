@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">KVASSISTENT version 17 cosmic craft poster</title>
+  <desc id="desc">A human holds a jar of kvass while bottles orbit through space like satellites. The poster says human-authored comes first and humans brew while AI guides.</desc>
+  <defs>
+    <radialGradient id="space" cx="30%" cy="20%" r="90%"><stop offset="0" stop-color="#2d347d"/><stop offset=".45" stop-color="#10183b"/><stop offset="1" stop-color="#03050d"/></radialGradient>
+    <linearGradient id="glass" x1="0" x2="1"><stop stop-color="#f8efcf" stop-opacity=".7"/><stop offset=".35" stop-color="#7a3d0c"/><stop offset="1" stop-color="#1b0c04"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#space)"/>
+  <g fill="#fff" opacity=".8">
+    <circle cx="82" cy="92" r="2"/><circle cx="174" cy="164" r="3"/><circle cx="310" cy="74" r="2"/><circle cx="466" cy="122" r="2"/><circle cx="622" cy="58" r="3"/><circle cx="774" cy="146" r="2"/><circle cx="932" cy="82" r="3"/><circle cx="1104" cy="166" r="2"/><circle cx="1040" cy="344" r="2"/><circle cx="116" cy="402" r="3"/><circle cx="224" cy="690" r="2"/><circle cx="1006" cy="702" r="3"/>
+  </g>
+  <g fill="none" stroke="#8cd8ff" stroke-opacity=".28" stroke-width="3"><ellipse cx="600" cy="420" rx="500" ry="235"/><ellipse cx="600" cy="420" rx="430" ry="310" transform="rotate(-18 600 420)"/></g>
+  <g transform="translate(120 180) rotate(-18)" filter="url(#glow)"><rect x="0" y="34" width="72" height="190" rx="22" fill="url(#glass)" stroke="#ffe6a1" stroke-width="5"/><rect x="21" width="30" height="50" rx="8" fill="#74320b" stroke="#ffe6a1" stroke-width="5"/><rect x="8" y="112" width="56" height="48" rx="8" fill="#f4bd50"/><text x="36" y="143" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="900" fill="#241103">КВАС</text></g>
+  <g transform="translate(1000 170) rotate(22) scale(.78)" filter="url(#glow)"><rect x="0" y="34" width="72" height="190" rx="22" fill="url(#glass)" stroke="#ffe6a1" stroke-width="5"/><rect x="21" width="30" height="50" rx="8" fill="#74320b" stroke="#ffe6a1" stroke-width="5"/><rect x="8" y="112" width="56" height="48" rx="8" fill="#f4bd50"/><text x="36" y="143" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="900" fill="#241103">КВАС</text></g>
+  <g transform="translate(930 590) rotate(-28) scale(.62)" filter="url(#glow)"><rect x="0" y="34" width="72" height="190" rx="22" fill="url(#glass)" stroke="#ffe6a1" stroke-width="5"/><rect x="21" width="30" height="50" rx="8" fill="#74320b" stroke="#ffe6a1" stroke-width="5"/><rect x="8" y="112" width="56" height="48" rx="8" fill="#f4bd50"/><text x="36" y="143" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="900" fill="#241103">КВАС</text></g>
+  <g transform="translate(420 344)"><path d="M55 210c-40-56-48-122-18-178 18-34 62-43 86-15 16 19 12 49-10 65-11 8-19 22-15 36l34 92z" fill="#d79a72"/><path d="M264 210c40-56 48-122 18-178-18-34-62-43-86-15-16 19-12 49 10 65 11 8 19 22 15 36l-34 92z" fill="#d79a72"/><rect x="96" y="34" width="126" height="216" rx="30" fill="#f4e8c8" fill-opacity=".32" stroke="#ffe5a0" stroke-width="7"/><path d="M103 114h112v126H103z" fill="#6d330b" opacity=".92"/><circle cx="142" cy="148" r="8" fill="#f2bc50"/><circle cx="182" cy="180" r="6" fill="#f2bc50"/><circle cx="128" cy="209" r="5" fill="#f2bc50"/><text x="159" y="288" text-anchor="middle" font-family="sans-serif" font-size="23" font-weight="900" fill="#ffe6a1">REAL HUMAN WORK</text></g>
+  <text x="600" y="88" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="900" letter-spacing="5" fill="#ffd66f">KVASSISTENT · VERSION 17</text>
+  <text x="600" y="164" text-anchor="middle" font-family="sans-serif" font-size="64" font-weight="950" fill="#fff8dd">ЭТО ТВОЙ КВАС</text>
+  <text x="600" y="224" text-anchor="middle" font-family="sans-serif" font-size="28" font-weight="800" fill="#bfe6ff">HUMAN-AUTHORED COMES FIRST</text>
+  <rect x="258" y="662" width="684" height="88" rx="44" fill="#f1bd52"/>
+  <text x="600" y="718" text-anchor="middle" font-family="sans-serif" font-size="35" font-weight="950" fill="#1b1006">HUMANS BREW. AI GUIDES.</text>
+</svg>
