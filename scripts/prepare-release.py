@@ -69,6 +69,14 @@ if manifest_path.is_file():
             f"copied {source_visual.relative_to(ROOT)} to {target_visual.relative_to(ROOT)}"
         )
 
+    visual_text = target_visual.read_text(encoding="utf-8")
+    prepared_visual = re.sub(r"VERSION\s+\d+", f"VERSION {ONES}", visual_text)
+    prepared_visual = re.sub(r"version\s+\d+", f"version {ONES}", prepared_visual)
+    prepared_visual = re.sub(r"Версия\s+\d+", f"Версия {ONES}", prepared_visual)
+    if prepared_visual != visual_text:
+        target_visual.write_text(prepared_visual, encoding="utf-8")
+        print(f"prepared {target_visual.relative_to(ROOT)} labels for version {ONES}")
+
     changed = False
     for key, value in (
         ("version", VERSION),
@@ -85,5 +93,46 @@ if manifest_path.is_file():
             encoding="utf-8",
         )
         print(f"prepared {manifest_path.relative_to(ROOT)} for v{VERSION}")
+
+package_path = ROOT / "package.json"
+if package_path.is_file():
+    package = json.loads(package_path.read_text(encoding="utf-8"))
+    package["kvassistentRelease"] = VERSION
+    package["onesCount"] = ONES
+    package["description"] = (
+        "KVASSISTENT: human-first AI for manual kvass craft with simple language routing, "
+        "a compact mobile menu, GitHub coding-agent context, and Telegram feedback via Cloudflare Pages."
+    )
+    package.setdefault("scripts", {})["finalize:release"] = "python scripts/finalize-release.py"
+    files = package.setdefault("files", [])
+    for required in (
+        "PROJECT_GOAL.md",
+        ".github/copilot-instructions.md",
+        "scripts/finalize-release.py",
+    ):
+        if required not in files:
+            files.append(required)
+    package_path.write_text(
+        json.dumps(package, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    print(f"prepared {package_path.relative_to(ROOT)} for v{VERSION}")
+
+finalizer = ROOT / "scripts/finalize-release.py"
+enhancer = ROOT / "scripts/enhance-release.py"
+hook_marker = "# KVASSISTENT_FINALIZE_HOOK"
+if finalizer.is_file() and enhancer.is_file():
+    compile(finalizer.read_text(encoding="utf-8"), str(finalizer), "exec")
+    enhancer_text = enhancer.read_text(encoding="utf-8")
+    if hook_marker not in enhancer_text:
+        enhancer_text += (
+            "\n\n"
+            + hook_marker
+            + "\nimport runpy as _kvassistent_runpy\n"
+            + '_kvassistent_runpy.run_path(str(ROOT / "scripts/finalize-release.py"), '
+            + 'run_name="__kvassistent_finalize__")\n'
+        )
+        enhancer.write_text(enhancer_text, encoding="utf-8")
+        print("attached release finalizer to scripts/enhance-release.py")
 
 print(f"KVASSISTENT release {ONES}: v{VERSION}")
