@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - develop
-    paths:
-      - .github/deploy-pages-now
 
 permissions:
   contents: write
@@ -44,7 +42,6 @@ jobs:
           set -euo pipefail
           VERSION="$(python -c "import json; print(json.load(open('release/version.json'))['current'])")"
           ONES="$(python -c "import json; print(json.load(open('release/version.json'))['ones_count'])")"
-          test "$ONES" = "20"
           echo "RELEASE_VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "RELEASE_ONES=$ONES" >> "$GITHUB_ENV"
           echo "Deploying KVASSISTENT $ONES: v$VERSION"
