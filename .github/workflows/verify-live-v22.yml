@@ -1,0 +1,72 @@
+name: Verify live KVASSISTENT site version 22
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - '.github/workflows/verify-live-v22.yml'
+
+permissions:
+  contents: read
+
+env:
+  VERSION: 1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1
+  ONES: '22'
+
+jobs:
+  verify-live:
+    if: github.head_ref == 'agent/verify-live-v22'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Cloudflare site, links and backend
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://kvassistent.pages.dev'
+          IMMUTABLE="${BASE}/v${VERSION}"
+          BACKEND='https://q49g8jkjoe.execute-api.eu-west-1.amazonaws.com/default/kvassistent/status'
+
+          for attempt in $(seq 1 24); do
+            ok=1
+            curl --fail --location --silent --show-error "$BASE/latest-version.json" -o /tmp/latest.json || ok=0
+            grep -Fq "\"version\": \"${VERSION}\"" /tmp/latest.json 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$BASE/" -o /tmp/home.html || ok=0
+            grep -Fq "v${VERSION}" /tmp/home.html 2>/dev/null || ok=0
+            grep -Fq 'https://t.me/kvassistent_bot' /tmp/home.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$BASE/game/" -o /tmp/game.html || ok=0
+            grep -Fq "VERSION ${ONES}" /tmp/game.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$BASE/companion/" -o /tmp/companion.html || ok=0
+            grep -Fq 'Live batch' /tmp/companion.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$BASE/feedback/" -o /tmp/feedback.html || ok=0
+            grep -Fq 'https://t.me/kvassistent_bot' /tmp/feedback.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$BASE/telegram/" -o /tmp/telegram.html || ok=0
+            grep -Fq 'Ай да какой ты квас задумал, ай да хорош!' /tmp/telegram.html 2>/dev/null || ok=0
+            grep -Fq 'Фото кваса' /tmp/telegram.html 2>/dev/null || ok=0
+            grep -Fq 'https://t.me/kvassistent_bot' /tmp/telegram.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$IMMUTABLE/manifest.json" -o /tmp/manifest.json || ok=0
+            grep -Fq "\"version\": \"${VERSION}\"" /tmp/manifest.json 2>/dev/null || ok=0
+            grep -Fq "\"ones_count\": ${ONES}" /tmp/manifest.json 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$BACKEND" -o /tmp/backend.json || ok=0
+            jq -e '.ok == true and .ready == true and .release_number == 22 and (.features | index("feedback_pr")) != null and (.features | index("photo_feedback")) != null' /tmp/backend.json >/dev/null 2>&1 || ok=0
+
+            curl --fail --location --silent --show-error --output /dev/null 'https://t.me/kvassistent_bot' || ok=0
+            curl --fail --location --silent --show-error --output /dev/null 'https://github.com/bambuchastudent/kvas-ai-agent' || ok=0
+
+            if [ "$ok" -eq 1 ]; then
+              echo "KVASSISTENT site version 22 and all linked services are live"
+              exit 0
+            fi
+            sleep 5
+          done
+
+          echo 'Live verification failed' >&2
+          cat /tmp/latest.json >&2 2>/dev/null || true
+          cat /tmp/backend.json >&2 2>/dev/null || true
+          exit 1
