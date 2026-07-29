@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#17130d">
-  <meta name="description" content="Напишите КВАССИСТЕНТУ в Telegram о своём квасе, рецепте, идее или ошибке.">
-  <title>Обратная связь · КВАССИСТЕНТ</title>
+  <meta name="description" content="Добавьте свой напиток в КВАССИСТЕНТ: название, рецепт, результат и ссылку на фотографию. Форма отправляет задачу автору через Telegram.">
+  <title>Добавить напиток · КВАССИСТЕНТ 23</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -15,30 +15,87 @@
   </header>
   <main>
     <section class="hero">
-      <p class="kicker">Обратная связь · Telegram</p>
-      <h1>Расскажи нам<br><em>про свой напиток.</em></h1>
-      <p class="lead">Рецепт, фотография, история удачной партии, предложение или ошибка — напиши боту <a href="https://t.me/kvassistent_bot" target="_blank" rel="noopener noreferrer">@kvassistent_bot</a>. Сообщение попадёт владельцу КВАССИСТЕНТА.</p>
+      <p class="kicker">Версия 23 · работающая форма</p>
+      <h1>Добавь свой<br><em>напиток.</em></h1>
+      <p class="lead">Название, состав, технология и результат уйдут автору КВАССИСТЕНТА и станут отдельной задачей следующего релиза. Для загрузки фотографии прямо с телефона остаётся Telegram.</p>
     </section>
 
     <section class="layout">
-      <article class="telegram-card">
-        <div class="form-heading"><span>01</span><div><h2>Открой Telegram</h2><p>Можно отправить текст, фотографию, видео или ссылку на рецепт.</p></div></div>
-        <p>Напиши своими словами: что готовил, какие были пропорции, сколько шло брожение и что получилось. Бот подтвердит получение и передаст сообщение.</p>
-        <a class="telegram-cta" href="https://t.me/kvassistent_bot" target="_blank" rel="noopener noreferrer"><strong>Написать КВАССИСТЕНТУ</strong><span>→</span></a>
-        <p class="privacy">Не отправляй пароли, платёжные данные и другую чувствительную информацию.</p>
-      </article>
+      <form id="drink-form">
+        <div class="form-heading"><span>01</span><div><h2>Новый напиток</h2><p>Обязательны название и нормальное описание хотя бы в десяти символах.</p></div></div>
+
+        <div class="two">
+          <label><span>Как тебя назвать</span><input name="name" maxlength="80" autocomplete="name" placeholder="Имя или ник"></label>
+          <label><span>Как ответить</span><input name="contact" maxlength="180" autocomplete="email" placeholder="@telegram или email"></label>
+        </div>
+
+        <label><span>Название напитка *</span><input name="drink_name" minlength="2" maxlength="120" required placeholder="Например: красный хлебный квас"></label>
+        <label><span>Рецепт, пропорции и результат *</span><textarea name="message" minlength="10" maxlength="2000" rows="9" required placeholder="Из чего готовил, сколько бродило, какая температура, вкус и что нужно добавить в КВАССИСТЕНТ"></textarea></label>
+        <label><span>Ссылка на фотографию</span><input name="photo_url" type="url" maxlength="500" inputmode="url" placeholder="https://… (необязательно)"></label>
+        <label class="honey" aria-hidden="true"><span>Website</span><input name="website" tabindex="-1" autocomplete="off"></label>
+
+        <button type="submit"><strong>Отправить напиток</strong><span>→</span></button>
+        <p class="privacy">Форма не хранит историю на сайте. Данные отправляются владельцу через Telegram и записываются задачей релиза 24. Не отправляй пароли и платёжные данные.</p>
+        <p id="form-result" class="form-result" role="status" aria-live="polite" hidden></p>
+      </form>
 
       <aside>
-        <p class="kicker">Прямая связь</p>
-        <h2>Один бот вместо формы и почты.</h2>
-        <p>Обратная связь теперь работает через серверлесс-бота в AWS Lambda. Никаких FormSubmit и потерянных писем.</p>
+        <p class="kicker">Фотография с телефона</p>
+        <h2>Можно через Telegram.</h2>
+        <p>Бот принимает реальное фото файлом, подпись, пожелание или вопрос по партии. Одинаковая фотография с одинаковой подписью больше не создаёт две задачи.</p>
         <nav aria-label="Контакты">
-          <a href="https://t.me/kvassistent_bot" target="_blank" rel="noopener noreferrer"><strong>Telegram</strong><span>@kvassistent_bot ↗</span></a>
+          <a href="https://t.me/kvassistent_bot" target="_blank" rel="noopener noreferrer"><strong>Открыть бота</strong><span>@kvassistent_bot ↗</span></a>
           <a href="https://github.com/bambuchastudent/kvas-ai-agent" target="_blank" rel="noopener noreferrer"><strong>GitHub</strong><span>Код проекта ↗</span></a>
         </nav>
+        <small>Если форма временно недоступна, отправь тот же текст боту — сообщение всё равно попадёт владельцу.</small>
       </aside>
     </section>
   </main>
-  <footer>КВАССИСТЕНТ · Твоя кухня, твоя история</footer>
+  <footer>КВАССИСТЕНТ · Версия 23 · Твоя кухня, твоя история</footer>
+
+  <script>
+  (() => {
+    const endpoint = "https://q49g8jkjoe.execute-api.eu-west-1.amazonaws.com/default/kvassistent/feedback";
+    const form = document.getElementById("drink-form");
+    const result = document.getElementById("form-result");
+    const button = form.querySelector("button[type=submit]");
+    let sending = false;
+
+    const show = (text, kind) => {
+      result.textContent = text;
+      result.dataset.kind = kind;
+      result.hidden = false;
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (sending) return;
+      if (!form.reportValidity()) return;
+      sending = true;
+      button.disabled = true;
+      button.setAttribute("aria-busy", "true");
+      show("Отправляю напиток…", "pending");
+
+      try {
+        const payload = Object.fromEntries(new FormData(form).entries());
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {"content-type": "application/json"},
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || "Не получилось отправить напиток");
+        show(data.message || "Напиток отправлен. Ай да хорош!", "ok");
+        form.reset();
+      } catch (error) {
+        show(`${error.message || "Не получилось отправить напиток"}. Можно отправить его @kvassistent_bot.`, "error");
+      } finally {
+        sending = false;
+        button.disabled = false;
+        button.removeAttribute("aria-busy");
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
