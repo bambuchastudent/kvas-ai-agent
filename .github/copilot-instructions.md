@@ -4,7 +4,8 @@ Read these files before proposing changes:
 
 1. [`PROJECT_GOAL.md`](../PROJECT_GOAL.md)
 2. [`HUMAN_MANIFESTO.md`](../HUMAN_MANIFESTO.md)
-3. [`AGENTS.md`](../AGENTS.md)
+3. [`AI_CHANGELOG.md`](../AI_CHANGELOG.md)
+4. [`AGENTS.md`](../AGENTS.md)
 
 The repository is the product contract. Preserve human-authored identity and report uncertainty honestly.
 
@@ -20,6 +21,10 @@ Before editing, summarize:
 
 Do not begin with a large rewrite when a focused fix is possible.
 
+## Mandatory AI-readable change log
+
+Every repository change must update [`AI_CHANGELOG.md`](../AI_CHANGELOG.md) in the same commit or pull request. The newest entry must explain what changed, why, user-visible behavior, affected files and systems, verification actually completed, deployment state, and remaining work. Use explicit `no user-visible change` or `none` where appropriate. Reread the entry after checks and make sure it matches the diff and live state. Never put secrets, private identifiers, or vague claims in the log.
+
 ## Branch and release discipline
 
 - Never commit release work directly to `develop`.
@@ -27,6 +32,7 @@ Do not begin with a large rewrite when a focused fix is possible.
 - Keep fixes in the same PR until CI is green.
 - Merge only after the publication artifact passes.
 - For a new release, edit only `release/version.json`; preparation synchronizes generated metadata.
+- A release is incomplete until `AI_CHANGELOG.md` records final checks and publication state.
 - Run, in order:
 
 ```bash
@@ -61,14 +67,7 @@ For the landing page:
 
 ## Telegram acceptance rules
 
-The generated site must contain:
-
-- `_worker.js` and `_routes.json` for `/api/telegram/*`;
-- `GET /api/telegram/status`;
-- `POST /api/telegram/feedback`;
-- `POST /api/telegram/webhook`;
-- protected `POST /api/telegram/admin/setup`;
-- a `/telegram/` page with status, direct bot link when available, and a feedback form.
+The generated site must contain working direct links to the deployed Telegram bot and describe its current capabilities accurately. The website must not claim that an obsolete form or worker is operational when the real bot is hosted elsewhere.
 
 Never commit or print:
 
@@ -77,7 +76,7 @@ Never commit or print:
 - `TELEGRAM_OWNER_CHAT_ID`;
 - `TELEGRAM_ADMIN_SECRET`.
 
-A published Worker without configured secrets is **prepared**, not **operational**. State that distinction in the PR and final report.
+A prepared integration without configured secrets is **prepared**, not **operational**. State that distinction in the PR, `AI_CHANGELOG.md`, and final report.
 
 ## Handoff format
 
@@ -87,4 +86,5 @@ When work is complete, report:
 2. what CI verified;
 3. what was published;
 4. what still requires a human-owned credential;
-5. exact latest and immutable URLs.
+5. exact latest and immutable URLs;
+6. confirmation that `AI_CHANGELOG.md` was updated and reread.
