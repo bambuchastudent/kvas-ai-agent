@@ -27,11 +27,11 @@ version: 16
 
 1. Toast the bread dark golden; do not burn it.
 2. Infuse it in boiling water for 4–8 hours.
-3. Strain thoroughly: ferment the liquid, not bread porridge.
+3. Strain thoroughly through clean gauze, a folded bandage, or a food-grade filter bag: ferment the liquid, not bread porridge.
 4. Add sugar or panela and cool the infusion to 25–35°C.
 5. Add starter and cover with cloth, gauze, or a loose lid.
 6. Ferment for 8–12 hours; at 28°C start checking after 4–6 hours.
-7. When the surface is clean and smell and taste are normal, strain again.
+7. When the surface is clean and smell and taste are normal, strain again through clean gauze, a folded bandage, or a food-grade filter bag.
 8. Bottle in food-grade PET, let pressure build, and chill immediately when the bottle becomes firm.
 
 <!-- section:heat -->
