@@ -24,20 +24,31 @@ Do not write vague entries such as “updated files” or “fixed things.” Do
 
 ---
 
+## 2026-07-29 — KVASSISTENT 23 Add Drink form completion
+
+- **Version or scope:** release 23 completion; version stays `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
+- **Changed:** restored a real form at `/feedback/` with author, contact, drink name, recipe/result description, optional photo URL, honeypot, accessible status messages, single-submit guard, and Telegram fallback; the form posts to the existing AWS backend and states that accepted drinks become release-24 tasks; updated release notes and form styles.
+- **Why:** the release-23 feedback PR received a later valid request to fix the form for adding a drink; the already published page only linked to Telegram and therefore did not implement that wish.
+- **Behavior:** visitors can submit a drink without opening Telegram; the button cannot fire concurrent duplicate requests; direct photo file upload remains available through `@kvassistent_bot`, while the web form accepts an optional public photo URL.
+- **Files and systems:** `feedback/index.html`, `feedback/styles.css`, version-23 release notes, AWS feedback endpoint in the companion backend repository, generated latest and immutable version-23 website routes.
+- **Verification:** source form includes the required endpoint, fields, validation, anti-spam field, error fallback, and release-24 wording; full publication CI and live generated-page verification remain to be completed by the hotfix PR workflow.
+- **Deployment:** not yet republished at the time of this entry.
+- **Remaining work:** merge after green publication CI, verify the generated `/feedback/` page and immutable version 23, then close the fulfilled release-23 feedback PR.
+
 ## 2026-07-29 — KVASSISTENT website release 23
 
 - **Version or scope:** release 23, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
 - **Changed:** clarified both filtering steps in Russian and English source guides using clean gauze, a folded bandage, or a food-grade filter bag; added a version 23 poster and release notes; added `touch-action: manipulation` to generated interactive elements; removed flickering flame and star animations; slowed decorative orbits, stops them on mobile, and fully disables motion under `prefers-reduced-motion`; debounced the compact-menu button; updated the Telegram page with release 23 filtering and feedback behavior.
-- **Why:** implement every accumulated release-23 wish: explain exactly how to strain the wort, prevent seizure-like flashing, and stop double-tap zoom when users repeatedly press buttons without disabling ordinary pinch zoom.
+- **Why:** implement the accumulated release-23 wishes: explain exactly how to strain the wort, prevent seizure-like flashing, and stop double-tap zoom when users repeatedly press buttons without disabling ordinary pinch zoom.
 - **Behavior:** the site is calmer by default, respects reduced-motion preferences, keeps normal page zoom available, and no longer zooms from rapid double taps on controls; recipe pages and Telegram use the same explicit filtering guidance.
 - **Files and systems:** `release/version.json`, `scripts/finalize-release.py`, Russian and English publication sources, version 23 comic and release notes, generated latest/immutable website routes, Telegram page, game, companion, and feedback pages.
-- **Verification:** Python syntax check for the finalizer completed locally. Full publication build, localization checks, artifact checks, Cloudflare Pages publication, and live URL verification remain to be completed by the release PR workflows.
-- **Deployment:** not yet published at the time of this entry.
-- **Remaining work:** open the release PR, require green publication checks, merge, verify the root and immutable version 23 URLs, then update deployment status if necessary.
+- **Verification:** publication PR CI completed successfully; the `gh-pages` branch, version-23 tag, latest metadata, immutable manifest, touch rules, reduced-motion rules and Telegram page were verified after merge.
+- **Deployment:** published as version 23 before this form-completion hotfix.
+- **Remaining work:** republish the same version 23 with the working Add Drink form.
 
 ## 2026-07-29 — AI change-log contract
 
-- **Version or scope:** unreleased repository rule; current product release remains version 22.
+- **Version or scope:** unreleased repository rule; current product release remains version 22 at the time of this historical entry.
 - **Changed:** created `AI_CHANGELOG.md` and made it a mandatory part of every future change and release.
 - **Why:** the project must always leave a concise, understandable handoff that another AI agent can read before continuing work.
 - **Behavior:** no user-visible product change.
