@@ -1,9 +1,9 @@
 {
   "name": "kvas-zhizha",
   "version": "1.1.1",
-  "kvassistentRelease": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
-  "onesCount": 17,
-  "description": "KVASSISTENT: a human-first, offline-first kvass companion with a cosmic bottle-satellite landing page, preserved creator manifesto, stable latest URLs, and Telegram bot scaffolding.",
+  "kvassistentRelease": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+  "onesCount": 20,
+  "description": "KVASSISTENT: human-first AI for manual kvass craft with simple language routing, a compact mobile menu, GitHub coding-agent context, and Telegram feedback via Cloudflare Pages.",
   "type": "module",
   "private": false,
   "license": "BSD-3-Clause",
@@ -19,7 +19,8 @@
     "package": "bash scripts/run-python.sh scripts/build-release.py",
     "publication": "bash scripts/run-python.sh scripts/build-release.py",
     "next-release": "bash scripts/run-python.sh scripts/next-ones-version.py",
-    "legacy-package": "bash scripts/build-package.sh"
+    "legacy-package": "bash scripts/build-package.sh",
+    "finalize:release": "python scripts/finalize-release.py"
   },
   "files": [
     "AGENTS.md",
@@ -53,7 +54,10 @@
     "scripts/setup-ai-tools.sh",
     "scripts/check-ai-tools.sh",
     "scripts/test-companion.mjs",
-    "scripts/test-localization.mjs"
+    "scripts/test-localization.mjs",
+    "PROJECT_GOAL.md",
+    ".github/copilot-instructions.md",
+    "scripts/finalize-release.py"
   ],
   "keywords": [
     "kvass",

@@ -1,4 +1,4 @@
-const CACHE = "kvassistent-live-v18";
+const CACHE = "kvassistent-live-v20";
 const ASSETS = ["./","index.html","styles.css","engine.js","preferences.js","app.js","manifest.webmanifest","icon.svg","icon-192.png","icon-512.png","game/","game/index.html","game/styles.css","game/i18n.css","game/i18n.js","game/game.js"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting())));
 self.addEventListener("activate", event => event.waitUntil(Promise.all([

@@ -286,3 +286,8 @@ for required_file in ("sitemap.xml", "robots.txt"):
     if not (SITE / required_file).is_file():
         raise RuntimeError(f"SEO artifact missing: {required_file}")
 print(f"enhanced KVASSISTENT version {ONES}: v{VERSION}")
+
+
+# KVASSISTENT_FINALIZE_HOOK
+import runpy as _kvassistent_runpy
+_kvassistent_runpy.run_path(str(ROOT / "scripts/finalize-release.py"), run_name="__kvassistent_finalize__")

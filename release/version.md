@@ -1,17 +1,13 @@
 # Version
 
-Current immutable release: `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`
+Current immutable release: `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`
 
-Display on the Russian homepage:
+> Версия 20, потому что в ней единиц вот столько: 20. Пересчитай: v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1
 
-> Версия 17, потому что в ней единиц вот столько: 17. Пересчитай: v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1
+Latest: `https://kvassistent.pages.dev/`
 
-Stable latest URLs:
+Game: `https://kvassistent.pages.dev/game/`
 
-- Home: `https://kvassistent.pages.dev/`
-- Game: `https://kvassistent.pages.dev/game/`
-- Live batch: `https://kvassistent.pages.dev/companion/`
-- Feedback: `https://kvassistent.pages.dev/feedback/`
-- Telegram entry: `https://kvassistent.pages.dev/telegram/`
+Live batch: `https://kvassistent.pages.dev/companion/`
 
-Next immutable release: `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`
+Next immutable release: `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`
