@@ -4,8 +4,9 @@ Read in this order before planning repository changes:
 
 1. [`PROJECT_GOAL.md`](PROJECT_GOAL.md) — product goal, current UX priorities, deployment boundaries, and definition of done.
 2. [`HUMAN_MANIFESTO.md`](HUMAN_MANIFESTO.md) — canonical creator-authored identity.
-3. This `AGENTS.md` — shared repository and tool rules.
-4. [`.github/copilot-instructions.md`](.github/copilot-instructions.md) when the work is performed by GitHub Copilot coding agent.
+3. [`AI_CHANGELOG.md`](AI_CHANGELOG.md) — chronological, AI-readable handoff of completed changes, checks, deployments, and remaining work.
+4. This `AGENTS.md` — shared repository and tool rules.
+5. [`.github/copilot-instructions.md`](.github/copilot-instructions.md) when the work is performed by GitHub Copilot coding agent.
 
 Before editing, state the user-visible goal, context read, files expected to change, checks to run, and any external credential or deployment step that remains owner-controlled.
 
@@ -13,15 +14,24 @@ The manifesto is canonical human-authored content. Preserve it verbatim, includi
 
 KVASSISTENT is human-first AI for manual craft: the person performs the physical work and reports observations; AI remembers state, explains risks, requests evidence, and refuses to invent sensory facts.
 
+## Mandatory AI-readable change log
+
+Every repository change must update [`AI_CHANGELOG.md`](AI_CHANGELOG.md) in the **same commit or pull request**. This applies to code, documentation, configuration, workflows, generated artifacts, release metadata, fixes, and rollbacks.
+
+The newest entry goes first and must state: date; version or scope; what changed; why; user-visible behavior; important files and systems; verification actually completed; deployment state; and remaining work. Write `no user-visible change` or `none` explicitly when appropriate.
+
+Never put secrets, credentials, private identifiers, or unverifiable claims in the log. Do not use vague descriptions such as “updated files” or “fixed things.” Before final handoff, reread the new entry after tests and confirm it matches the actual diff and live state. Work is incomplete until this is done.
+
 Release rules:
 - Never commit release work directly to `develop`; use a branch and pull request.
 - Every release appends one `.1` segment.
 - `ones_count` must match the version.
 - `/` and short feature URLs point to latest.
 - `/v<version>/` remains immutable.
-- Telegram tokens, owner chat IDs, admin secrets, and webhook secrets must never enter the repository, issues, PRs, screenshots, or logs.
+- Telegram tokens, owner chat IDs, admin secrets, and webhook secrets must never enter the repository, issues, PRs, screenshots, logs, or `AI_CHANGELOG.md`.
 - Before release validation run `python scripts/prepare-release.py`; after `python scripts/build-release.py`, run `python scripts/enhance-release.py`.
 - Merge only after the generated publication artifact is green in CI.
+- A release is not complete until its final checks and publication state are recorded in `AI_CHANGELOG.md`.
 
 Tool-specific companion files: [`CLAUDE.md`](CLAUDE.md), [`GEMINI.md`](GEMINI.md), and [`.github/copilot-instructions.md`](.github/copilot-instructions.md). Codex follows this `AGENTS.md` directly.
 
