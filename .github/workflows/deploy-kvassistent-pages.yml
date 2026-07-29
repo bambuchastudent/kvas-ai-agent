@@ -42,14 +42,14 @@ jobs:
           set -euo pipefail
           VERSION="$(python -c "import json; print(json.load(open('release/version.json'))['current'])")"
           ONES="$(python -c "import json; print(json.load(open('release/version.json'))['ones_count'])")"
-          COUNTED="$(python -c "import json; v=json.load(open('release/version.json'))['current']; print(sum(part == '1' for part in v.split('.')))")"
+          COUNTED="$(python -c "import json; v=json.load(open('release/version.json'))['current']; print(sum(part == '1' for part in v.split('.')))" )"
           test "$ONES" = "21"
           test "$COUNTED" = "21"
           echo "RELEASE_VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "RELEASE_ONES=$ONES" >> "$GITHUB_ENV"
           echo "Deploying KVASSISTENT $ONES: v$VERSION"
 
-      - name: Prepare, test and build current site
+      - name: Prepare, test, build and enhance current site
         shell: bash
         run: |
           set -euo pipefail
@@ -57,6 +57,7 @@ jobs:
           npm run test:companion
           npm run test:localization
           npm run package
+          npm run enhance:release
           test -f "dist/site/v${RELEASE_VERSION}/index.html"
           test -f "dist/site/feedback/index.html"
           grep -R "https://t.me/kvassistent_bot" \
