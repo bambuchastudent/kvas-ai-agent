@@ -40,7 +40,7 @@ Ask for volume, bread composition, sugar amount, starter type and amount, start 
 <!-- section:process -->
 ## Process
 
-Toast the bread, infuse for 4–8 hours, strain, add sweetener, cool to 25–35°C, add starter, and run primary fermentation under cloth or a loose lid. After a normal safety check, strain again, bottle in food-grade PET, condition briefly, and chill immediately when the bottle becomes firm.
+Toast the bread, infuse for 4–8 hours, strain through clean gauze, a folded bandage, or a food-grade filter bag, add sweetener, cool to 25–35°C, add starter, and run primary fermentation under cloth or a loose lid. After a normal safety check, strain again through clean gauze, a folded bandage, or a food-grade filter bag, bottle in food-grade PET, condition briefly, and chill immediately when the bottle becomes firm.
 
 <!-- section:heat -->
 ## Hot fermentation
@@ -68,7 +68,7 @@ Panela replaces sugar roughly 1:1. Maltose ferments but does not replace malt. A
 <!-- section:visual -->
 ## Visual control
 
-Bread porridge is mash: strain again and keep the liquid. Sunlight, overheating, a sealed primary vessel, and a very firm or deformed bottle are risks, not signs of success.
+Bread porridge is mash: strain again through clean gauze, a folded bandage, or a food-grade filter bag and keep the liquid. Sunlight, overheating, a sealed primary vessel, and a very firm or deformed bottle are risks, not signs of success.
 
 <!-- section:safety -->
 ## Safety
