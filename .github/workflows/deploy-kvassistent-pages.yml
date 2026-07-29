@@ -1,0 +1,134 @@
+name: Deploy current KVASSISTENT site
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths:
+      - .github/deploy-pages-now
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kvassistent-pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install publication dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements-publication.txt
+
+      - name: Read current release
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(python -c "import json; print(json.load(open('release/version.json'))['current'])")"
+          ONES="$(python -c "import json; print(json.load(open('release/version.json'))['ones_count'])")"
+          test "$ONES" = "20"
+          echo "RELEASE_VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "RELEASE_ONES=$ONES" >> "$GITHUB_ENV"
+          echo "Deploying KVASSISTENT $ONES: v$VERSION"
+
+      - name: Test and build current site
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run test:companion
+          npm run test:localization
+          npm run package
+          test -f "dist/site/v${RELEASE_VERSION}/index.html"
+          test -f "dist/site/feedback/index.html"
+          grep -R "https://t.me/kvassistent_bot" \
+            "dist/site/feedback/index.html" \
+            "dist/site/v${RELEASE_VERSION}/index.html"
+          ! grep -R "formsubmit.co" "dist/site/feedback/index.html"
+
+      - name: Verify all stable entry points in build
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in \
+            index.html \
+            game/index.html \
+            companion/index.html \
+            feedback/index.html \
+            telegram/index.html \
+            "v${RELEASE_VERSION}/index.html"; do
+            test -f "dist/site/$path"
+          done
+
+      - name: Publish gh-pages branch for Cloudflare Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/kvassistent-site
+          mkdir -p /tmp/kvassistent-site
+          cp -a dist/site/. /tmp/kvassistent-site/
+
+          git config user.name "KVASSISTENT Deploy Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git switch --orphan kvassistent-pages-publish
+          git rm -rf . >/dev/null 2>&1 || true
+          cp -a /tmp/kvassistent-site/. .
+          touch .nojekyll
+          git add -A
+          git commit -m "Publish KVASSISTENT ${RELEASE_ONES}: v${RELEASE_VERSION}"
+          git push origin HEAD:gh-pages --force
+
+      - name: Verify Cloudflare Pages publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://kvassistent.pages.dev"
+          IMMUTABLE="${BASE}/v${RELEASE_VERSION}"
+
+          for attempt in $(seq 1 40); do
+            ok=1
+            curl --fail --location --silent --show-error \
+              "${IMMUTABLE}/manifest.json" -o /tmp/manifest.json || ok=0
+            grep -q "\"version\": \"${RELEASE_VERSION}\"" /tmp/manifest.json 2>/dev/null || ok=0
+            curl --fail --location --silent --show-error \
+              "${BASE}/feedback/" -o /tmp/feedback.html || ok=0
+            grep -q "https://t.me/kvassistent_bot" /tmp/feedback.html 2>/dev/null || ok=0
+
+            for url in \
+              "${BASE}/" \
+              "${BASE}/game/" \
+              "${BASE}/companion/" \
+              "${BASE}/feedback/" \
+              "${BASE}/telegram/" \
+              "${IMMUTABLE}/"; do
+              curl --fail --location --silent --show-error --output /dev/null "$url" || ok=0
+            done
+
+            if [ "$ok" -eq 1 ]; then
+              echo "KVASSISTENT ${RELEASE_ONES} is live at ${BASE}/"
+              exit 0
+            fi
+
+            echo "Waiting for Cloudflare Pages ($attempt/40)..."
+            sleep 10
+          done
+
+          echo "Cloudflare Pages did not publish KVASSISTENT ${RELEASE_ONES} in time." >&2
+          exit 1
