@@ -1,1 +1,1 @@
-deploy KVASSISTENT 20
+deploy KVASSISTENT 20 retry 2
