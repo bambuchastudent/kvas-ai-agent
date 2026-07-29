@@ -1,9 +1,9 @@
 {
   "name": "kvas-zhizha",
   "version": "1.1.1",
-  "kvassistentRelease": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
-  "onesCount": 20,
-  "description": "KVASSISTENT: human-first AI for manual kvass craft with simple language routing, a compact mobile menu, GitHub coding-agent context, and Telegram feedback via Cloudflare Pages.",
+  "kvassistentRelease": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+  "onesCount": 21,
+  "description": "KVASSISTENT: human-first AI for manual kvass craft with simple language routing, a compact mobile menu, GitHub coding-agent context, and working Telegram feedback forwarding.",
   "type": "module",
   "private": false,
   "license": "BSD-3-Clause",
