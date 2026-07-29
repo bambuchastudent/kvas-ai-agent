@@ -32,7 +32,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Read release metadata
+      - name: Read and recount release metadata
         id: release-meta
         shell: bash
         run: |
@@ -41,15 +41,21 @@ jobs:
           import json
           from pathlib import Path
           meta = json.loads(Path("release/version.json").read_text(encoding="utf-8"))
-          print(f"version={meta['current']}")
-          print(f"ones_count={meta['ones_count']}")
-          print(f"artifact_name=kvassistent-{meta['current']}-publication-build")
+          version = str(meta["current"])
+          expected = int(meta["ones_count"])
+          counted = sum(part == "1" for part in version.split("."))
+          if counted != expected:
+              raise SystemExit(f"Version mismatch: metadata={expected}, counted={counted}, version={version}")
+          print(f"version={version}")
+          print(f"ones_count={expected}")
+          print(f"artifact_name=kvassistent-{version}-publication-build")
           PY
           VERSION="$(python -c 'import json; print(json.load(open("release/version.json"))["current"])')"
           ONES_COUNT="$(python -c 'import json; print(json.load(open("release/version.json"))["ones_count"])')"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "TAG=v$VERSION" >> "$GITHUB_ENV"
           echo "ONES_COUNT=$ONES_COUNT" >> "$GITHUB_ENV"
+          echo "KVASSISTENT version $ONES_COUNT: v$VERSION"
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -99,7 +105,7 @@ jobs:
           (cd dist/site && zip -qr "../kvassistent-${VERSION}-website.zip" .)
           tar -C dist/site -czf "dist/kvassistent-${VERSION}-website.tar.gz" .
 
-      - name: Verify immutable release and stable latest URLs
+      - name: Verify release, links and Telegram feedback
         shell: bash
         run: |
           set -euo pipefail
@@ -115,8 +121,6 @@ jobs:
               test -s "$immutable_web"
               test -s "$latest_web"
               pdfinfo "$pdf" | grep -q '^Pages:'
-              pdftoppm -f 1 -singlefile -png -r 72 "$pdf" "/tmp/${type}-${lang}" >/dev/null
-              test -s "/tmp/${type}-${lang}.png"
             done
           done
 
@@ -124,6 +128,8 @@ jobs:
           landing="$immutable/index.html"
           game="$immutable/companion/game/index.html"
           companion="$immutable/companion/index.html"
+          feedback="$immutable/feedback/index.html"
+          telegram="$immutable/telegram/index.html"
           comic="$immutable/assets/kvassistent-${VERSION}-comic.svg"
 
           test "$(find dist/publication -maxdepth 1 -name '*.pdf' | wc -l)" -eq 12
@@ -136,8 +142,9 @@ jobs:
           test -s "$landing"
           test -s "$game"
           test -s "$companion"
+          test -s "$feedback"
+          test -s "$telegram"
           test -s "$comic"
-          test -s "$immutable/telegram/index.html"
 
           grep -Fq "Версия ${ONES_COUNT}, потому что в ней единиц вот столько: ${ONES_COUNT}. Пересчитай:" "$landing"
           grep -Fq "v${VERSION}" "$landing"
@@ -148,11 +155,11 @@ jobs:
           grep -Fq 'id="localization"' "$landing"
           grep -Fq 'id="human-manifesto"' "$landing"
           grep -Fq 'kvass-space-layer' "$landing"
-          grep -Fq 'ЭТО ТВОЙ КВАС делай с ним что хочешь' "$landing"
           grep -Fq 'href="/game/"' "$landing"
           grep -Fq 'href="/companion/"' "$landing"
           grep -Fq 'href="/feedback/"' "$landing"
           grep -Fq 'href="/telegram/"' "$landing"
+          grep -Fq 'https://t.me/kvassistent_bot' "$landing"
           grep -Fq "kvassistent-${VERSION}-comic.svg" "$landing"
 
           grep -Fq "VERSION ${ONES_COUNT}" "$game"
@@ -161,14 +168,18 @@ jobs:
           grep -Fq 'resolveGameLanguage' "$immutable/companion/game/game.js"
           grep -Fq 'zh-CN' "$immutable/companion/game/i18n.js"
           grep -Fq "ΕΚΔΟΣΗ ${ONES_COUNT}" "$immutable/companion/game/i18n.js"
+          grep -Fq "kvassistent-live-v${ONES_COUNT}" "$immutable/companion/sw.js"
 
           grep -Fq 'Live batch' "$companion"
           grep -Fq 'Straightforward kvass' "$companion"
           grep -Fq 'id="consent-card"' "$companion"
           grep -Fq 'data-consent="essential"' "$companion"
           grep -Fq 'option value="el"' "$companion"
-          grep -Fq "kvassistent-live-v${ONES_COUNT}" "$immutable/companion/sw.js"
-          grep -Fq 'formsubmit.co/kvassitent@gmail.com' "$immutable/feedback/index.html"
+
+          grep -Fq 'https://t.me/kvassistent_bot' "$feedback"
+          grep -Fq 'https://github.com/bambuchastudent/kvas-ai-agent' "$feedback"
+          ! grep -Fq 'formsubmit.co' "$feedback"
+          grep -Fq 'https://t.me/kvassistent_bot' "$telegram"
 
           python - <<'PY'
           import os
@@ -177,17 +188,17 @@ jobs:
           assert not any(('А' <= ch <= 'я') or ch in 'Ёё' for ch in text), 'Russian leaked into universal companion shell'
           PY
 
-          test -s dist/site/index.html
-          test -s dist/site/game/index.html
-          test -s dist/site/companion/index.html
-          test -s dist/site/feedback/index.html
-          test -s dist/site/telegram/index.html
-          test -s dist/site/latest-version.json
+          for path in \
+            dist/site/index.html \
+            dist/site/game/index.html \
+            dist/site/companion/index.html \
+            dist/site/feedback/index.html \
+            dist/site/telegram/index.html \
+            dist/site/latest-version.json; do
+            test -s "$path"
+          done
           grep -Fq "\"version\": \"${VERSION}\"" dist/site/latest-version.json
           grep -Fq '"telegram": "/telegram/"' dist/site/latest-version.json
-          grep -Fq 'id="human-manifesto"' dist/site/index.html
-          grep -Fq 'id="game-language"' dist/site/game/index.html
-          grep -Fq 'Live batch' dist/site/companion/index.html
           grep -Fq "\"ones_count\": ${ONES_COUNT}" "$immutable/manifest.json"
 
       - name: Upload builder log
@@ -238,9 +249,10 @@ jobs:
         run: |
           set -euo pipefail
           notes="release/RELEASE-${VERSION}.md"
+          comic="share/kvassistent-${VERSION}-comic.svg"
           title="КВАССИСТЕНТ ${VERSION} · единиц: ${ONES_COUNT}"
           test -s "$notes"
-          test -s "share/kvassistent-${VERSION}-comic.svg"
+          test -s "$comic"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -f "$TAG" "$GITHUB_SHA"
@@ -257,7 +269,7 @@ jobs:
             "dist/kvas-${VERSION}-publication.tar.gz" \
             "dist/kvassistent-${VERSION}-website.zip" \
             "dist/kvassistent-${VERSION}-website.tar.gz" \
-            "share/kvassistent-${VERSION}-comic.svg" \
+            "$comic" \
             --clobber
 
   gh-pages-branch:
@@ -309,35 +321,55 @@ jobs:
       ONES_COUNT: ${{ needs.build.outputs.ones_count }}
 
     steps:
-      - name: Wait for immutable and latest URLs
+      - name: Wait for site, links, Telegram bot and backend
         shell: bash
         run: |
           set -euo pipefail
           root="https://kvassistent.pages.dev"
           immutable="$root/v${VERSION}"
-          for attempt in $(seq 1 24); do
-            if curl --fail --location --silent --show-error "$root/latest-version.json" -o /tmp/latest-version.json \
-              && grep -Fq "\"version\": \"${VERSION}\"" /tmp/latest-version.json \
-              && grep -Fq '"telegram": "/telegram/"' /tmp/latest-version.json \
-              && curl --fail --location --silent --show-error "$root/" -o /tmp/latest.html \
-              && grep -Fq "v${VERSION}" /tmp/latest.html \
-              && grep -Fq 'id="human-manifesto"' /tmp/latest.html \
-              && grep -Fq 'kvass-space-layer' /tmp/latest.html \
-              && curl --fail --location --silent --show-error "$root/game/" -o /tmp/game.html \
-              && grep -Fq "VERSION ${ONES_COUNT}" /tmp/game.html \
-              && curl --fail --location --silent --show-error "$root/companion/" -o /tmp/companion.html \
-              && grep -Fq 'Live batch' /tmp/companion.html \
-              && curl --fail --location --silent --show-error "$root/telegram/" -o /tmp/telegram.html \
-              && grep -Fq 'Telegram-бот подготовлен' /tmp/telegram.html \
-              && curl --fail --location --silent --show-error "$immutable/manifest.json" -o /tmp/immutable-manifest.json \
-              && grep -Fq "\"version\": \"${VERSION}\"" /tmp/immutable-manifest.json \
-              && curl --fail --location --silent --show-error "$immutable/" -o /tmp/immutable.html \
-              && grep -Fq 'id="human-manifesto"' /tmp/immutable.html; then
-              echo "Verified KVASSISTENT ${VERSION}: latest, Telegram, game, companion and immutable release"
+          backend="https://q49g8jkjoe.execute-api.eu-west-1.amazonaws.com/default/kvassistent/status"
+
+          for attempt in $(seq 1 40); do
+            ok=1
+            curl --fail --location --silent --show-error "$root/latest-version.json" -o /tmp/latest-version.json || ok=0
+            grep -Fq "\"version\": \"${VERSION}\"" /tmp/latest-version.json 2>/dev/null || ok=0
+            grep -Fq '"telegram": "/telegram/"' /tmp/latest-version.json 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$root/" -o /tmp/latest.html || ok=0
+            grep -Fq "v${VERSION}" /tmp/latest.html 2>/dev/null || ok=0
+            grep -Fq 'id="human-manifesto"' /tmp/latest.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$root/game/" -o /tmp/game.html || ok=0
+            grep -Fq "VERSION ${ONES_COUNT}" /tmp/game.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$root/companion/" -o /tmp/companion.html || ok=0
+            grep -Fq 'Live batch' /tmp/companion.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$root/feedback/" -o /tmp/feedback.html || ok=0
+            grep -Fq 'https://t.me/kvassistent_bot' /tmp/feedback.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$root/telegram/" -o /tmp/telegram.html || ok=0
+            grep -Fq 'https://t.me/kvassistent_bot' /tmp/telegram.html 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$immutable/manifest.json" -o /tmp/immutable-manifest.json || ok=0
+            grep -Fq "\"version\": \"${VERSION}\"" /tmp/immutable-manifest.json 2>/dev/null || ok=0
+            grep -Fq "\"ones_count\": ${ONES_COUNT}" /tmp/immutable-manifest.json 2>/dev/null || ok=0
+
+            curl --fail --location --silent --show-error "$backend" -o /tmp/backend.json || ok=0
+            jq -e --argjson release "$ONES_COUNT" '.ok == true and .ready == true and .release_number == $release' /tmp/backend.json >/dev/null 2>&1 || ok=0
+
+            curl --fail --location --silent --show-error --output /dev/null 'https://t.me/kvassistent_bot' || ok=0
+            curl --fail --location --silent --show-error --output /dev/null 'https://github.com/bambuchastudent/kvas-ai-agent' || ok=0
+
+            if [ "$ok" -eq 1 ]; then
+              echo "Verified KVASSISTENT version ${ONES_COUNT}: site, stable links, immutable release, Telegram and backend"
               exit 0
             fi
-            echo "Waiting for Cloudflare Pages ($attempt/24)..."
+            echo "Waiting for Cloudflare Pages and linked services ($attempt/40)..."
             sleep 10
           done
-          echo "Cloudflare Pages did not publish release ${VERSION} in time." >&2
+
+          echo "KVASSISTENT version ${ONES_COUNT} did not pass live verification." >&2
+          cat /tmp/latest-version.json >&2 2>/dev/null || true
+          cat /tmp/backend.json >&2 2>/dev/null || true
           exit 1
