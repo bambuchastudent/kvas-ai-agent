@@ -1,7 +1,7 @@
 {
-  "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+  "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
   "source_version": "16",
-  "ones_count": 20,
+  "ones_count": 21,
   "project": "КВАССИСТЕНТ",
   "brand": "Жижа",
   "knowledge_sources": [
@@ -11,13 +11,15 @@
   "fallback_language": "en",
   "localization_policy": "Russian and English are canonical knowledge sources. Other languages must keep identical sections, quantities, safety rules, and links. Missing non-Russian interface strings fall back to English, never Russian.",
   "human_content_policy": "HUMAN_MANIFESTO.md is canonical creator-authored content. Preserve it verbatim and place translations or professional explanations beside it, never instead of it.",
-  "research_topic": "human-first AI for manual craft, preserved creator voice, readable cosmic landing, SEO discovery, stable latest URLs, Telegram feedback scaffolding, strained wort, primary fermentation, PET bottle conditioning, and honest alcohol limits",
+  "research_topic": "human-first AI for manual craft, preserved creator voice, readable cosmic landing, SEO discovery, stable latest URLs, working Telegram feedback forwarding, strained wort, primary fermentation, PET bottle conditioning, and honest alcohol limits",
   "visual_guide": "share/kvassistent-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1-comic.svg",
   "latest_urls": {
     "home": "https://kvassistent.pages.dev/",
     "game": "https://kvassistent.pages.dev/game/",
     "companion": "https://kvassistent.pages.dev/companion/",
-    "feedback": "https://kvassistent.pages.dev/feedback/"
+    "feedback": "https://kvassistent.pages.dev/feedback/",
+    "telegram": "https://kvassistent.pages.dev/telegram/",
+    "bot": "https://t.me/kvassistent_bot"
   },
   "languages": [
     {
