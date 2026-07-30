@@ -21,8 +21,13 @@ if not SITE.is_dir():
 
 language_group = "|".join(re.escape(value) for value in LANGUAGES)
 type_group = "|".join(re.escape(value) for value in TYPES)
-pattern = re.compile(
+localized_route_pattern = re.compile(
     rf"/v(?P<old>(?:1\.)*1)/(?P<language>{language_group})/(?P<kind>{type_group})/"
+)
+version_prefix_pattern = re.compile(r"/v(?P<old>(?:1\.)*1)/")
+language_payload_pattern = re.compile(
+    r'(?P<open><script id="kvass-language-data"[^>]*>)(?P<body>.*?)(?P<close></script>)',
+    re.S,
 )
 
 changed_files = 0
@@ -32,28 +37,65 @@ stale_examples: list[str] = []
 for path in SITE.rglob("*.html"):
     before = path.read_text(encoding="utf-8")
 
-    def replace(match: re.Match[str]) -> str:
+    def replace_localized_route(match: re.Match[str]) -> str:
         original = match.group(0)
         if match.group("old") == VERSION:
             return original
         stale_examples.append(original)
         return f"{CANONICAL_PREFIX}{match.group('language')}/{match.group('kind')}/"
 
-    after = pattern.sub(replace, before)
-    actual = sum(1 for match in pattern.finditer(before) if match.group("old") != VERSION)
-    if actual:
+    after = localized_route_pattern.sub(replace_localized_route, before)
+
+    def replace_payload(payload_match: re.Match[str]) -> str:
+        body = payload_match.group("body")
+
+        def replace_prefix(version_match: re.Match[str]) -> str:
+            original = version_match.group(0)
+            if version_match.group("old") == VERSION:
+                return original
+            stale_examples.append(original)
+            return CANONICAL_PREFIX
+
+        canonical_body = version_prefix_pattern.sub(replace_prefix, body)
+        return payload_match.group("open") + canonical_body + payload_match.group("close")
+
+    after = language_payload_pattern.sub(replace_payload, after)
+    if after != before:
         path.write_text(after, encoding="utf-8")
         changed_files += 1
-        replacements += actual
+        before_stale = [
+            match.group(0)
+            for match in version_prefix_pattern.finditer(before)
+            if match.group("old") != VERSION
+        ]
+        after_stale = [
+            match.group(0)
+            for match in version_prefix_pattern.finditer(after)
+            if match.group("old") != VERSION
+        ]
+        replacements += max(0, len(before_stale) - len(after_stale))
 
 for path in (SITE / "index.html", SITE / f"v{VERSION}/index.html"):
     text = path.read_text(encoding="utf-8")
-    stale = [match.group(0) for match in pattern.finditer(text) if match.group("old") != VERSION]
-    if stale:
-        raise RuntimeError(f"Stale localized immutable links remain in {path}: {stale[:5]}")
+    payload_match = language_payload_pattern.search(text)
+    if payload_match:
+        stale_payload = [
+            match.group(0)
+            for match in version_prefix_pattern.finditer(payload_match.group("body"))
+            if match.group("old") != VERSION
+        ]
+        if stale_payload:
+            raise RuntimeError(f"Stale immutable links remain in language payload {path}: {stale_payload[:5]}")
+    stale_routes = [
+        match.group(0)
+        for match in localized_route_pattern.finditer(text)
+        if match.group("old") != VERSION
+    ]
+    if stale_routes:
+        raise RuntimeError(f"Stale localized routes remain in {path}: {stale_routes[:5]}")
 
 print(
-    f"canonicalized {replacements} localized release links in {changed_files} files "
+    f"canonicalized {replacements} embedded release links in {changed_files} files "
     f"for Версия {ONES}: v{VERSION}"
 )
 if stale_examples:
