@@ -1,5 +1,18 @@
 # AI-readable change log
 
+## 2026-07-30 — KVASSISTENT website release 27 stable sticky menu
+
+- **Version or scope:** release 27, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`; next release 28.
+- **Changed:** stabilized the sticky homepage menu with separate enter/leave scroll thresholds, one `requestAnimationFrame` update per frame, state-change-only class updates, disabled geometry transitions, and compositor-safe rendering markers; added release metadata and notes.
+- **Why:** the mobile menu visibly flashed because one `scrollY > 120` threshold could toggle repeatedly while the header itself changed height during scrolling.
+- **Behavior:** the menu enters compact mode after 180 px and leaves it only above 72 px; scrolling near one threshold no longer causes rapid compact/expanded oscillation.
+- **Files and systems:** `scripts/stabilize-sticky-menu.py`, generated root and immutable homepages, canonicalizer hook, `release/version.json`, README, release notes, backend status synchronization and this changelog.
+- **Verification:** fast PR checks compile all scripts and validate version/localization contracts; the post-merge publication build must verify both generated homepages contain the hysteresis, rAF and no-transition markers, then live-check site and backend release 27.
+- **Deployment:** merge to `develop` publishes website release 27 after backend release 27 is live.
+- **Remaining work:** complete PR CI, merge, and verify the production menu on a mobile browser.
+
+---
+
 ## 2026-07-30 — Fast pull-request and merge-only release pipeline
 
 - **Version or scope:** release engineering after Version 26; product version remains 26.
