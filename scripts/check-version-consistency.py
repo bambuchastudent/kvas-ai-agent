@@ -73,7 +73,7 @@ for stale in ("KVASSISTENT 16", "КВАССИСТЕНТ 16", "VERSION 20", "ВЕ
     assert stale not in game_i18n, stale
 
 prepare = (ROOT / "scripts/prepare-release.py").read_text(encoding="utf-8")
-for pattern in (r"KVASSISTENT\\s+\\d+", r"КВАССИСТЕНТ\\s+\\d+", r"第\\s*\\d+\\s*版"):
+for pattern in (r"KVASSISTENT\s+\d+", r"КВАССИСТЕНТ\s+\d+", r"第\s*\d+\s*版"):
     assert pattern in prepare, pattern
 
 assert (ROOT / "V2_PLAN.md").is_file()
