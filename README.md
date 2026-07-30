@@ -80,7 +80,7 @@
 
 - [JSON Schema состояния](agent-instructions/state.schema.json)
 - [Пример состояния](agent-instructions/state-example.json)
-- [Стартовая инструкцияция агенту](AI_AGENT_START.md)
+- [Стартовая инструкция агенту](AI_AGENT_START.md)
 
 ## Сборка
 
