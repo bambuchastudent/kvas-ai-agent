@@ -402,7 +402,9 @@ def _public_patch_html(path: Path) -> None:
         f'<meta name="twitter:image" content="{_PUBLIC_IMAGE}">'
     )
     if "</head>" not in text:
-        raise RuntimeError(f"HTML page has no closing head: {path}")
+        # Language aliases and other tiny redirect wrappers intentionally have no full head.
+        # They do not need social/discovery metadata; their destination page receives it.
+        return
     text = text.replace("</head>", metadata + "</head>", 1)
     path.write_text(text, encoding="utf-8")
 
