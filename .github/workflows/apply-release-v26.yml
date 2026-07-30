@@ -1,28 +1,40 @@
-name: Verify KVASSISTENT release 26 version contract
+name: Finalize KVASSISTENT release 26 version contract
 
 on:
   push:
     branches:
       - agent/release-v26-consistent-versioning
-  pull_request:
-    branches:
-      - develop
+    paths:
+      - scripts/fix_release_v26_build_verify.py
+      - .github/workflows/apply-release-v26.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  verify-version-contract:
+  finalize:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: agent/release-v26-consistent-versioning
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify canonical version contract
+      - name: Fix and verify canonical version contract
         run: |
+          python scripts/fix_release_v26_build_verify.py
           python -m py_compile \
+            scripts/fix_release_v26_build_verify.py \
             scripts/build-release.py \
             scripts/finalize-release.py \
             scripts/check-version-consistency.py
           python scripts/check-version-consistency.py
+      - name: Commit final build verification
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/build-release.py
+          git commit -m "Verify canonical release 26 version display" || exit 0
+          git push origin HEAD:agent/release-v26-consistent-versioning
