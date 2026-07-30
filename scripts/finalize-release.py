@@ -23,8 +23,17 @@ LANGUAGES = {
     "el": ("Ελληνικά", "EL", "/el/summary/"),
 }
 
+HEADER_COPY = {
+    "ru": {"brand": "КВАССИСТЕНТ", "subtitle": "Последняя версия и все основные входы", "game": "Игра", "companion": "Живая партия", "links": "Все ссылки", "people": "Для людей", "ai": "Для ИИ", "feedback": "Фидбек", "telegram": "Telegram", "telegramBot": "Telegram-бот", "github": "GitHub", "menu": "Меню", "language": "Язык"},
+    "en": {"brand": "KVASSISTENT", "subtitle": "Latest version and every main entry point", "game": "Game", "companion": "Live batch", "links": "All links", "people": "For people", "ai": "For AI", "feedback": "Feedback", "telegram": "Telegram", "telegramBot": "Telegram bot", "github": "GitHub", "menu": "Menu", "language": "Language"},
+    "es": {"brand": "KVASSISTENT", "subtitle": "Última versión y todos los accesos principales", "game": "Juego", "companion": "Lote en vivo", "links": "Todos los enlaces", "people": "Para personas", "ai": "Para IA", "feedback": "Comentarios", "telegram": "Telegram", "telegramBot": "Bot de Telegram", "github": "GitHub", "menu": "Menú", "language": "Idioma"},
+    "de": {"brand": "KVASSISTENT", "subtitle": "Neueste Version und alle wichtigen Einstiege", "game": "Spiel", "companion": "Live-Charge", "links": "Alle Links", "people": "Für Menschen", "ai": "Für KI", "feedback": "Feedback", "telegram": "Telegram", "telegramBot": "Telegram-Bot", "github": "GitHub", "menu": "Menü", "language": "Sprache"},
+    "zh-CN": {"brand": "KVASSISTENT", "subtitle": "最新版本和所有主要入口", "game": "游戏", "companion": "实时批次", "links": "全部链接", "people": "用户指南", "ai": "AI 指南", "feedback": "反馈", "telegram": "Telegram", "telegramBot": "Telegram 机器人", "github": "GitHub", "menu": "菜单", "language": "语言"},
+    "el": {"brand": "KVASSISTENT", "subtitle": "Τελευταία έκδοση και όλες οι βασικές είσοδοι", "game": "Παιχνίδι", "companion": "Ζωντανή παρτίδα", "links": "Όλοι οι σύνδεσμοι", "people": "Για ανθρώπους", "ai": "Για AI", "feedback": "Σχόλια", "telegram": "Telegram", "telegramBot": "Bot Telegram", "github": "GitHub", "menu": "Μενού", "language": "Γλώσσα"},
+}
+
 ACCESSIBILITY_CSS = r"""
-/* kvassistent-safe-interactions-v24 */
+/* kvassistent-safe-interactions-v25 */
 :where(button,a,[role="button"],input,select,textarea,summary){touch-action:manipulation}
 :where(button,a,[role="button"]){-webkit-tap-highlight-color:transparent}
 body::after,.kvass-flame{animation:none!important}
@@ -50,13 +59,23 @@ MENU_CSS = r"""
 .inline-language-button:focus-visible{outline:3px solid rgba(180,119,24,.36);outline-offset:2px}
 #header-language-select[hidden]{display:none!important}
 #kvass-language-content[aria-busy="true"]{opacity:.62}
+.header-version-badge{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 12px;border-radius:999px;background:#2a2118;color:#fffdf7;font:950 13px/1 system-ui;letter-spacing:.08em;box-shadow:0 7px 18px rgba(42,33,24,.2);white-space:nowrap}
+#kvass-language-content{transition:opacity .12s ease}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]){margin:18px 0 42px;padding:clamp(20px,4vw,42px);border:1px solid rgba(219,201,169,.96);border-radius:26px;background:rgba(255,253,247,.98);color:#2a2118;box-shadow:0 24px 70px rgba(0,0,0,.28);backdrop-filter:blur(14px)}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) :where(h1,h2,h3,h4,p,li,strong,em,code,span){color:inherit}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) a{color:#7a4c06;text-decoration-thickness:2px;text-underline-offset:3px}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) .cover{background:linear-gradient(145deg,#fffdf7,#f8efdd)!important;color:#2a2118!important;box-shadow:none!important}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) article{color:#2a2118}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) pre{color:#fff8e8;background:#211a13}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) h2{border-bottom-color:#dbc9a9}
+
 @media(max-width:980px){.inline-language-picker{order:4;width:100%;justify-content:center;margin-left:0;border-radius:18px}.inline-language-picker>span{width:100%;text-align:center}}
 @media(max-width:760px){
   .site-topbar{transition:padding .18s ease,border-radius .18s ease,box-shadow .18s ease}
   .menu-toggle{display:inline-flex;margin-left:auto}
   .site-topbar.is-compact{padding:8px 10px;gap:8px;border-radius:0 0 16px 16px;box-shadow:0 10px 28px rgba(0,0,0,.22)}
   .site-topbar.is-compact .topbar-brand{flex:1;min-width:0}
-  .site-topbar.is-compact .topbar-brand span,.site-topbar.is-compact .topbar-links{display:none}
+  .site-topbar.is-compact .topbar-brand span,.site-topbar.is-compact .topbar-links{display:none}.site-topbar.is-compact .header-version-badge{min-height:34px;padding:7px 9px}
   .site-topbar.is-compact .topbar-brand strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .site-topbar.is-compact .inline-language-picker{display:flex;width:100%;padding:4px;gap:3px}
   .site-topbar.is-compact .inline-language-picker>span{display:none}
@@ -119,26 +138,38 @@ def language_markup() -> str:
     )
     options = "".join(f'<option value="{language}">{label}</option>' for language, (label, _short, _route) in LANGUAGES.items())
     legacy = f'<select id="header-language-select" hidden aria-hidden="true" tabindex="-1">{options}</select>'
-    return f'<div class="inline-language-picker" role="group" aria-label="Language · Язык"><span>Язык</span>{buttons}{legacy}</div>'
+    return f'<div class="inline-language-picker" role="group" aria-label="Language · Язык"><span id="header-language-label">Язык</span>{buttons}{legacy}</div>'
 
 
 def language_script(data: dict[str, dict[str, str]]) -> str:
     safe_json = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-    return f'''<script id="kvass-language-data" type="application/json">{safe_json}</script>
+    header_json = json.dumps(HEADER_COPY, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    return f"""<script id="kvass-language-data" type="application/json">{safe_json}</script>
+<script id="kvass-header-language-data" type="application/json">{header_json}</script>
 <script id="kvassistent-inline-languages">
 (() => {{
   const content = document.getElementById("kvass-language-content");
   const dataNode = document.getElementById("kvass-language-data");
+  const headerNode = document.getElementById("kvass-header-language-data");
   const buttons = Array.from(document.querySelectorAll("[data-kvass-lang]"));
-  if (!content || !dataNode || !buttons.length) return;
+  if (!content || !dataNode || !headerNode || !buttons.length) return;
   const items = JSON.parse(dataNode.textContent || "{{}}");
+  const headerItems = JSON.parse(headerNode.textContent || "{{}}");
   items.ru = {{html:content.innerHTML,title:document.title}};
+  const setText = (id, value) => {{ const node = document.getElementById(id); if (node && value) node.textContent = value; }};
   const apply = (requested, remember=true) => {{
     const language = Object.prototype.hasOwnProperty.call(items, requested) ? requested : "ru";
+    const header = headerItems[language] || headerItems.ru || {{}};
     content.setAttribute("aria-busy", "true");
     content.innerHTML = items[language].html;
+    content.dataset.activeLang = language;
     document.documentElement.lang = language;
     document.title = items[language].title;
+    setText("header-brand-title", header.brand);
+    setText("header-brand-subtitle", header.subtitle);
+    setText("menu-label", header.menu);
+    setText("header-language-label", header.language);
+    document.querySelectorAll("[data-header-key]").forEach((node) => {{ const value = header[node.dataset.headerKey]; if (value) node.textContent = value; }});
     buttons.forEach((button) => button.setAttribute("aria-pressed", button.dataset.kvassLang === language ? "true" : "false"));
     content.removeAttribute("aria-busy");
     if (remember) {{ try {{ localStorage.setItem("kvassistent-language", language); }} catch (_) {{}} }}
@@ -148,7 +179,7 @@ def language_script(data: dict[str, dict[str, str]]) -> str:
   try {{ stored = localStorage.getItem("kvassistent-language") || "ru"; }} catch (_) {{}}
   apply(stored, false);
 }})();
-</script>'''
+</script>"""
 
 
 MENU_SCRIPT = r'''<script id="kvassistent-navigation">
@@ -172,7 +203,23 @@ def patch_landing(path: Path, data: dict[str, dict[str, str]]) -> None:
     if BOT_URL not in text:
         text = text.replace('<nav class="topbar-links">', f'<nav class="topbar-links"><a class="telegram-direct" href="{BOT_URL}" target="_blank" rel="noopener noreferrer">Telegram-бот</a>', 1)
 
-    picker = language_markup()
+    text = text.replace('<div class="topbar-brand"><strong>КВАССИСТЕНТ</strong><span>Последняя версия и все основные входы</span></div>', '<div class="topbar-brand"><strong id="header-brand-title">КВАССИСТЕНТ</strong><span id="header-brand-subtitle">Последняя версия и все основные входы</span></div>', 1)
+    text = text.replace('☰ <span>Меню</span>', '☰ <span id="menu-label">Меню</span>', 1)
+    header_links = {
+        '<a href="/game/">Игра</a>': '<a href="/game/" data-header-key="game">Игра</a>',
+        '<a href="/companion/">Живая партия</a>': '<a href="/companion/" data-header-key="companion">Живая партия</a>',
+        '<a href="#all-links">Все ссылки</a>': '<a href="#all-links" data-header-key="links">Все ссылки</a>',
+        '<a href="#for-people">Для людей</a>': '<a href="#for-people" data-header-key="people">Для людей</a>',
+        '<a href="#for-ai-agents">Для ИИ</a>': '<a href="#for-ai-agents" data-header-key="ai">Для ИИ</a>',
+        '<a href="/feedback/">Фидбек</a>': '<a href="/feedback/" data-header-key="feedback">Фидбек</a>',
+        '<a href="/telegram/">Telegram</a>': '<a href="/telegram/" data-header-key="telegram">Telegram</a>',
+        '<a href="https://github.com/bambuchastudent/kvas-ai-agent">GitHub</a>': '<a href="https://github.com/bambuchastudent/kvas-ai-agent" data-header-key="github">GitHub</a>',
+        f'<a class="telegram-direct" href="{BOT_URL}" target="_blank" rel="noopener noreferrer">Telegram-бот</a>': f'<a class="telegram-direct" href="{BOT_URL}" target="_blank" rel="noopener noreferrer" data-header-key="telegramBot">Telegram-бот</a>',
+    }
+    for old, new in header_links.items():
+        text = text.replace(old, new, 1)
+
+    picker = '<span class="header-version-badge" id="header-version-badge" aria-label="KVASSISTENT version 25">V25</span>' + language_markup()
     text, replaced = re.subn(r'<div class="header-language">.*?</div>', picker, text, count=1, flags=re.S)
     if replaced == 0 and "inline-language-picker" not in text:
         text = text.replace("</header>", picker + "</header>", 1)
@@ -194,7 +241,7 @@ def patch_landing(path: Path, data: dict[str, dict[str, str]]) -> None:
 
 
 def install_safe_interactions() -> None:
-    marker = "kvassistent-safe-interactions-v24"
+    marker = "kvassistent-safe-interactions-v25"
     for css_path in SITE.rglob("*.css"):
         text = css_path.read_text(encoding="utf-8")
         if marker not in text:
@@ -235,7 +282,7 @@ for required in (ROOT/"PROJECT_GOAL.md", ROOT/".github/copilot-instructions.md")
 
 latest = (SITE/"index.html").read_text(encoding="utf-8")
 telegram = (SITE/"telegram/index.html").read_text(encoding="utf-8")
-for required in ('id="header-language-select"','id="kvassistent-inline-languages"','id="kvass-language-content"',"inline-language-button","localStorage.setItem","kvassistent-safe-interactions-v24","touch-action:manipulation","prefers-reduced-motion",BOT_URL):
+for required in ('id="header-language-select"','id="header-version-badge"','id="header-brand-title"','data-header-key="game"','id="kvassistent-inline-languages"','id="kvass-language-content"',"inline-language-button","data-active-lang","kvass-header-language-data","localStorage.setItem","kvassistent-safe-interactions-v25","touch-action:manipulation","prefers-reduced-motion",BOT_URL):
     if required not in latest:
         raise RuntimeError(f"Landing finalization missing: {required}")
 if "window.location.assign" in latest:
@@ -246,4 +293,4 @@ for language in LANGUAGES:
 for required in (BOT_URL,"@kvassistent_bot",f"ВЕРСИЯ {ONES}","Ай да какой ты квас задумал","пищевой фильтровальный мешок","релиза 25"):
     if required not in telegram:
         raise RuntimeError(f"Telegram page finalization missing: {required}")
-print(f"finalized KVASSISTENT version {ONES}: six inline homepage languages without navigation")
+print(f"finalized KVASSISTENT version {ONES}: readable inline languages, localized header and persistent version badge")

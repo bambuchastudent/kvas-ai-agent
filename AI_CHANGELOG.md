@@ -1,5 +1,18 @@
 # AI-readable change log
 
+## 2026-07-30 — KVASSISTENT website release 25
+
+- **Version or scope:** release 25, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
+- **Changed:** put every non-Russian inline localization on a high-contrast light card; localized the complete sticky header for six languages; added a persistent `V25` badge; preserved single-page switching, current scroll position and local language preference; added release notes, demo pitch and poster.
+- **Why:** the version-24 demo screenshot showed dark text on a dark space background, an untranslated Russian header and no visible version after switching languages.
+- **Behavior:** RU, EN, ES, DE, 中文 and EL switch without navigation; both content and header change together; text stays readable; version remains visible while scrolling.
+- **Files and systems:** release metadata, finalizer, publication workflow assertions, README, release notes, demo pitch, poster, generated latest and immutable site.
+- **Verification:** migration assertions, Python compile, publication build, twelve PDFs, inline-language checks, contrast markers, localized-header markers, persistent badge checks and live Cloudflare verification.
+- **Deployment:** merge to `develop` publishes version 25.
+- **Remaining work:** none after green live verification.
+
+---
+
 This file is the chronological handoff for humans and AI agents working on KVASSISTENT.
 
 ## Mandatory rule
