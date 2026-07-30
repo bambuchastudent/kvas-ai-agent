@@ -6,12 +6,14 @@ on:
       - agent/release-v26-consistent-versioning
     paths:
       - scripts/apply_release_v26.py
+      - scripts/fix_release_v26_checker.py
       - .github/workflows/apply-release-v26.yml
   pull_request:
     branches:
       - develop
     paths:
       - scripts/apply_release_v26.py
+      - scripts/fix_release_v26_checker.py
       - .github/workflows/apply-release-v26.yml
 
 permissions:
@@ -29,12 +31,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Apply canonical version contract
-        run: python scripts/apply_release_v26.py
+      - name: Fix checker source and apply canonical version contract
+        run: |
+          python scripts/fix_release_v26_checker.py
+          python scripts/apply_release_v26.py
       - name: Verify generated changes
         run: |
           python -m py_compile \
             scripts/apply_release_v26.py \
+            scripts/fix_release_v26_checker.py \
             scripts/build-release.py \
             scripts/finalize-release.py \
             scripts/check-version-consistency.py
@@ -48,6 +53,7 @@ jobs:
             README.md \
             release/version.json \
             release/RELEASE-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.md \
+            scripts/apply_release_v26.py \
             scripts/build-release.py \
             scripts/finalize-release.py \
             scripts/check-version-consistency.py
