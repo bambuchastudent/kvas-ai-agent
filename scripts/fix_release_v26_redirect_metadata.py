@@ -20,3 +20,5 @@ elif new in text:
     print("redirect metadata fix already applied")
 else:
     raise RuntimeError("Could not find public metadata head guard")
+
+# This script is intentionally idempotent because release CI may replay it.
