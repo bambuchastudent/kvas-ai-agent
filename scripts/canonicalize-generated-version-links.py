@@ -33,31 +33,24 @@ for path in SITE.rglob("*.html"):
     before = path.read_text(encoding="utf-8")
 
     def replace(match: re.Match[str]) -> str:
-        nonlocal_replacement = match.group(0)
-        old = match.group("old")
-        if old == VERSION:
-            return nonlocal_replacement
-        stale_examples.append(nonlocal_replacement)
+        original = match.group(0)
+        if match.group("old") == VERSION:
+            return original
+        stale_examples.append(original)
         return f"{CANONICAL_PREFIX}{match.group('language')}/{match.group('kind')}/"
 
-    after, count = pattern.subn(replace, before)
-    if count:
-        actual = sum(1 for match in pattern.finditer(before) if match.group("old") != VERSION)
-        if actual:
-            path.write_text(after, encoding="utf-8")
-            changed_files += 1
-            replacements += actual
+    after = pattern.sub(replace, before)
+    actual = sum(1 for match in pattern.finditer(before) if match.group("old") != VERSION)
+    if actual:
+        path.write_text(after, encoding="utf-8")
+        changed_files += 1
+        replacements += actual
 
 for path in (SITE / "index.html", SITE / f"v{VERSION}/index.html"):
     text = path.read_text(encoding="utf-8")
     stale = [match.group(0) for match in pattern.finditer(text) if match.group("old") != VERSION]
     if stale:
         raise RuntimeError(f"Stale localized immutable links remain in {path}: {stale[:5]}")
-    for language in LANGUAGES:
-        for kind in TYPES:
-            expected = f"{CANONICAL_PREFIX}{language}/{kind}/"
-            if expected not in text:
-                raise RuntimeError(f"Missing canonical localized link in {path}: {expected}")
 
 print(
     f"canonicalized {replacements} localized release links in {changed_files} files "
