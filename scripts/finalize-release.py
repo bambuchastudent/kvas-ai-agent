@@ -528,7 +528,7 @@ def _public_write_discovery_files() -> None:
     lines.append("</urlset>")
     (SITE / "sitemap.xml").write_text("\n".join(lines) + "\n", encoding="utf-8")
     (SITE / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\nDisallow: /v{VERSION}/\n\nSitemap: {_PUBLIC_BASE}/sitemap.xml\n",
+        f"User-agent: *\nAllow: /\n\nSitemap: {_PUBLIC_BASE}/sitemap.xml\n",
         encoding="utf-8",
     )
     (SITE / "llms.txt").write_text(
