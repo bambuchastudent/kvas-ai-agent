@@ -7,12 +7,19 @@ on:
     paths:
       - scripts/apply_release_v25.py
       - .github/workflows/apply-release-v25.yml
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - scripts/apply_release_v25.py
+      - .github/workflows/apply-release-v25.yml
 
 permissions:
   contents: write
 
 jobs:
   migrate:
+    if: github.head_ref == 'agent/release-v25-readable-localizations' || github.ref_name == 'agent/release-v25-readable-localizations'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
