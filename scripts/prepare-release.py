@@ -133,12 +133,18 @@ if finalizer.is_file() and enhancer.is_file():
         return
     text = text.replace("</head>", metadata + "</head>", 1)
 '''
+    redirect_behavior = '''    if "</head>" not in text:'''
+    redirect_return_and_insert = '''        return
+    text = text.replace("</head>", metadata + "</head>", 1)'''
     if strict_head_guard in finalizer_text:
         finalizer_text = finalizer_text.replace(strict_head_guard, redirect_safe_guard, 1)
         finalizer.write_text(finalizer_text, encoding="utf-8")
         print("prepared finalizer to skip metadata injection for redirect wrappers")
-    elif redirect_safe_guard not in finalizer_text:
-        raise RuntimeError("Cannot locate redirect metadata head guard in finalizer")
+    elif not (
+        redirect_behavior in finalizer_text
+        and redirect_return_and_insert in finalizer_text
+    ):
+        raise RuntimeError("Cannot locate redirect-safe metadata head guard in finalizer")
 
     compile(finalizer_text, str(finalizer), "exec")
     enhancer_text = enhancer.read_text(encoding="utf-8")
