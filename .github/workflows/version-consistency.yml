@@ -1,8 +1,6 @@
-name: KVASSISTENT version consistency
+name: KVASSISTENT fast PR check
 
 on:
-  push:
-    branches: [develop]
   pull_request:
     branches: [develop]
   workflow_dispatch:
@@ -10,15 +8,52 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: fast-kvassistent-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
+    name: Source, version and localization checks
     runs-on: ubuntu-latest
+    timeout-minutes: 3
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Check human, technical and immutable versions
+          python-version: "3.12"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run fast checks without PDF dependencies
+        shell: bash
         run: |
-          python -m py_compile scripts/check-version-consistency.py scripts/build-release.py scripts/finalize-release.py
+          set -euo pipefail
+          python -m compileall -q scripts
           python scripts/check-version-consistency.py
+          node scripts/test-companion.mjs
+          node scripts/test-localization.mjs
+
+          python - <<'PY'
+          from pathlib import Path
+
+          workflows = Path('.github/workflows')
+          stale = sorted(str(path) for path in workflows.glob('*release-v*.yml'))
+          if stale:
+              raise SystemExit(f'Release-specific migration workflows must be removed: {stale}')
+
+          release = (workflows / 'release.yml').read_text(encoding='utf-8')
+          if 'pull_request:' in release:
+              raise SystemExit('Heavy release workflow must not run for pull requests')
+          if 'sudo apt-get' not in release or 'scripts/build-release.py' not in release:
+              raise SystemExit('Merge-only release workflow lost the full publication build')
+
+          print('FAST_OK: no PDF/font installation, archives or deployment in pull-request CI')
+          PY

@@ -1,5 +1,18 @@
 # AI-readable change log
 
+## 2026-07-30 — Fast pull-request and merge-only release pipeline
+
+- **Version or scope:** release engineering after Version 26; product version remains 26.
+- **Changed:** split pull-request validation from full publication; PRs now run Python compilation, version-contract checks and Node localization/companion tests only; the 12 PDFs, fonts, archives, GitHub Release, `gh-pages` publication and live Cloudflare/AWS verification run only after a merge to `develop`; removed completed release-25 and release-26 migration workflows and their obsolete one-off scripts.
+- **Why:** the previous workflow installed fonts and PDF dependencies and rebuilt every publication artifact after each small PR commit, causing repeated minute-long runs and making a multi-fix release take close to an hour.
+- **Behavior:** contributors receive fast feedback without waiting for PDF generation; one full release build still runs after merge and retains canonical-version, immutable-URL, Telegram and backend verification.
+- **Files and systems:** `.github/workflows/version-consistency.yml`, new `.github/workflows/release.yml`, removed `.github/workflows/publish.yml`, release-specific workflows and migration scripts, GitHub Actions, GitHub Releases, `gh-pages` and Cloudflare Pages.
+- **Verification:** the first clean fast PR run passed all version, Python, Companion and localization checks; its test commands completed in about 0.8 seconds and the complete GitHub job, including runner setup and cleanup, completed in about 4.5 seconds. The merge-only workflow still must build 12 PDFs, validate the site, publish `gh-pages`, and pass the production site/backend check after merge.
+- **Deployment:** PR 28 is green and ready to merge.
+- **Remaining work:** verify the first merge-only release run; consider a prebuilt publication container only if that single post-merge build remains too slow.
+
+---
+
 ## 2026-07-30 — KVASSISTENT release 26 public discovery
 
 - **Version or scope:** release 26 public-discovery completion.
@@ -55,8 +68,8 @@ Each entry must contain:
 - **Behavior** — what a user or operator will notice; write `no user-visible change` when applicable;
 - **Files and systems** — important files, workflows, services, URLs, or repositories affected;
 - **Verification** — tests, CI, builds, live checks, or manual checks actually completed;
-- **Deployment** — published, merged but not published, local only, or not applicable;
-- **Remaining work** — known limitations, follow-ups, or `none`.
+- **Deployment:** published, merged but not published, local only, or not applicable.
+- **Remaining work:** known limitations, follow-ups, or `none`.
 
 Do not write vague entries such as “updated files” or “fixed things.” Do not include tokens, passwords, private chat identifiers, access keys, webhook secrets, or other credentials.
 

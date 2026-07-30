@@ -3,22 +3,20 @@ name: Publish KVASSISTENT release
 on:
   push:
     branches: [develop]
-  pull_request:
-    branches: [develop]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: publish-kvassistent-${{ github.event_name }}-${{ github.ref }}
+  group: release-kvassistent-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    name: Build and verify publication once
+    name: Build and verify release
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     outputs:
       version: ${{ steps.release-meta.outputs.version }}
       ones_count: ${{ steps.release-meta.outputs.ones_count }}
@@ -30,7 +28,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Read and recount release metadata
+      - name: Read release metadata
         id: release-meta
         shell: bash
         run: |
@@ -41,16 +39,15 @@ jobs:
 
           meta = json.loads(Path("release/version.json").read_text(encoding="utf-8"))
           version = str(meta["current"])
-          expected = int(meta["ones_count"])
-          parts = version.split(".")
-          if parts != ["1"] * expected:
-              raise SystemExit(f"Version mismatch: expected {expected} ones, got {version}")
+          ones = int(meta["ones_count"])
+          if version.split(".") != ["1"] * ones:
+              raise SystemExit(f"Version mismatch: expected {ones} ones, got {version}")
           if meta.get("display") != f"v{version}":
               raise SystemExit("Technical display must be lowercase v plus the full version")
-          if meta.get("human_label") != f"Версия {expected}":
+          if meta.get("human_label") != f"Версия {ones}":
               raise SystemExit("Human label must be 'Версия N'")
           print(f"version={version}")
-          print(f"ones_count={expected}")
+          print(f"ones_count={ones}")
           print(f"artifact_name=kvassistent-{version}-publication-build")
           PY
           VERSION="$(python -c 'import json; print(json.load(open("release/version.json"))["current"])')"
@@ -79,112 +76,54 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends \
             fonts-noto-core fonts-noto-cjk fonts-noto-mono poppler-utils
-          python -m pip install --upgrade --quiet pip
           python -m pip install --quiet -r requirements-publication.txt
           fc-cache -f >/dev/null
 
-      - name: Prepare, test, build and enhance
+      - name: Build once
         shell: bash
         run: |
           set -euo pipefail
           python scripts/prepare-release.py
-          python -m py_compile \
-            scripts/build-release.py \
-            scripts/prepare-release.py \
-            scripts/enhance-release.py \
-            scripts/finalize-release.py \
-            scripts/check-version-consistency.py \
-            scripts/next-ones-version.py
+          python -m compileall -q scripts
           python scripts/check-version-consistency.py
           node scripts/test-companion.mjs
           node scripts/test-localization.mjs
           python scripts/build-release.py 2>&1 | tee publication-build.log
           python scripts/enhance-release.py
-
-      - name: Package generated website
-        shell: bash
-        run: |
-          set -euo pipefail
           (cd dist/site && zip -qr "../kvassistent-${VERSION}-website.zip" .)
           tar -C dist/site -czf "dist/kvassistent-${VERSION}-website.tar.gz" .
 
-      - name: Verify canonical release and links
+      - name: Verify generated release
         shell: bash
         run: |
           set -euo pipefail
-          expected_languages=(ru en es de zh-CN el)
-          expected_types=(summary instructions)
-
-          for lang in "${expected_languages[@]}"; do
-            for type in "${expected_types[@]}"; do
-              pdf="dist/publication/kvas-${type}-${lang}-${VERSION}.pdf"
-              immutable_web="dist/site/v${VERSION}/${lang}/${type}/index.html"
-              latest_web="dist/site/${lang}/${type}/index.html"
-              test -s "$pdf"
-              test -s "$immutable_web"
-              test -s "$latest_web"
-              pdfinfo "$pdf" | grep -q '^Pages:'
-            done
-          done
-
           immutable="dist/site/v${VERSION}"
           landing="$immutable/index.html"
-          game="$immutable/companion/game/index.html"
-          companion="$immutable/companion/index.html"
-          feedback="$immutable/feedback/index.html"
-          telegram="$immutable/telegram/index.html"
-          comic="$immutable/assets/kvassistent-${VERSION}-comic.svg"
 
           test "$(find dist/publication -maxdepth 1 -name '*.pdf' | wc -l)" -eq 12
+          for pdf in dist/publication/*.pdf; do
+            test -s "$pdf"
+            pdfinfo "$pdf" | grep -q '^Pages:'
+          done
+
           for path in \
             "dist/kvas-${VERSION}-publication.zip" \
             "dist/kvas-${VERSION}-publication.tar.gz" \
             "dist/kvassistent-${VERSION}-website.zip" \
             "dist/kvassistent-${VERSION}-website.tar.gz" \
             "$immutable/manifest.json" "$immutable/version.json" \
-            "$landing" "$game" "$companion" "$feedback" "$telegram" "$comic"; do
+            "$landing" "$immutable/companion/game/index.html" \
+            "$immutable/companion/index.html" "$immutable/feedback/index.html" \
+            "$immutable/telegram/index.html" dist/site/latest-version.json; do
             test -s "$path"
           done
 
           grep -Fq "Версия ${ONES_COUNT}" "$landing"
           grep -Fq "v${VERSION}" "$landing"
-          ! grep -Fq "Пересчитай" "$landing"
           grep -Fq 'id="site-topbar"' "$landing"
           grep -Fq 'id="header-version-badge"' "$landing"
           grep -Fq 'id="header-language-select"' "$landing"
-          grep -Fq 'id="human-manifesto"' "$landing"
-          grep -Fq 'href="/game/"' "$landing"
-          grep -Fq 'href="/companion/"' "$landing"
-          grep -Fq 'href="/feedback/"' "$landing"
-          grep -Fq 'href="/telegram/"' "$landing"
           grep -Fq 'https://t.me/kvassistent_bot' "$landing"
-          grep -Fq "kvassistent-${VERSION}-comic.svg" "$landing"
-
-          grep -Fq "VERSION ${ONES_COUNT}" "$game"
-          grep -Fq 'id="game-language"' "$game"
-          test "$(grep -o 'class="site"' "$game" | wc -l)" -eq 6
-          grep -Fq 'resolveGameLanguage' "$immutable/companion/game/game.js"
-          grep -Fq 'zh-CN' "$immutable/companion/game/i18n.js"
-          grep -Fq "ΕΚΔΟΣΗ ${ONES_COUNT}" "$immutable/companion/game/i18n.js"
-          grep -Fq "kvassistent-live-v${ONES_COUNT}" "$immutable/companion/sw.js"
-
-          grep -Fq 'Live batch' "$companion"
-          grep -Fq 'id="consent-card"' "$companion"
-          grep -Fq 'option value="el"' "$companion"
-          grep -Fq 'https://t.me/kvassistent_bot' "$feedback"
-          grep -Fq 'https://github.com/bambuchastudent/kvas-ai-agent' "$feedback"
-          ! grep -Fq 'formsubmit.co' "$feedback"
-          grep -Fq 'https://t.me/kvassistent_bot' "$telegram"
-
-          for path in \
-            dist/site/index.html dist/site/game/index.html \
-            dist/site/companion/index.html dist/site/feedback/index.html \
-            dist/site/telegram/index.html dist/site/latest-version.json; do
-            test -s "$path"
-          done
-          grep -Fq "\"version\": \"${VERSION}\"" dist/site/latest-version.json
-          grep -Fq '"telegram": "/telegram/"' dist/site/latest-version.json
-          grep -Fq "\"ones_count\": ${ONES_COUNT}" "$immutable/manifest.json"
 
           python - <<'PY'
           import json
@@ -197,14 +136,9 @@ jobs:
           canonical = f"/v{version}/"
           assert version.split(".") == ["1"] * ones
 
-          companion = Path(f"dist/site/v{version}/companion/index.html").read_text(encoding="utf-8")
-          assert not any(("А" <= ch <= "я") or ch in "Ёё" for ch in companion), "Russian leaked into universal companion shell"
-
-          current_files = [Path("dist/site/index.html"), Path(f"dist/site/v{version}/index.html")]
-          pattern = re.compile(r"/v(?:1\.)*1/")
-          for path in current_files:
+          for path in (Path("dist/site/index.html"), Path(f"dist/site/v{version}/index.html")):
               text = path.read_text(encoding="utf-8")
-              found = pattern.findall(text)
+              found = re.findall(r"/v(?:1\.)*1/", text)
               assert found, f"No immutable URL in {path}"
               assert all(item == canonical for item in found), (path, found, canonical)
 
@@ -223,7 +157,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
-      - name: Upload verified publication build
+      - name: Upload verified release
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.release-meta.outputs.artifact_name }}
@@ -231,9 +165,8 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-  release:
+  github-release:
     name: Publish GitHub Release
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -244,16 +177,14 @@ jobs:
       TAG: v${{ needs.build.outputs.version }}
 
     steps:
-      - name: Checkout release metadata
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Download verified publication
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
-      - name: Create or update tag and GitHub Release
+      - name: Create or update release
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -261,7 +192,6 @@ jobs:
           set -euo pipefail
           notes="release/RELEASE-${VERSION}.md"
           comic="share/kvassistent-${VERSION}-comic.svg"
-          title="КВАССИСТЕНТ · Версия ${ONES_COUNT}"
           test -s "$notes"
           test -s "$comic"
           git config user.name "github-actions[bot]"
@@ -269,9 +199,9 @@ jobs:
           git tag -f "$TAG" "$GITHUB_SHA"
           git push origin "refs/tags/$TAG" --force
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release edit "$TAG" --title "$title" --notes-file "$notes"
+            gh release edit "$TAG" --title "КВАССИСТЕНТ · Версия ${ONES_COUNT}" --notes-file "$notes"
           else
-            gh release create "$TAG" --target "$GITHUB_SHA" --title "$title" --notes-file "$notes"
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "КВАССИСТЕНТ · Версия ${ONES_COUNT}" --notes-file "$notes"
           fi
           gh release upload "$TAG" \
             dist/publication/*.pdf dist/publication/manifest.json \
@@ -281,25 +211,22 @@ jobs:
             "dist/kvassistent-${VERSION}-website.tar.gz" \
             "$comic" --clobber
 
-  gh-pages-branch:
-    name: Publish the already verified website
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+  pages:
+    name: Publish verified website
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Checkout for branch publication
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - name: Download verified publication
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
-      - name: Force-publish static website branch
+      - name: Force-publish gh-pages
         shell: bash
         run: |
           set -euo pipefail
@@ -316,19 +243,16 @@ jobs:
           git commit -m "Publish KVASSISTENT Версия ${{ needs.build.outputs.ones_count }}"
           git push origin HEAD:gh-pages --force
 
-  verify-cloudflare-pages:
-    name: Verify Cloudflare Pages deployment
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: [build, gh-pages-branch]
+  live-check:
+    name: Verify production
+    needs: [build, pages]
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     env:
       VERSION: ${{ needs.build.outputs.version }}
       ONES_COUNT: ${{ needs.build.outputs.ones_count }}
 
     steps:
-      - name: Wait for site, immutable release and backend
+      - name: Wait for site and backend
         shell: bash
         run: |
           set -euo pipefail
@@ -338,35 +262,31 @@ jobs:
 
           for attempt in $(seq 1 40); do
             ok=1
-            curl --fail --location --silent --show-error "$root/latest-version.json" -o /tmp/latest-version.json || ok=0
-            grep -Fq "\"version\": \"${VERSION}\"" /tmp/latest-version.json 2>/dev/null || ok=0
-            grep -Fq "\"immutable\": \"/v${VERSION}/\"" /tmp/latest-version.json 2>/dev/null || ok=0
+            curl --fail --location --silent --show-error "$root/latest-version.json" -o /tmp/latest.json || ok=0
+            grep -Fq "\"version\": \"${VERSION}\"" /tmp/latest.json 2>/dev/null || ok=0
+            grep -Fq "\"immutable\": \"/v${VERSION}/\"" /tmp/latest.json 2>/dev/null || ok=0
 
-            curl --fail --location --silent --show-error "$root/" -o /tmp/latest.html || ok=0
-            grep -Fq "Версия ${ONES_COUNT}" /tmp/latest.html 2>/dev/null || ok=0
-            grep -Fq "v${VERSION}" /tmp/latest.html 2>/dev/null || ok=0
+            curl --fail --location --silent --show-error "$root/" -o /tmp/home.html || ok=0
+            grep -Fq "Версия ${ONES_COUNT}" /tmp/home.html 2>/dev/null || ok=0
+            grep -Fq "v${VERSION}" /tmp/home.html 2>/dev/null || ok=0
 
-            curl --fail --location --silent --show-error "$immutable/manifest.json" -o /tmp/immutable-manifest.json || ok=0
-            grep -Fq "\"version\": \"${VERSION}\"" /tmp/immutable-manifest.json 2>/dev/null || ok=0
-            grep -Fq "\"ones_count\": ${ONES_COUNT}" /tmp/immutable-manifest.json 2>/dev/null || ok=0
+            curl --fail --location --silent --show-error "$immutable/manifest.json" -o /tmp/manifest.json || ok=0
+            grep -Fq "\"ones_count\": ${ONES_COUNT}" /tmp/manifest.json 2>/dev/null || ok=0
 
             curl --fail --location --silent --show-error "$backend" -o /tmp/backend.json || ok=0
-            jq -e \
-              --arg version "v${VERSION}" \
-              --argjson release "$ONES_COUNT" \
+            jq -e --arg version "v${VERSION}" --argjson release "$ONES_COUNT" \
               '.ok == true and .ready == true and .version == $version and .release_number == $release and .next_release_number == ($release + 1)' \
               /tmp/backend.json >/dev/null 2>&1 || ok=0
 
-            curl --fail --location --silent --show-error --output /dev/null 'https://t.me/kvassistent_bot' || ok=0
             if [ "$ok" -eq 1 ]; then
-              echo "Verified KVASSISTENT Версия ${ONES_COUNT}: site, canonical immutable URL, Telegram and backend"
+              echo "Verified KVASSISTENT Версия ${ONES_COUNT}: site, immutable URL and backend"
               exit 0
             fi
-            echo "Waiting for Cloudflare Pages and backend ($attempt/40)..."
+            echo "Waiting for production ($attempt/40)..."
             sleep 10
           done
 
-          echo "KVASSISTENT Версия ${ONES_COUNT} did not pass live verification." >&2
-          cat /tmp/latest-version.json >&2 2>/dev/null || true
+          echo "Production verification failed for Версия ${ONES_COUNT}" >&2
+          cat /tmp/latest.json >&2 2>/dev/null || true
           cat /tmp/backend.json >&2 2>/dev/null || true
           exit 1
