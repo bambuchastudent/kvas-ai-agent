@@ -7,12 +7,19 @@ on:
     paths:
       - scripts/fix_release_v26_redirect_metadata.py
       - .github/workflows/apply-release-v26.yml
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - scripts/fix_release_v26_redirect_metadata.py
+      - .github/workflows/apply-release-v26.yml
 
 permissions:
   contents: write
 
 jobs:
   finalize:
+    if: github.head_ref == 'agent/release-v26-consistent-versioning' || github.ref_name == 'agent/release-v26-consistent-versioning'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
