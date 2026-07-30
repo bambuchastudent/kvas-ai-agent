@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import re
+import runpy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -100,3 +101,8 @@ print(
 )
 if stale_examples:
     print("replaced examples:", ", ".join(sorted(set(stale_examples))[:4]))
+
+runpy.run_path(
+    str(ROOT / "scripts/stabilize-sticky-menu.py"),
+    run_name="__kvassistent_sticky_menu__",
+)
