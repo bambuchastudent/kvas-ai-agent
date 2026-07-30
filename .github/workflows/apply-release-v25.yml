@@ -6,12 +6,14 @@ on:
       - agent/release-v25-readable-localizations
     paths:
       - scripts/apply_release_v25.py
+      - scripts/fix_apply_release_v25_source.py
       - .github/workflows/apply-release-v25.yml
   pull_request:
     branches:
       - develop
     paths:
       - scripts/apply_release_v25.py
+      - scripts/fix_apply_release_v25_source.py
       - .github/workflows/apply-release-v25.yml
 
 permissions:
@@ -29,8 +31,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Apply release migration
-        run: python scripts/apply_release_v25.py
+      - name: Repair and apply release migration
+        run: |
+          python scripts/fix_apply_release_v25_source.py
+          python scripts/apply_release_v25.py
       - name: Verify migration output
         run: |
           python -m py_compile scripts/apply_release_v25.py scripts/finalize-release.py
@@ -44,10 +48,18 @@ jobs:
           for marker in ('header-version-badge','HEADER_COPY','data-active-lang','background:rgba(255,253,247,.98)'):
               assert marker in text, marker
           PY
-      - name: Commit migration result
+      - name: Commit non-workflow migration result
         run: |
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
+          git add \
+            AI_CHANGELOG.md \
+            README.md \
+            release/version.json \
+            release/RELEASE-*.md \
+            release/DEMO-PITCH-25.md \
+            scripts/finalize-release.py \
+            share/kvassistent-*.svg
           git commit -m "Release KVASSISTENT version 25 with readable localizations" || exit 0
           git push origin HEAD:agent/release-v25-readable-localizations
