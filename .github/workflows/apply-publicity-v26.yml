@@ -34,6 +34,7 @@ jobs:
           python -m py_compile scripts/apply_publicity_v26.py scripts/finalize-release.py
           git diff --check
           grep -Fq '# KVASSISTENT_PUBLIC_DISCOVERY_V26' scripts/finalize-release.py
+          ! grep -Fq 'Disallow: /v{VERSION}/' scripts/finalize-release.py
           grep -Fq 'release 26 public discovery' AI_CHANGELOG.md
           grep -Fq 'Публичность и индексирование' release/RELEASE-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.md
 
@@ -48,5 +49,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add scripts/finalize-release.py AI_CHANGELOG.md release/RELEASE-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.md
-          git commit -m 'feat: prepare release 26 public discovery'
+          git commit -m 'fix: keep release archives crawlable for noindex'
           git push origin HEAD:agent/release-v26-consistent-versioning
