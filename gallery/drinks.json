@@ -1,4 +1,25 @@
 {
-  "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
-  "drinks": []
+  "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+  "drinks": [],
+  "publication_links": [
+    {
+      "kind": "video",
+      "title": "Видео и история KVASSISTENT",
+      "platform": "Devpost",
+      "url": "https://devpost.com/software/kvassistent"
+    },
+    {
+      "kind": "story-maker",
+      "title": "Собрать сториз 9:16",
+      "platform": "KVASSISTENT",
+      "url": "https://kvassistent.pages.dev/feedback/stories/"
+    },
+    {
+      "kind": "submission",
+      "title": "Прислать фото или видео результата",
+      "platform": "Telegram",
+      "url": "https://t.me/kvassistent_bot?start=result"
+    }
+  ],
+  "missing_direct_publication_urls": 2
 }

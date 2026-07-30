@@ -23,7 +23,10 @@ PATTERNS = (
     (r"ВЕРСИЯ\s+\d+", f"ВЕРСИЯ {ONES}"),
     (r"VERSIÓN\s+\d+", f"VERSIÓN {ONES}"),
     (r"版本\s*\d+", f"版本 {ONES}"),
+    (r"第\s*\d+\s*版", f"第 {ONES} 版"),
     (r"ΕΚΔΟΣΗ\s+\d+", f"ΕΚΔΟΣΗ {ONES}"),
+    (r"KVASSISTENT\s+\d+", f"KVASSISTENT {ONES}"),
+    (r"КВАССИСТЕНТ\s+\d+", f"КВАССИСТЕНТ {ONES}"),
     (r"kvassistent-live-v\d+", f"kvassistent-live-v{ONES}"),
     (r"release\s+\d+\s+content", f"release {ONES} content"),
 )
