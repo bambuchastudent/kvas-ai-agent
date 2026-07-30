@@ -1,0 +1,53 @@
+name: Apply KVASSISTENT release 26 public discovery
+
+on:
+  push:
+    branches: [agent/release-v26-consistent-versioning]
+    paths:
+      - .github/workflows/apply-publicity-v26.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-kvassistent-publicity-v26
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    name: Patch release 26 publication pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/release-v26-consistent-versioning
+          fetch-depth: 0
+
+      - name: Apply idempotent public-discovery migration
+        run: python scripts/apply_publicity_v26.py
+
+      - name: Verify patched Python and clean diff
+        run: |
+          python -m py_compile scripts/apply_publicity_v26.py scripts/finalize-release.py
+          git diff --check
+          grep -Fq '# KVASSISTENT_PUBLIC_DISCOVERY_V26' scripts/finalize-release.py
+          ! grep -Fq 'Disallow: /v{VERSION}/' scripts/finalize-release.py
+          grep -Fq 'release 26 public discovery' AI_CHANGELOG.md
+          grep -Fq 'Публичность и индексирование' release/RELEASE-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.md
+
+      - name: Commit migration result
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo 'Public-discovery migration already applied.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/finalize-release.py AI_CHANGELOG.md release/RELEASE-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.md
+          git commit -m 'fix: keep release archives crawlable for noindex'
+          git push origin HEAD:agent/release-v26-consistent-versioning

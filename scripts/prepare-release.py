@@ -109,6 +109,7 @@ if package_path.is_file():
         "PROJECT_GOAL.md",
         ".github/copilot-instructions.md",
         "scripts/finalize-release.py",
+        "scripts/canonicalize-generated-version-links.py",
     ):
         if required not in files:
             files.append(required)
@@ -119,11 +120,39 @@ if package_path.is_file():
     print(f"prepared {package_path.relative_to(ROOT)} for v{VERSION}")
 
 finalizer = ROOT / "scripts/finalize-release.py"
+canonicalizer = ROOT / "scripts/canonicalize-generated-version-links.py"
 enhancer = ROOT / "scripts/enhance-release.py"
 hook_marker = "# KVASSISTENT_FINALIZE_HOOK"
-if finalizer.is_file() and enhancer.is_file():
-    compile(finalizer.read_text(encoding="utf-8"), str(finalizer), "exec")
+canonicalizer_hook_marker = "# KVASSISTENT_CANONICAL_VERSION_LINKS_HOOK"
+if finalizer.is_file() and canonicalizer.is_file() and enhancer.is_file():
+    finalizer_text = finalizer.read_text(encoding="utf-8")
+    strict_head_guard = '''    if "</head>" not in text:
+        raise RuntimeError(f"HTML page has no closing head: {path}")
+    text = text.replace("</head>", metadata + "</head>", 1)
+'''
+    redirect_safe_guard = '''    if "</head>" not in text:
+        # Redirect wrappers intentionally omit a full document head.
+        # Their canonical destination receives discovery and social metadata.
+        return
+    text = text.replace("</head>", metadata + "</head>", 1)
+'''
+    redirect_behavior = '''    if "</head>" not in text:'''
+    redirect_return_and_insert = '''        return
+    text = text.replace("</head>", metadata + "</head>", 1)'''
+    if strict_head_guard in finalizer_text:
+        finalizer_text = finalizer_text.replace(strict_head_guard, redirect_safe_guard, 1)
+        finalizer.write_text(finalizer_text, encoding="utf-8")
+        print("prepared finalizer to skip metadata injection for redirect wrappers")
+    elif not (
+        redirect_behavior in finalizer_text
+        and redirect_return_and_insert in finalizer_text
+    ):
+        raise RuntimeError("Cannot locate redirect-safe metadata head guard in finalizer")
+
+    compile(finalizer_text, str(finalizer), "exec")
+    compile(canonicalizer.read_text(encoding="utf-8"), str(canonicalizer), "exec")
     enhancer_text = enhancer.read_text(encoding="utf-8")
+    changed_enhancer = False
     if hook_marker not in enhancer_text:
         enhancer_text += (
             "\n\n"
@@ -132,7 +161,19 @@ if finalizer.is_file() and enhancer.is_file():
             + '_kvassistent_runpy.run_path(str(ROOT / "scripts/finalize-release.py"), '
             + 'run_name="__kvassistent_finalize__")\n'
         )
-        enhancer.write_text(enhancer_text, encoding="utf-8")
+        changed_enhancer = True
         print("attached release finalizer to scripts/enhance-release.py")
+    if canonicalizer_hook_marker not in enhancer_text:
+        enhancer_text += (
+            "\n\n"
+            + canonicalizer_hook_marker
+            + "\nimport runpy as _kvassistent_version_runpy\n"
+            + '_kvassistent_version_runpy.run_path(str(ROOT / "scripts/canonicalize-generated-version-links.py"), '
+            + 'run_name="__kvassistent_canonical_links__")\n'
+        )
+        changed_enhancer = True
+        print("attached localized version-link canonicalizer to scripts/enhance-release.py")
+    if changed_enhancer:
+        enhancer.write_text(enhancer_text, encoding="utf-8")
 
 print(f"KVASSISTENT release {ONES}: v{VERSION}")
