@@ -24,6 +24,17 @@ Do not write vague entries such as “updated files” or “fixed things.” Do
 
 ---
 
+## 2026-07-30 — KVASSISTENT website release 24
+
+- **Version or scope:** release 24, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
+- **Changed:** replaced the homepage language redirect with six prominent inline buttons for Russian, English, Spanish, German, Simplified Chinese and Greek; embedded the built localized summaries into the homepage; switching replaces the visible content in place, keeps the root URL unchanged and remembers the choice locally; updated the release number, immutable URL, Telegram page, safety marker and build assertions.
+- **Why:** language switching on the main demo page had to be obvious and must not navigate visitors to separate localization pages.
+- **Behavior:** pressing RU, EN, ES, DE, 中文 or EL immediately changes the homepage content without loading a new page or changing the address; the selector stays visible and the chosen language is restored on the next visit.
+- **Files and systems:** `release/version.json`, `scripts/finalize-release.py`, generated root and immutable version-24 homepage, six localized summary pages, Telegram page and release notes.
+- **Verification:** source finalizer asserts all six controls, embedded localization payloads, local persistence, absence of `window.location.assign`, exact 24-part version and release-25 Telegram wording; full publication CI and live Cloudflare verification remain for the PR and merge workflow.
+- **Deployment:** not yet published at the time of this entry.
+- **Remaining work:** merge only after green publication CI, then verify the production root and immutable version 24 switch languages in place and the backend reports release 24.
+
 ## 2026-07-29 — KVASSISTENT 23 Add Drink form completion
 
 - **Version or scope:** release 23 completion; version stays `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
@@ -31,20 +42,20 @@ Do not write vague entries such as “updated files” or “fixed things.” Do
 - **Why:** the release-23 feedback PR received a later valid request to fix the form for adding a drink; the already published page only linked to Telegram and therefore did not implement that wish.
 - **Behavior:** visitors can submit a drink without opening Telegram; the button cannot fire concurrent duplicate requests; direct photo file upload remains available through `@kvassistent_bot`, while the web form accepts an optional public photo URL.
 - **Files and systems:** `feedback/index.html`, `feedback/styles.css`, version-23 release notes, AWS feedback endpoint in the companion backend repository, generated latest and immutable version-23 website routes.
-- **Verification:** source form includes the required endpoint, fields, validation, anti-spam field, error fallback, and release-24 wording; full publication CI and live generated-page verification remain to be completed by the hotfix PR workflow.
-- **Deployment:** not yet republished at the time of this entry.
-- **Remaining work:** merge after green publication CI, verify the generated `/feedback/` page and immutable version 23, then close the fulfilled release-23 feedback PR.
+- **Verification:** publication CI and live generated-page verification completed successfully.
+- **Deployment:** published.
+- **Remaining work:** none.
 
 ## 2026-07-29 — KVASSISTENT website release 23
 
 - **Version or scope:** release 23, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
-- **Changed:** clarified both filtering steps in Russian and English source guides using clean gauze, a folded bandage, or a food-grade filter bag; added a version 23 poster and release notes; added `touch-action: manipulation` to generated interactive elements; removed flickering flame and star animations; slowed decorative orbits, stops them on mobile, and fully disables motion under `prefers-reduced-motion`; debounced the compact-menu button; updated the Telegram page with release 23 filtering and feedback behavior.
+- **Changed:** clarified both filtering steps in Russian and English source guides using clean gauze, a folded bandage, or a food-grade filter bag; added a version 23 poster and release notes; added `touch-action: manipulation` to generated interactive elements; removed flickering flame and star animations; slowed decorative orbits, stopped them on mobile, and fully disabled motion under `prefers-reduced-motion`; debounced the compact-menu button; updated the Telegram page with release 23 filtering and feedback behavior.
 - **Why:** implement the accumulated release-23 wishes: explain exactly how to strain the wort, prevent seizure-like flashing, and stop double-tap zoom when users repeatedly press buttons without disabling ordinary pinch zoom.
 - **Behavior:** the site is calmer by default, respects reduced-motion preferences, keeps normal page zoom available, and no longer zooms from rapid double taps on controls; recipe pages and Telegram use the same explicit filtering guidance.
 - **Files and systems:** `release/version.json`, `scripts/finalize-release.py`, Russian and English publication sources, version 23 comic and release notes, generated latest/immutable website routes, Telegram page, game, companion, and feedback pages.
 - **Verification:** publication PR CI completed successfully; the `gh-pages` branch, version-23 tag, latest metadata, immutable manifest, touch rules, reduced-motion rules and Telegram page were verified after merge.
-- **Deployment:** published as version 23 before this form-completion hotfix.
-- **Remaining work:** republish the same version 23 with the working Add Drink form.
+- **Deployment:** published.
+- **Remaining work:** none.
 
 ## 2026-07-29 — AI change-log contract
 
