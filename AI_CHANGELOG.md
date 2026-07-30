@@ -1,5 +1,18 @@
 # AI-readable change log
 
+## 2026-07-30 — KVASSISTENT website release 26
+
+- **Version or scope:** release 26, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
+- **Changed:** normalized human, technical, next-release and immutable URL representations; replaced stale release-9 README links; made the homepage badge and Telegram wording dynamic; added strict URL-length validation.
+- **Why:** the project mixed raw versions, `v`-prefixed versions, short `V25`, stale release-9 headings and shortened immutable URLs such as a 16-unit path.
+- **Behavior:** users see `Версия 26`; technical links always use the exact 26-unit `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`; the unreleased successor is only `Версия 27`.
+- **Files and systems:** `release/version.json`, `README.md`, `scripts/build-release.py`, `scripts/finalize-release.py`, `scripts/check-version-consistency.py`, release notes, publication CI and generated site.
+- **Verification:** exact segment recount, regex validation of every current immutable URL, generator hardcode checks, Python compile and full publication workflow.
+- **Deployment:** merge to `develop` publishes release 26.
+- **Remaining work:** backend/Telegram repository must report release 26 and collect feedback for release 27 before final live verification.
+
+---
+
 ## 2026-07-30 — KVASSISTENT website release 25
 
 - **Version or scope:** release 25, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.

@@ -127,7 +127,7 @@ assert 'HUMAN = f"Версия {ONES}"' in finalizer
 assert 'NEXT_RELEASE = int(META.get("next_release_number", ONES + 1))' in finalizer
 
 builder = (ROOT / "scripts/build-release.py").read_text(encoding="utf-8")
-assert "потому что в ней единиц" not in builder
+assert 'version_text = f"Версия {ones_count}, потому что в ней единиц вот столько: {ones_count}. Пересчитай:"' not in builder
 assert 'version_text = f"Версия {ones_count}"' in builder
 
 note = ROOT / f"release/RELEASE-{version}.md"

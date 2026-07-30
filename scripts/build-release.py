@@ -97,8 +97,8 @@ def patch_landing(version: str, ones_count: int) -> None:
         raise RuntimeError("Cannot find landing page markers")
 
     immutable_path = f"/v{version}/"
-    version_text = f"Версия {ones_count}, потому что в ней единиц вот столько: {ones_count}. Пересчитай:"
-    version_html = f'{version_text} <a class="version-link" href="{immutable_path}">v{version}</a>'
+    version_text = f"Версия {ones_count}"
+    version_html = f'{version_text} · технический номер: <a class="version-link" href="{immutable_path}">v{version}</a>'
     comic_name = f"kvassistent-{version}-comic.svg"
 
     css = """

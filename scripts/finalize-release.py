@@ -13,6 +13,9 @@ ONES = int(META["ones_count"])
 SITE = ROOT / "dist/site"
 BOT_URL = "https://t.me/kvassistent_bot"
 REPO_URL = "https://github.com/bambuchastudent/kvas-ai-agent"
+HUMAN = f"Версия {ONES}"
+TECHNICAL = f"v{VERSION}"
+NEXT_RELEASE = int(META.get("next_release_number", ONES + 1))
 
 LANGUAGES = {
     "ru": ("Русский", "RU", "/ru/summary/"),
@@ -33,7 +36,7 @@ HEADER_COPY = {
 }
 
 ACCESSIBILITY_CSS = r"""
-/* kvassistent-safe-interactions-v25 */
+/* kvassistent-safe-interactions */
 :where(button,a,[role="button"],input,select,textarea,summary){touch-action:manipulation}
 :where(button,a,[role="button"]){-webkit-tap-highlight-color:transparent}
 body::after,.kvass-flame{animation:none!important}
@@ -219,7 +222,7 @@ def patch_landing(path: Path, data: dict[str, dict[str, str]]) -> None:
     for old, new in header_links.items():
         text = text.replace(old, new, 1)
 
-    picker = '<span class="header-version-badge" id="header-version-badge" aria-label="KVASSISTENT version 25">V25</span>' + language_markup()
+    picker = f'<span class="header-version-badge" id="header-version-badge" aria-label="KVASSISTENT {HUMAN}">{HUMAN}</span>' + language_markup()
     text, replaced = re.subn(r'<div class="header-language">.*?</div>', picker, text, count=1, flags=re.S)
     if replaced == 0 and "inline-language-picker" not in text:
         text = text.replace("</header>", picker + "</header>", 1)
@@ -241,7 +244,7 @@ def patch_landing(path: Path, data: dict[str, dict[str, str]]) -> None:
 
 
 def install_safe_interactions() -> None:
-    marker = "kvassistent-safe-interactions-v25"
+    marker = "kvassistent-safe-interactions"
     for css_path in SITE.rglob("*.css"):
         text = css_path.read_text(encoding="utf-8")
         if marker not in text:
@@ -256,7 +259,7 @@ def telegram_page() -> str:
     return f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>КВАССИСТЕНТ Telegram · Версия {ONES}</title><style>
 :root{{color-scheme:dark;--ink:#eef8ff;--accent:#62c4ff}}*{{box-sizing:border-box}}body{{margin:0;min-height:100vh;background:radial-gradient(circle at 30% 20%,#263c77,#050812 65%);color:var(--ink);font:18px/1.55 system-ui}}main{{width:min(900px,calc(100% - 32px));margin:auto;padding:30px 0 60px}}.card{{margin:18px 0;padding:clamp(26px,6vw,48px);border:1px solid #4da9e9;border-radius:28px;background:rgba(4,17,34,.94)}}h1{{font:500 clamp(46px,9vw,82px)/.95 Georgia,serif}}a{{color:#9edcff}}.primary{{display:flex;padding:17px 21px;border-radius:999px;background:var(--accent);color:#04111d;font-weight:900;text-decoration:none}}{ACCESSIBILITY_CSS}</style></head><body><main>
 <section class="card"><p>КВАССИСТЕНТ · ВЕРСИЯ {ONES}</p><h1>Ай да хорош!</h1><p>Ай да какой ты квас задумал, ай да хорош! 🥤</p><a class="primary" href="{BOT_URL}">Открыть @kvassistent_bot →</a></section>
-<section class="card"><h2>Что нового</h2><p>Шесть языков переключаются прямо на главной без перехода на другую страницу.</p><p>Короткий рецепт сохраняет процеживание через чистую марлю, сложенный бинт или пищевой фильтровальный мешок.</p><p>Новые идеи и фотографии становятся задачами релиза 25.</p></section>
+<section class="card"><h2>Что нового</h2><p>Шесть языков переключаются прямо на главной без перехода на другую страницу.</p><p>Короткий рецепт сохраняет процеживание через чистую марлю, сложенный бинт или пищевой фильтровальный мешок.</p><p>Новые идеи и фотографии становятся задачами релиза {NEXT_RELEASE}.</p></section>
 <section class="card"><a href="/">Главная и языки</a> · <a href="/feedback/">Добавить напиток</a> · <a href="/companion/">Живая партия</a> · <a href="/game/">Игра</a> · <a href="{REPO_URL}">GitHub</a><p>v{VERSION}</p></section>
 </main></body></html>'''
 
@@ -282,7 +285,7 @@ for required in (ROOT/"PROJECT_GOAL.md", ROOT/".github/copilot-instructions.md")
 
 latest = (SITE/"index.html").read_text(encoding="utf-8")
 telegram = (SITE/"telegram/index.html").read_text(encoding="utf-8")
-for required in ('id="header-language-select"','id="header-version-badge"','id="header-brand-title"','data-header-key="game"','id="kvassistent-inline-languages"','id="kvass-language-content"',"inline-language-button","data-active-lang","kvass-header-language-data","localStorage.setItem","kvassistent-safe-interactions-v25","touch-action:manipulation","prefers-reduced-motion",BOT_URL):
+for required in ('id="header-language-select"','id="header-version-badge"','id="header-brand-title"','data-header-key="game"','id="kvassistent-inline-languages"','id="kvass-language-content"',"inline-language-button","data-active-lang","kvass-header-language-data","localStorage.setItem","kvassistent-safe-interactions","touch-action:manipulation","prefers-reduced-motion",BOT_URL):
     if required not in latest:
         raise RuntimeError(f"Landing finalization missing: {required}")
 if "window.location.assign" in latest:
@@ -290,7 +293,7 @@ if "window.location.assign" in latest:
 for language in LANGUAGES:
     if f'data-kvass-lang="{language}"' not in latest:
         raise RuntimeError(f"Missing inline language button: {language}")
-for required in (BOT_URL,"@kvassistent_bot",f"ВЕРСИЯ {ONES}","Ай да какой ты квас задумал","пищевой фильтровальный мешок","релиза 25"):
+for required in (BOT_URL,"@kvassistent_bot",f"ВЕРСИЯ {ONES}","Ай да какой ты квас задумал","пищевой фильтровальный мешок",f"релиза {NEXT_RELEASE}"):
     if required not in telegram:
         raise RuntimeError(f"Telegram page finalization missing: {required}")
 print(f"finalized KVASSISTENT version {ONES}: readable inline languages, localized header and persistent version badge")
