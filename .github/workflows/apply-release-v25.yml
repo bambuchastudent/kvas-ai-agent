@@ -1,0 +1,46 @@
+name: Apply KVASSISTENT website release 25 migration
+
+on:
+  push:
+    branches:
+      - agent/release-v25-readable-localizations
+    paths:
+      - scripts/apply_release_v25.py
+      - .github/workflows/apply-release-v25.yml
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/release-v25-readable-localizations
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply release migration
+        run: python scripts/apply_release_v25.py
+      - name: Verify migration output
+        run: |
+          python -m py_compile scripts/apply_release_v25.py scripts/finalize-release.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          meta=json.loads(Path('release/version.json').read_text())
+          assert meta['ones_count']==25
+          assert meta['current'].split('.')==['1']*25
+          text=Path('scripts/finalize-release.py').read_text()
+          for marker in ('header-version-badge','HEADER_COPY','data-active-lang','background:rgba(255,253,247,.98)'):
+              assert marker in text, marker
+          PY
+      - name: Commit migration result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Release KVASSISTENT version 25 with readable localizations" || exit 0
+          git push origin HEAD:agent/release-v25-readable-localizations
