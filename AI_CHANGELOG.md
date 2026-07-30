@@ -1,5 +1,18 @@
 # AI-readable change log
 
+## 2026-07-30 — KVASSISTENT website release 28 results and stories
+
+- **Version or scope:** release 28, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`; next release 29.
+- **Changed:** replaced the stale Version 23 web form with a one-field result flow; added optional photo/video URL, local 1080×1920 story generation and a publication rail; synchronized every game title, description and language label with Version 28; expanded release preparation and CI guards; added `V2_PLAN.md`.
+- **Why:** users should be able to show a real result without filling a long form, and published photos/video need a clear route into stories and a future gallery. The previous release still exposed numbers 16, 20, 23 and 24 in public surfaces.
+- **Behavior:** a result requires only a short description; optional identity and media fields stay collapsed; the story maker keeps the photo in the browser and exports or shares a PNG; game localization cannot ship with stale numbers; exact URLs for the two already published photos are intentionally not invented and remain a Version 29 data task.
+- **Files and systems:** `feedback/`, `feedback/stories/`, game i18n, release preparation, version consistency checks, release metadata, gallery publication entry points, README, release notes, package metadata and v2 roadmap.
+- **Verification:** fast CI checks exact 28-unit metadata, form markers, story canvas/share markers, all six game labels and absence of known stale version strings; merge-only publication must build, deploy and live-check website release 28 against backend release 28.
+- **Deployment:** merge to `develop` publishes Version 28 after the paired backend PR is green and merged.
+- **Remaining work:** add direct public URLs for the two photos and one video as real gallery records; do not create fictional links.
+
+---
+
 ## 2026-07-30 — KVASSISTENT website release 27 stable sticky menu
 
 - **Version or scope:** release 27, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`; next release 28.
@@ -78,56 +91,8 @@ Each entry must contain:
 - **Version or scope** — release number, full ones-version, or `unreleased`;
 - **Changed** — exactly what was added, removed, or corrected;
 - **Why** — the user-visible goal or reason;
-- **Behavior** — what a user or operator will notice; write `no user-visible change` when applicable;
-- **Files and systems** — important files, workflows, services, URLs, or repositories affected;
-- **Verification** — tests, CI, builds, live checks, or manual checks actually completed;
-- **Deployment** — published, merged but not published, local only, or not applicable;
-- **Remaining work** — known limitations, follow-ups, or `none`.
-
-Do not write vague entries such as “updated files” or “fixed things.” Do not include tokens, passwords, private chat identifiers, access keys, webhook secrets, or other credentials.
-
----
-
-## 2026-07-30 — KVASSISTENT website release 24
-
-- **Version or scope:** release 24, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
-- **Changed:** replaced the homepage language redirect with six prominent inline buttons for Russian, English, Spanish, German, Simplified Chinese and Greek; embedded the built localized summaries into the homepage; switching replaces the visible content in place, keeps the root URL unchanged and remembers the choice locally; updated the release number, immutable URL, Telegram page, safety marker and build assertions.
-- **Why:** language switching on the main demo page had to be obvious and must not navigate visitors to separate localization pages.
-- **Behavior:** pressing RU, EN, ES, DE, 中文 or EL immediately changes the homepage content without loading a new page or changing the address; the selector stays visible and the chosen language is restored on the next visit.
-- **Files and systems:** `release/version.json`, `scripts/finalize-release.py`, generated root and immutable version-24 homepage, six localized summary pages, Telegram page and release notes.
-- **Verification:** source finalizer asserts all six controls, embedded localization payloads, local persistence, absence of `window.location.assign`, exact 24-part version and release-25 Telegram wording; full publication CI and live Cloudflare verification remain for the PR and merge workflow.
-- **Deployment:** not yet published at the time of this entry.
-- **Remaining work:** merge only after green publication CI, then verify the production root and immutable version 24 switch languages in place and the backend reports release 24.
-
-## 2026-07-29 — KVASSISTENT 23 Add Drink form completion
-
-- **Version or scope:** release 23 completion; version stays `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
-- **Changed:** restored a real form at `/feedback/` with author, contact, drink name, recipe/result description, optional photo URL, honeypot, accessible status messages, single-submit guard, and Telegram fallback; the form posts to the existing AWS backend and states that accepted drinks become release-24 tasks; updated release notes and form styles.
-- **Why:** the release-23 feedback PR received a later valid request to fix the form for adding a drink; the already published page only linked to Telegram and therefore did not implement that wish.
-- **Behavior:** visitors can submit a drink without opening Telegram; the button cannot fire concurrent duplicate requests; direct photo file upload remains available through `@kvassistent_bot`, while the web form accepts an optional public photo URL.
-- **Files and systems:** `feedback/index.html`, `feedback/styles.css`, version-23 release notes, AWS feedback endpoint in the companion backend repository, generated latest and immutable version-23 website routes.
-- **Verification:** publication CI and live generated-page verification completed successfully.
-- **Deployment:** published.
-- **Remaining work:** none.
-
-## 2026-07-29 — KVASSISTENT website release 23
-
-- **Version or scope:** release 23, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
-- **Changed:** clarified both filtering steps in Russian and English source guides using clean gauze, a folded bandage, or a food-grade filter bag; added a version 23 poster and release notes; added `touch-action: manipulation` to generated interactive elements; removed flickering flame and star animations; slowed decorative orbits, stopped them on mobile, and fully disabled motion under `prefers-reduced-motion`; debounced the compact-menu button; updated the Telegram page with release 23 filtering and feedback behavior.
-- **Why:** implement the accumulated release-23 wishes: explain exactly how to strain the wort, prevent seizure-like flashing, and stop double-tap zoom when users repeatedly press buttons without disabling ordinary pinch zoom.
-- **Behavior:** the site is calmer by default, respects reduced-motion preferences, keeps normal page zoom available, and no longer zooms from rapid double taps on controls; recipe pages and Telegram use the same explicit filtering guidance.
-- **Files and systems:** `release/version.json`, `scripts/finalize-release.py`, Russian and English publication sources, version 23 comic and release notes, generated latest/immutable website routes, Telegram page, game, companion, and feedback pages.
-- **Verification:** publication PR CI completed successfully; the `gh-pages` branch, version-23 tag, latest metadata, immutable manifest, touch rules, reduced-motion rules and Telegram page were verified after merge.
-- **Deployment:** published.
-- **Remaining work:** none.
-
-## 2026-07-29 — AI change-log contract
-
-- **Version or scope:** unreleased repository rule; current product release remains version 22 at the time of this historical entry.
-- **Changed:** created `AI_CHANGELOG.md` and made it a mandatory part of every future change and release.
-- **Why:** the project must always leave a concise, understandable handoff that another AI agent can read before continuing work.
-- **Behavior:** no user-visible product change.
-- **Files and systems:** `AI_CHANGELOG.md`, AI-agent instruction files in the website repository, and the companion Telegram-bot repository contract.
-- **Verification:** checked that the required fields cover intent, implementation, validation, deployment, and remaining work.
-- **Deployment:** documentation-only repository update; no website or Lambda deployment required.
-- **Remaining work:** every future commit or PR must add its own newest entry above this one.
+- **Behavior** — what a person or system now experiences;
+- **Files and systems** — affected repositories, paths, APIs, deployment targets or generated artifacts;
+- **Verification** — tests, assertions, manual checks or deployment evidence;
+- **Deployment** — whether it is proposed, merged, published or live;
+- **Remaining work** — explicit follow-up, or `none`.
