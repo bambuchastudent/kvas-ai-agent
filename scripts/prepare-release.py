@@ -122,7 +122,25 @@ finalizer = ROOT / "scripts/finalize-release.py"
 enhancer = ROOT / "scripts/enhance-release.py"
 hook_marker = "# KVASSISTENT_FINALIZE_HOOK"
 if finalizer.is_file() and enhancer.is_file():
-    compile(finalizer.read_text(encoding="utf-8"), str(finalizer), "exec")
+    finalizer_text = finalizer.read_text(encoding="utf-8")
+    strict_head_guard = '''    if "</head>" not in text:
+        raise RuntimeError(f"HTML page has no closing head: {path}")
+    text = text.replace("</head>", metadata + "</head>", 1)
+'''
+    redirect_safe_guard = '''    if "</head>" not in text:
+        # Redirect wrappers intentionally omit a full document head.
+        # Their canonical destination receives discovery and social metadata.
+        return
+    text = text.replace("</head>", metadata + "</head>", 1)
+'''
+    if strict_head_guard in finalizer_text:
+        finalizer_text = finalizer_text.replace(strict_head_guard, redirect_safe_guard, 1)
+        finalizer.write_text(finalizer_text, encoding="utf-8")
+        print("prepared finalizer to skip metadata injection for redirect wrappers")
+    elif redirect_safe_guard not in finalizer_text:
+        raise RuntimeError("Cannot locate redirect metadata head guard in finalizer")
+
+    compile(finalizer_text, str(finalizer), "exec")
     enhancer_text = enhancer.read_text(encoding="utf-8")
     if hook_marker not in enhancer_text:
         enhancer_text += (
