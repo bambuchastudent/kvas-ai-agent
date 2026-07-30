@@ -1,5 +1,18 @@
 # AI-readable change log
 
+## 2026-07-30 — Fast pull-request and merge-only release pipeline
+
+- **Version or scope:** release engineering after Version 26; product version remains 26.
+- **Changed:** split pull-request validation from full publication; PRs now run Python compilation, version-contract checks and Node localization/companion tests only; the 12 PDFs, fonts, archives, GitHub Release, `gh-pages` publication and live Cloudflare/AWS verification run only after a merge to `develop`; removed the completed release-26 migration workflow.
+- **Why:** the previous workflow installed fonts and PDF dependencies and rebuilt every publication artifact after each small PR commit, causing repeated minute-long runs and making a multi-fix release take close to an hour.
+- **Behavior:** contributors receive fast feedback without waiting for PDF generation; one full release build still runs after merge and retains canonical-version, immutable-URL, Telegram and backend verification.
+- **Files and systems:** `.github/workflows/version-consistency.yml`, new `.github/workflows/release.yml`, removed `.github/workflows/publish.yml` and `.github/workflows/apply-release-v26.yml`, GitHub Actions, GitHub Releases, `gh-pages` and Cloudflare Pages.
+- **Verification:** the PR must complete the new fast workflow; after merge, the new release workflow must build 12 PDFs, validate the generated site, publish `gh-pages`, and pass the production site/backend smoke check.
+- **Deployment:** not yet merged at the time of this entry.
+- **Remaining work:** measure the first fast PR run and first merge-only release run; consider a prebuilt publication container only if the single post-merge build remains too slow.
+
+---
+
 ## 2026-07-30 — KVASSISTENT release 26 public discovery
 
 - **Version or scope:** release 26 public-discovery completion.
