@@ -22,3 +22,4 @@ else:
     raise RuntimeError("Could not find public metadata head guard")
 
 # This script is intentionally idempotent because release CI may replay it.
+# Redirect aliases remain available while canonical destination pages carry metadata.
