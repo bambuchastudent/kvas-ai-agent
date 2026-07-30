@@ -1,61 +1,28 @@
-name: Apply KVASSISTENT release 26 version contract
+name: Verify KVASSISTENT release 26 version contract
 
 on:
   push:
     branches:
       - agent/release-v26-consistent-versioning
-    paths:
-      - scripts/apply_release_v26.py
-      - scripts/fix_release_v26_checker.py
-      - .github/workflows/apply-release-v26.yml
   pull_request:
     branches:
       - develop
-    paths:
-      - scripts/apply_release_v26.py
-      - scripts/fix_release_v26_checker.py
-      - .github/workflows/apply-release-v26.yml
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  migrate:
-    if: github.head_ref == 'agent/release-v26-consistent-versioning' || github.ref_name == 'agent/release-v26-consistent-versioning'
+  verify-version-contract:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: agent/release-v26-consistent-versioning
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Fix checker source and apply canonical version contract
-        run: |
-          python scripts/fix_release_v26_checker.py
-          python scripts/apply_release_v26.py
-      - name: Verify generated changes
+      - name: Verify canonical version contract
         run: |
           python -m py_compile \
-            scripts/apply_release_v26.py \
-            scripts/fix_release_v26_checker.py \
             scripts/build-release.py \
             scripts/finalize-release.py \
             scripts/check-version-consistency.py
           python scripts/check-version-consistency.py
-      - name: Commit migration result
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            AI_CHANGELOG.md \
-            README.md \
-            release/version.json \
-            release/RELEASE-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.md \
-            scripts/apply_release_v26.py \
-            scripts/build-release.py \
-            scripts/finalize-release.py \
-            scripts/check-version-consistency.py
-          git commit -m "Normalize KVASSISTENT release 26 version display" || exit 0
-          git push origin HEAD:agent/release-v26-consistent-versioning
