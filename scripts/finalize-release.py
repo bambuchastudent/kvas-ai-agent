@@ -297,3 +297,324 @@ for required in (BOT_URL,"@kvassistent_bot",f"ВЕРСИЯ {ONES}","Ай да к
     if required not in telegram:
         raise RuntimeError(f"Telegram page finalization missing: {required}")
 print(f"finalized KVASSISTENT version {ONES}: readable inline languages, localized header and persistent version badge")
+
+# KVASSISTENT_PUBLIC_DISCOVERY_V26
+import html as _public_html
+import shutil as _public_shutil
+
+_PUBLIC_BASE = "https://kvassistent.pages.dev"
+_PUBLIC_IMAGE = f"{_PUBLIC_BASE}/assets/kvassistent-social.png"
+_PUBLIC_DESCRIPTION = (
+    "KVASSISTENT is a free human-first AI companion for making homemade kvass. "
+    "It guides a real person through one batch, explains risks, works in six languages, "
+    "and keeps the latest public entry points on one stable URL."
+)
+_PUBLIC_LANGS = ("ru", "en", "es", "de", "zh-CN", "el")
+
+
+def _public_route(path: Path) -> tuple[str, bool]:
+    relative = path.relative_to(SITE).as_posix()
+    immutable_prefix = f"v{VERSION}/"
+    immutable = relative.startswith(immutable_prefix)
+    if immutable:
+        relative = relative[len(immutable_prefix):]
+    if relative in ("index.html", ""):
+        route = "/"
+    elif relative in ("game/index.html", "companion/game/index.html"):
+        route = "/game/"
+    elif relative.endswith("/index.html"):
+        route = "/" + relative[:-len("index.html")]
+    else:
+        route = "/" + relative
+    route = re.sub(r"/+", "/", route)
+    return route, immutable
+
+
+def _public_title(text: str, fallback: str) -> str:
+    match = re.search(r"<title>(.*?)</title>", text, flags=re.I | re.S)
+    if not match:
+        return fallback
+    return re.sub(r"\s+", " ", match.group(1)).strip()
+
+
+def _public_description(text: str) -> str:
+    match = re.search(
+        r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']',
+        text,
+        flags=re.I | re.S,
+    )
+    return re.sub(r"\s+", " ", match.group(1)).strip() if match else _PUBLIC_DESCRIPTION
+
+
+def _public_alternates(route: str) -> str:
+    if route == "/":
+        doc_type = "summary"
+    else:
+        match = re.fullmatch(r"/(?:ru|en|es|de|zh-CN|el)/(summary|instructions)/", route)
+        if not match:
+            return ""
+        doc_type = match.group(1)
+    links = [
+        f'<link rel="alternate" hreflang="{language}" href="{_PUBLIC_BASE}/{language}/{doc_type}/">'
+        for language in _PUBLIC_LANGS
+    ]
+    links.append(f'<link rel="alternate" hreflang="x-default" href="{_PUBLIC_BASE}/">')
+    return "".join(links)
+
+
+def _public_patch_html(path: Path) -> None:
+    text = path.read_text(encoding="utf-8")
+    route, immutable = _public_route(path)
+    canonical = _PUBLIC_BASE + route
+    title = _public_title(text, "KVASSISTENT — human-first AI for homemade kvass")
+    description = _public_description(text)
+    robots = "noindex,follow" if immutable else "index,follow,max-image-preview:large"
+
+    removal_patterns = (
+        r'<link\s+rel=["\']canonical["\'][^>]*>',
+        r'<link\s+rel=["\']alternate["\'][^>]*>',
+        r'<meta\s+name=["\']robots["\'][^>]*>',
+        r'<meta\s+name=["\']googlebot["\'][^>]*>',
+        r'<meta\s+property=["\']og:(?:site_name|type|title|description|url|image|image:width|image:height)["\'][^>]*>',
+        r'<meta\s+name=["\']twitter:(?:card|title|description|image)["\'][^>]*>',
+    )
+    for pattern in removal_patterns:
+        text = re.sub(pattern, "", text, flags=re.I)
+
+    esc_title = _public_html.escape(title, quote=True)
+    esc_description = _public_html.escape(description, quote=True)
+    metadata = (
+        f'<meta name="robots" content="{robots}">'
+        f'<meta name="googlebot" content="{robots}">'
+        f'<link rel="canonical" href="{canonical}">'
+        f'{_public_alternates(route)}'
+        '<meta property="og:site_name" content="KVASSISTENT">'
+        '<meta property="og:type" content="website">'
+        f'<meta property="og:title" content="{esc_title}">'
+        f'<meta property="og:description" content="{esc_description}">'
+        f'<meta property="og:url" content="{canonical}">'
+        f'<meta property="og:image" content="{_PUBLIC_IMAGE}">'
+        '<meta property="og:image:width" content="1200">'
+        '<meta property="og:image:height" content="800">'
+        '<meta name="twitter:card" content="summary_large_image">'
+        f'<meta name="twitter:title" content="{esc_title}">'
+        f'<meta name="twitter:description" content="{esc_description}">'
+        f'<meta name="twitter:image" content="{_PUBLIC_IMAGE}">'
+    )
+    if "</head>" not in text:
+        raise RuntimeError(f"HTML page has no closing head: {path}")
+    text = text.replace("</head>", metadata + "</head>", 1)
+    path.write_text(text, encoding="utf-8")
+
+
+def _public_page(title: str, lead: str, body: str) -> str:
+    return f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{_public_html.escape(title)}</title><meta name="description" content="{_public_html.escape(lead, quote=True)}">
+<style>
+:root{{color-scheme:dark;--ink:#fff8e8;--muted:#c9d8ed;--gold:#f0bb45}}
+*{{box-sizing:border-box}}body{{margin:0;background:radial-gradient(circle at 20% 10%,#283d86,#050812 64%);color:var(--ink);font:18px/1.6 system-ui,-apple-system,sans-serif}}
+main{{width:min(920px,calc(100% - 32px));margin:auto;padding:32px 0 70px}}nav{{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:42px}}
+nav a,.cta{{padding:10px 14px;border:1px solid #5276a3;border-radius:999px;color:#aee1ff;text-decoration:none}}
+article{{padding:clamp(25px,6vw,55px);border:1px solid #576b99;border-radius:28px;background:rgba(4,15,36,.91);box-shadow:0 24px 70px rgba(0,0,0,.35)}}
+h1{{margin:.1em 0 .35em;font:700 clamp(42px,8vw,76px)/.96 Georgia,serif}}h2{{margin-top:1.5em;color:#ffd778}}p,li{{color:var(--muted)}}strong{{color:var(--ink)}}code{{overflow-wrap:anywhere;color:#ffd778}}
+</style></head><body><main>
+<nav><a href="/">KVASSISTENT</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/press/">Press</a><a href="/changelog/">Changelog</a><a href="/telegram/">Telegram</a><a href="https://github.com/bambuchastudent/kvas-ai-agent">GitHub</a></nav>
+<article><p><strong>KVASSISTENT · Version {ONES}</strong></p><h1>{_public_html.escape(title)}</h1><p>{_public_html.escape(lead)}</p>{body}</article>
+</main></body></html>"""
+
+
+def _public_write_pages() -> None:
+    pages = {
+        "about": (
+            "About KVASSISTENT",
+            "A human-first AI companion for making real homemade kvass from bread.",
+            """<h2>What it is</h2><p>KVASSISTENT guides one real batch at a time. The person prepares the ingredients, observes the jar, smells and tastes the drink; the assistant remembers state, explains risk and asks for the next observation.</p>
+<h2>What makes it different</h2><ul><li>Six-language interface on one stable homepage.</li><li>Offline live-batch companion with structured JSON handoff.</li><li>Explicit safety stops instead of pretending AI can inspect food.</li><li>Open source, free to use and built in public.</li></ul>
+<p><a class="cta" href="/companion/">Open the live batch companion →</a></p>""",
+        ),
+        "how-it-works": (
+            "How KVASSISTENT works",
+            "From dry bread to a chilled bottle, with one clear next step at a time.",
+            """<h2>1. Start a batch</h2><p>Enter volume, ingredients, start time and temperature.</p>
+<h2>2. Report what you observe</h2><p>Surface, smell, taste, sunlight, temperature and bottle pressure stay explicit; unknown data stays unknown.</p>
+<h2>3. Receive the next safe step</h2><p>The companion suggests one action and a check-in time. Mold, slime, dangerous smell or overheating stop the household protocol.</p>
+<h2>4. Share feedback</h2><p>Ideas, recipes and photos can be sent through the website or Telegram and become structured work for a later release.</p>""",
+        ),
+        "faq": (
+            "KVASSISTENT FAQ",
+            "Straight answers about the product, kvass, safety, languages and privacy.",
+            """<h2>Does AI make the kvass?</h2><p>No. A person makes and judges the drink. AI guides, records and explains.</p>
+<h2>Is homemade yeast kvass always alcohol-free?</h2><p>No honest household process can guarantee 0.0%. Fermentation can create some alcohol.</p>
+<h2>Which languages are supported?</h2><p>Russian, English, Spanish, German, Simplified Chinese and Greek.</p>
+<h2>Does the live companion upload my batch?</h2><p>The companion is designed to keep its working state locally in the browser. External links are opened only after an explicit action.</p>
+<h2>Can AI certify food safety?</h2><p>No. KVASSISTENT provides conservative household guidance, not laboratory testing or a medical diagnosis.</p>""",
+        ),
+        "press": (
+            "KVASSISTENT press kit",
+            "Facts, positioning and official links for reviewers, communities and hackathon judges.",
+            """<h2>One-line description</h2><p><strong>KVASSISTENT is a human-first AI companion that guides people through making homemade kvass while keeping observation, safety and final judgment in human hands.</strong></p>
+<h2>Project facts</h2><ul><li>Free and open source.</li><li>Progressive web app with six languages.</li><li>Live batch state, safety flags and JSON handoff.</li><li>Public immutable releases plus a stable latest URL.</li><li>Telegram feedback and community recipe intake.</li></ul>
+<h2>Official links</h2><p><a href="/">Live product</a> · <a href="https://devpost.com/software/kvassistent">Devpost</a> · <a href="https://github.com/bambuchastudent/kvas-ai-agent">Source code</a> · <a href="https://t.me/kvassistent_bot">Telegram bot</a></p>
+<h2>Media asset</h2><p><a href="/assets/kvassistent-social.png">1200×800 social image</a></p>""",
+        ),
+        "changelog": (
+            "KVASSISTENT changelog",
+            f"Current public release: Version {ONES}. The stable homepage always points to the latest release.",
+            f"""<h2>Version {ONES}</h2><p>Unified version display and public discovery: canonical latest URLs, noindex immutable archives, complete social cards, sitemap, robots, public product pages and an AI-readable project summary.</p>
+<h2>Release history</h2><p>The detailed human and AI-readable history is maintained in the public repository.</p>
+<p><a class="cta" href="https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/AI_CHANGELOG.md">Open AI_CHANGELOG.md →</a></p>""",
+        ),
+    }
+    for slug, (title, lead, body) in pages.items():
+        target = SITE / slug / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(_public_page(title, lead, body), encoding="utf-8")
+
+
+def _public_inject_home() -> None:
+    path = SITE / "index.html"
+    text = path.read_text(encoding="utf-8")
+    if 'id="public-discovery"' in text:
+        return
+    section = """
+<section class="all-links-release" id="public-discovery">
+  <div class="eyebrow">Public discovery · понятно людям, поиску и ИИ</div>
+  <h2>Один официальный адрес и нормальное описание проекта</h2>
+  <p>Главная страница всегда ведёт на последний релиз. Архивные версии остаются доступными, но не конкурируют с главной в поиске.</p>
+  <div class="all-links-grid">
+    <a href="/about/"><strong>About</strong><span>Что такое KVASSISTENT</span></a>
+    <a href="/how-it-works/"><strong>How it works</strong><span>Как устроен продукт</span></a>
+    <a href="/faq/"><strong>FAQ</strong><span>Безопасность, приватность, языки</span></a>
+    <a href="/press/"><strong>Press kit</strong><span>Факты и официальные ссылки</span></a>
+    <a href="/changelog/"><strong>Changelog</strong><span>Что меняется по версиям</span></a>
+    <a href="/llms.txt"><strong>llms.txt</strong><span>Краткие факты для ИИ-систем</span></a>
+  </div>
+</section>
+"""
+    marker = '<section class="all-links-release" id="all-links">'
+    if marker in text:
+        text = text.replace(marker, section + marker, 1)
+    else:
+        text = text.replace("</main>", section + "</main>", 1)
+    path.write_text(text, encoding="utf-8")
+
+
+def _public_write_discovery_files() -> None:
+    routes = [
+        ("/", "weekly", "1.0"),
+        ("/about/", "monthly", "0.8"),
+        ("/how-it-works/", "monthly", "0.9"),
+        ("/faq/", "monthly", "0.8"),
+        ("/press/", "monthly", "0.7"),
+        ("/changelog/", "weekly", "0.7"),
+        ("/companion/", "weekly", "0.9"),
+        ("/game/", "monthly", "0.6"),
+        ("/feedback/", "monthly", "0.6"),
+        ("/telegram/", "monthly", "0.6"),
+    ]
+    for language in _PUBLIC_LANGS:
+        routes.append((f"/{language}/summary/", "monthly", "0.8"))
+        routes.append((f"/{language}/instructions/", "monthly", "0.7"))
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for route, frequency, priority in routes:
+        lines.extend((
+            "<url>",
+            f"<loc>{_PUBLIC_BASE}{route}</loc>",
+            f"<changefreq>{frequency}</changefreq>",
+            f"<priority>{priority}</priority>",
+            "</url>",
+        ))
+    lines.append("</urlset>")
+    (SITE / "sitemap.xml").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (SITE / "robots.txt").write_text(
+        f"User-agent: *\nAllow: /\nDisallow: /v{VERSION}/\n\nSitemap: {_PUBLIC_BASE}/sitemap.xml\n",
+        encoding="utf-8",
+    )
+    (SITE / "llms.txt").write_text(
+        f"""# KVASSISTENT
+
+> KVASSISTENT is a free human-first AI companion for making homemade kvass.
+
+Official URL: {_PUBLIC_BASE}/
+Current release: Version {ONES} ({TECHNICAL})
+Source: https://github.com/bambuchastudent/kvas-ai-agent
+Devpost: https://devpost.com/software/kvassistent
+Telegram: https://t.me/kvassistent_bot
+
+## Product facts
+- A real person brews, observes, smells, tastes and decides.
+- AI remembers batch state, explains risk and suggests the next observation.
+- Supported languages: Russian, English, Spanish, German, Simplified Chinese and Greek.
+- Live batch state can be handed to another AI as structured JSON.
+- Household guidance is not laboratory certification or medical advice.
+- Yeast fermentation cannot honestly guarantee 0.0% alcohol.
+
+## Canonical public pages
+- About: {_PUBLIC_BASE}/about/
+- How it works: {_PUBLIC_BASE}/how-it-works/
+- FAQ: {_PUBLIC_BASE}/faq/
+- Press: {_PUBLIC_BASE}/press/
+- Changelog: {_PUBLIC_BASE}/changelog/
+- Live batch: {_PUBLIC_BASE}/companion/
+- Feedback: {_PUBLIC_BASE}/feedback/
+
+Immutable /v.../ URLs are release archives. Cite the canonical latest pages unless a historical release is specifically required.
+""",
+        encoding="utf-8",
+    )
+    (SITE / "_headers").write_text(
+        f"""/v{VERSION}/*
+  X-Robots-Tag: noindex, follow
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/kvassistent-social.png
+  Cache-Control: public, max-age=604800
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+""",
+        encoding="utf-8",
+    )
+
+
+def _public_install_social_image() -> None:
+    source = ROOT / "share/devpost-cover.png"
+    if not source.is_file():
+        raise RuntimeError(f"Missing social image source: {source}")
+    for target in (
+        SITE / "assets/kvassistent-social.png",
+        SITE / f"v{VERSION}/assets/kvassistent-social.png",
+    ):
+        target.parent.mkdir(parents=True, exist_ok=True)
+        _public_shutil.copy2(source, target)
+
+
+_public_install_social_image()
+_public_write_pages()
+_public_inject_home()
+_public_write_discovery_files()
+for _public_html_path in SITE.rglob("*.html"):
+    _public_patch_html(_public_html_path)
+
+_public_latest = (SITE / "index.html").read_text(encoding="utf-8")
+_public_immutable = (SITE / f"v{VERSION}/index.html").read_text(encoding="utf-8")
+for _public_required in (
+    'id="public-discovery"',
+    'rel="canonical" href="https://kvassistent.pages.dev/"',
+    'property="og:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"',
+    'name="twitter:card" content="summary_large_image"',
+):
+    if _public_required not in _public_latest:
+        raise RuntimeError(f"Public discovery marker missing: {_public_required}")
+if 'content="noindex,follow"' not in _public_immutable:
+    raise RuntimeError("Immutable release must be noindex,follow")
+for _public_required_file in (
+    "robots.txt", "sitemap.xml", "llms.txt", "_headers",
+    "about/index.html", "how-it-works/index.html", "faq/index.html",
+    "press/index.html", "changelog/index.html", "assets/kvassistent-social.png",
+):
+    if not (SITE / _public_required_file).is_file():
+        raise RuntimeError(f"Missing public discovery artifact: {_public_required_file}")
+print(f"public discovery ready for KVASSISTENT Version {ONES}")

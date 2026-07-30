@@ -24,3 +24,15 @@
 ## Регрессия, которую больше нельзя пропустить
 
 Вариант immutable-пути только с 16 единицами считается ошибкой. Проверка `scripts/check-version-consistency.py` извлекает все текущие immutable URL из README и release notes и требует точного совпадения с 26-единичным каноническим путём.
+
+
+## Публичность и индексирование
+
+- `https://kvassistent.pages.dev/` — единственный canonical URL последнего релиза;
+- immutable-страницы `/v.../` остаются доступными, но получают `noindex,follow`;
+- добавлены полные Open Graph и Twitter Card метаданные с реальным изображением 1200×800;
+- публикуются `robots.txt`, расширенный `sitemap.xml`, `_headers` и `llms.txt`;
+- появились публичные страницы About, How it works, FAQ, Press kit и Changelog;
+- сборка проверяет все discovery-артефакты до публикации.
+
+После production-деплоя sitemap нужно вручную отправить в Google Search Console и Bing Webmaster Tools.

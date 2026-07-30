@@ -1,5 +1,17 @@
 # AI-readable change log
 
+## 2026-07-30 — KVASSISTENT release 26 public discovery
+
+- **Version or scope:** release 26 public-discovery completion.
+- **Changed:** made the root URL canonical; marked immutable release archives `noindex,follow`; added complete Open Graph and Twitter cards with a real 1200×800 image; generated `robots.txt`, expanded `sitemap.xml`, `_headers`, `llms.txt`, and public About, How it works, FAQ, Press and Changelog pages.
+- **Why:** search engines, link previews and AI systems need one stable official URL and an explicit machine-readable description instead of competing version paths.
+- **Behavior:** ordinary visitors and crawlers discover the latest product at `https://kvassistent.pages.dev/`; historical `/v.../` pages remain accessible but do not compete in search results.
+- **Verification:** publication fails unless canonical/noindex metadata, social image, public pages and discovery files are present.
+- **Deployment:** included in the Version 26 publication pipeline.
+- **Remaining work:** after production deployment, submit the sitemap manually in Google Search Console and Bing Webmaster Tools.
+
+---
+
 ## 2026-07-30 — KVASSISTENT website release 26
 
 - **Version or scope:** release 26, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`.
