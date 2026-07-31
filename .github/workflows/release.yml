@@ -86,10 +86,12 @@ jobs:
           python scripts/prepare-release.py
           python -m compileall -q scripts
           python scripts/check-version-consistency.py
-          node scripts/test-companion.mjs
-          node scripts/test-localization.mjs
+          npm run test:companion
+          npm run test:localization
+          npm run test:game
           python scripts/build-release.py 2>&1 | tee publication-build.log
           python scripts/enhance-release.py
+          KVASSISTENT_GAME_ROOT="dist/site/v${VERSION}/companion/game" npm run test:game
           (cd dist/site && zip -qr "../kvassistent-${VERSION}-website.zip" .)
           tar -C dist/site -czf "dist/kvassistent-${VERSION}-website.tar.gz" .
 
@@ -99,6 +101,7 @@ jobs:
           set -euo pipefail
           immutable="dist/site/v${VERSION}"
           landing="$immutable/index.html"
+          game="$immutable/companion/game"
 
           test "$(find dist/publication -maxdepth 1 -name '*.pdf' | wc -l)" -eq 12
           for pdf in dist/publication/*.pdf; do
@@ -112,7 +115,7 @@ jobs:
             "dist/kvassistent-${VERSION}-website.zip" \
             "dist/kvassistent-${VERSION}-website.tar.gz" \
             "$immutable/manifest.json" "$immutable/version.json" \
-            "$landing" "$immutable/companion/game/index.html" \
+            "$landing" "$game/index.html" "$game/game.js" "$game/game-state.js" "$game/styles.css" \
             "$immutable/companion/index.html" "$immutable/feedback/index.html" \
             "$immutable/telegram/index.html" dist/site/latest-version.json; do
             test -s "$path"
@@ -124,6 +127,16 @@ jobs:
           grep -Fq 'id="header-version-badge"' "$landing"
           grep -Fq 'id="header-language-select"' "$landing"
           grep -Fq 'https://t.me/kvassistent_bot' "$landing"
+
+          grep -Fq 'id="globe"' "$game/index.html"
+          grep -Fq 'tabindex="0"' "$game/index.html"
+          grep -Fq 'globe.addEventListener("click"' "$game/game.js"
+          grep -Fq 'nearestLaunchSite' "$game/game.js"
+          grep -Fq 'class="gas-bubble b1"' "$game/game.js"
+          grep -Fq 'class="paper-wing left"' "$game/game.js"
+          grep -Fq '@keyframes bubble-exhaust' "$game/styles.css"
+          ! grep -Fq 'class="flame"' "$game/game.js"
+          ! grep -Fq '@keyframes flame' "$game/styles.css"
 
           python - <<'PY'
           import json
@@ -145,7 +158,7 @@ jobs:
           latest = json.loads(Path("dist/site/latest-version.json").read_text(encoding="utf-8"))
           assert latest["version"] == version
           assert latest["immutable"] == canonical
-          print(f"verified Версия {ones}: v{version}; immutable {canonical}")
+          print(f"verified Версия {ones}: v{version}; immutable {canonical}; clickable carbonation game present")
           PY
 
       - name: Upload builder log
@@ -273,13 +286,24 @@ jobs:
             curl --fail --location --silent --show-error "$immutable/manifest.json" -o /tmp/manifest.json || ok=0
             grep -Fq "\"ones_count\": ${ONES_COUNT}" /tmp/manifest.json 2>/dev/null || ok=0
 
+            curl --fail --location --silent --show-error "$immutable/companion/game/index.html" -o /tmp/game.html || ok=0
+            grep -Fq 'id="globe"' /tmp/game.html 2>/dev/null || ok=0
+            grep -Fq 'tabindex="0"' /tmp/game.html 2>/dev/null || ok=0
+            curl --fail --location --silent --show-error "$immutable/companion/game/game.js" -o /tmp/game.js || ok=0
+            grep -Fq 'globe.addEventListener("click"' /tmp/game.js 2>/dev/null || ok=0
+            grep -Fq 'class="gas-bubble b1"' /tmp/game.js 2>/dev/null || ok=0
+            curl --fail --location --silent --show-error "$immutable/companion/game/styles.css" -o /tmp/game.css || ok=0
+            grep -Fq '@keyframes bubble-exhaust' /tmp/game.css 2>/dev/null || ok=0
+            grep -Fq '.paper-wing' /tmp/game.css 2>/dev/null || ok=0
+            grep -Fq '@keyframes flame' /tmp/game.css 2>/dev/null && ok=0 || true
+
             curl --fail --location --silent --show-error "$backend" -o /tmp/backend.json || ok=0
             jq -e --arg version "v${VERSION}" --argjson release "$ONES_COUNT" \
               '.ok == true and .ready == true and .version == $version and .release_number == $release and .next_release_number == ($release + 1)' \
               /tmp/backend.json >/dev/null 2>&1 || ok=0
 
             if [ "$ok" -eq 1 ]; then
-              echo "Verified KVASSISTENT Версия ${ONES_COUNT}: site, immutable URL and backend"
+              echo "Verified KVASSISTENT Версия ${ONES_COUNT}: site, immutable URL, clickable carbonation game and backend"
               exit 0
             fi
             echo "Waiting for production ($attempt/40)..."
