@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Source, version and localization checks
+    name: Source, version, game and localization checks
     runs-on: ubuntu-latest
     timeout-minutes: 3
 
@@ -38,8 +38,9 @@ jobs:
           set -euo pipefail
           python -m compileall -q scripts
           python scripts/check-version-consistency.py
-          node scripts/test-companion.mjs
-          node scripts/test-localization.mjs
+          npm run test:companion
+          npm run test:localization
+          npm run test:game
 
           python - <<'PY'
           from pathlib import Path
@@ -54,6 +55,8 @@ jobs:
               raise SystemExit('Heavy release workflow must not run for pull requests')
           if 'sudo apt-get' not in release or 'scripts/build-release.py' not in release:
               raise SystemExit('Merge-only release workflow lost the full publication build')
+          if 'npm run test:game' not in release:
+              raise SystemExit('Merge-only release workflow must test the generated game')
 
-          print('FAST_OK: no PDF/font installation, archives or deployment in pull-request CI')
+          print('FAST_OK: source, versions, localizations and globe interaction are checked without PDF/font installation')
           PY
