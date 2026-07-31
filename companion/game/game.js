@@ -1,19 +1,31 @@
 import { GAME_I18N, resolveGameLanguage } from "./i18n.js";
+import {
+  CONTINENT_IDS,
+  advanceCountdown,
+  createGameState,
+  nearestLaunchSite,
+  registerLaunch,
+} from "./game-state.js";
 
 (() => {
-  const ids = ["north-america", "south-america", "europe", "africa", "asia", "oceania"];
-  const stateKey = "kvassistent-globe-v16";
-  const legacyKey = "kvassistent-globe-v14";
+  const ids = CONTINENT_IDS;
+  const stateKey = "kvassistent-globe-v29";
+  const legacyKeys = ["kvassistent-globe-v16", "kvassistent-globe-v14"];
   const languageKey = "kvassistent-language";
-  const saved = JSON.parse(localStorage.getItem(stateKey) || localStorage.getItem(legacyKey) || "{}");
-  const state = {
-    total: Number(saved.total) || 0,
-    counts: Object.fromEntries(ids.map(id => [id, Number(saved.counts?.[id]) || 0])),
-    index: Number(saved.index) || 0,
-    paused: false,
-    seconds: 10,
-  };
 
+  function readSavedState() {
+    for (const key of [stateKey, ...legacyKeys]) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (raw) return JSON.parse(raw);
+      } catch (error) {
+        console.warn(`Ignoring broken game state ${key}`, error);
+      }
+    }
+    return {};
+  }
+
+  const state = createGameState(readSavedState());
   const totalEls = [document.getElementById("total"), document.getElementById("corner-total")];
   const countdown = document.getElementById("countdown");
   const globe = document.getElementById("globe");
@@ -22,6 +34,8 @@ import { GAME_I18N, resolveGameLanguage } from "./i18n.js";
   const pause = document.getElementById("pause");
   const sound = document.getElementById("sound");
   const languageSelect = document.getElementById("game-language");
+  const launchNow = document.getElementById("launch-now");
+  const reset = document.getElementById("reset");
   let audioOn = false;
   let language = resolveGameLanguage(localStorage.getItem(languageKey), navigator.languages || [navigator.language]);
 
@@ -54,6 +68,7 @@ import { GAME_I18N, resolveGameLanguage } from "./i18n.js";
     sites.forEach(site => {
       site.setAttribute("aria-label", t.launchFrom(t.continents[site.dataset.id]));
     });
+    globe.setAttribute("aria-label", t.globeAria);
     stats.setAttribute("aria-label", t.statsLabel);
     sound.textContent = audioOn ? t.soundOn : t.soundOff;
     pause.textContent = state.paused ? t.resume : t.pause;
@@ -64,8 +79,12 @@ import { GAME_I18N, resolveGameLanguage } from "./i18n.js";
     const t = copy();
     totalEls.forEach(element => { element.textContent = state.total.toLocaleString(t.locale); });
     countdown.textContent = state.seconds;
-    sites.forEach(site => { site.querySelector("small").textContent = state.counts[site.dataset.id].toLocaleString(t.locale); });
-    stats.innerHTML = ids.map(id => `<article><span>${t.continents[id]}</span><strong>${state.counts[id].toLocaleString(t.locale)}</strong></article>`).join("");
+    sites.forEach(site => {
+      site.querySelector("small").textContent = state.counts[site.dataset.id].toLocaleString(t.locale);
+    });
+    stats.innerHTML = ids
+      .map(id => `<article><span>${t.continents[id]}</span><strong>${state.counts[id].toLocaleString(t.locale)}</strong></article>`)
+      .join("");
   }
 
   function beep() {
@@ -76,18 +95,34 @@ import { GAME_I18N, resolveGameLanguage } from "./i18n.js";
     const oscillator = context.createOscillator();
     const gain = context.createGain();
     oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(180, context.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(620, context.currentTime + 0.22);
-    gain.gain.setValueAtTime(0.08, context.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.28);
+    oscillator.frequency.setValueAtTime(160, context.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(780, context.currentTime + 0.28);
+    gain.gain.setValueAtTime(0.07, context.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.34);
     oscillator.connect(gain).connect(context.destination);
     oscillator.start();
-    oscillator.stop(context.currentTime + 0.3);
+    oscillator.stop(context.currentTime + 0.36);
+  }
+
+  function craftMarkup() {
+    return `
+      <i class="craft-bottom"></i>
+      <i class="craft-body"><b>Ж</b></i>
+      <i class="paper-wing left"><span></span></i>
+      <i class="paper-wing right"><span></span></i>
+      <i class="craft-neck"></i>
+      <i class="craft-cap"></i>
+      <span class="gas-stream" aria-hidden="true">
+        <i class="gas-bubble b1"></i><i class="gas-bubble b2"></i>
+        <i class="gas-bubble b3"></i><i class="gas-bubble b4"></i>
+        <i class="gas-bubble b5"></i><i class="gas-bubble b6"></i>
+      </span>`;
   }
 
   function launch(id) {
     const site = sites.find(candidate => candidate.dataset.id === id);
-    if (!site) return;
+    if (!site) return false;
+
     const globeRect = globe.getBoundingClientRect();
     const siteRect = site.getBoundingClientRect();
     const x = siteRect.left - globeRect.left + siteRect.width / 2;
@@ -97,33 +132,55 @@ import { GAME_I18N, resolveGameLanguage } from "./i18n.js";
     const vectorX = x - centerX;
     const vectorY = y - centerY;
     const vectorLength = Math.hypot(vectorX, vectorY) || 1;
-    const distance = Math.max(innerWidth, innerHeight) * 0.46;
-    const rocket = document.createElement("div");
-    rocket.className = "rocket launch";
-    rocket.style.left = `${x}px`;
-    rocket.style.top = `${y}px`;
-    rocket.style.setProperty("--dx", `${vectorX / vectorLength * distance}px`);
-    rocket.style.setProperty("--dy", `${vectorY / vectorLength * distance}px`);
-    rocket.style.setProperty("--angle", `${Math.atan2(vectorY, vectorX) * 180 / Math.PI + 90}deg`);
-    rocket.innerHTML = '<i class="cap"></i><i class="bottle"></i><i class="fin l"></i><i class="fin r"></i><i class="flame"></i>';
-    globe.appendChild(rocket);
-    setTimeout(() => rocket.remove(), 2500);
-    state.total += 1;
-    state.counts[id] += 1;
-    state.index = (ids.indexOf(id) + 1) % ids.length;
-    state.seconds = 10;
+    const distance = Math.max(window.innerWidth, window.innerHeight) * 0.5;
+
+    const craft = document.createElement("div");
+    craft.className = "gas-craft launch";
+    craft.style.left = `${x}px`;
+    craft.style.top = `${y}px`;
+    craft.style.setProperty("--dx", `${vectorX / vectorLength * distance}px`);
+    craft.style.setProperty("--dy", `${vectorY / vectorLength * distance}px`);
+    craft.style.setProperty("--angle", `${Math.atan2(vectorY, vectorX) * 180 / Math.PI + 90}deg`);
+    craft.innerHTML = craftMarkup();
+    globe.appendChild(craft);
+    setTimeout(() => craft.remove(), 2600);
+
+    registerLaunch(state, id);
     save();
     render();
     beep();
+    return true;
   }
 
-  sites.forEach(site => site.addEventListener("click", () => launch(site.dataset.id)));
-  document.getElementById("launch-now").addEventListener("click", () => launch(ids[state.index % ids.length]));
+  function siteCenters() {
+    return sites.map(site => {
+      const rect = site.getBoundingClientRect();
+      return { id: site.dataset.id, x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    });
+  }
+
+  function resolveLaunchId(event) {
+    const directSite = event.target.closest(".site");
+    if (directSite && globe.contains(directSite)) return directSite.dataset.id;
+    return nearestLaunchSite(event.clientX, event.clientY, siteCenters());
+  }
+
+  globe.addEventListener("click", event => {
+    launch(resolveLaunchId(event));
+  });
+
+  globe.addEventListener("keydown", event => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    launch(ids[state.index % ids.length]);
+  });
+
+  launchNow.addEventListener("click", () => launch(ids[state.index % ids.length]));
   pause.addEventListener("click", () => {
     state.paused = !state.paused;
     pause.textContent = state.paused ? copy().resume : copy().pause;
   });
-  document.getElementById("reset").addEventListener("click", () => {
+  reset.addEventListener("click", () => {
     state.total = 0;
     state.index = 0;
     state.seconds = 10;
@@ -139,9 +196,8 @@ import { GAME_I18N, resolveGameLanguage } from "./i18n.js";
   languageSelect.addEventListener("change", event => applyLanguage(event.target.value));
 
   setInterval(() => {
-    if (state.paused) return;
-    state.seconds -= 1;
-    if (state.seconds <= 0) launch(ids[state.index % ids.length]);
+    const autoLaunchId = advanceCountdown(state);
+    if (autoLaunchId) launch(autoLaunchId);
     render();
   }, 1000);
 

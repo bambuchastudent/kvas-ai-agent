@@ -1,8 +1,8 @@
 # Version
 
-Current immutable release: `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`
+Current immutable release: `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`
 
-> Версия 28
+> Версия 29
 
 Latest: `https://kvassistent.pages.dev/`
 
@@ -18,4 +18,4 @@ Telegram entry: `https://kvassistent.pages.dev/telegram/`
 
 Telegram bot: `https://t.me/kvassistent_bot`
 
-Next immutable release: `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`
+Next immutable release: `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`

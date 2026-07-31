@@ -1,7 +1,7 @@
 {
-  "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+  "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
   "source_version": "16",
-  "ones_count": 28,
+  "ones_count": 29,
   "project": "КВАССИСТЕНТ",
   "brand": "Жижа",
   "knowledge_sources": [
@@ -11,7 +11,7 @@
   "fallback_language": "en",
   "localization_policy": "Russian and English are canonical knowledge sources. Other languages must keep identical sections, quantities, safety rules, and links. Missing non-Russian interface strings fall back to English, never Russian.",
   "human_content_policy": "HUMAN_MANIFESTO.md is canonical creator-authored content. Preserve it verbatim and place translations or professional explanations beside it, never instead of it.",
-  "research_topic": "human-first AI for manual craft, concise Telegram result intake, local story generation, verified publication links, smart batch help, photo and video feedback, strained wort, primary fermentation, PET bottle conditioning, and honest alcohol limits",
+  "research_topic": "human-first AI for manual craft, a fully clickable globe game, inverted bottle carbonation propulsion, bubble exhaust, toilet-paper-roll wings, deterministic interaction tests, concise Telegram result intake, local story generation, verified publication links, smart batch help, photo and video feedback, strained wort, primary fermentation, PET bottle conditioning, and honest alcohol limits",
   "visual_guide": "share/kvassistent-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1-comic.svg",
   "latest_urls": {
     "home": "https://kvassistent.pages.dev/",
