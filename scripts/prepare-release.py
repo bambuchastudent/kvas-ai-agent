@@ -15,6 +15,7 @@ TEXT_TARGETS = (
     ROOT / "scripts/build-release.py",
     ROOT / "companion/game/index.html",
     ROOT / "companion/game/i18n.js",
+    ROOT / "companion/game/game.js",
     ROOT / "companion/sw.js",
 )
 
@@ -28,6 +29,7 @@ PATTERNS = (
     (r"KVASSISTENT\s+\d+", f"KVASSISTENT {ONES}"),
     (r"КВАССИСТЕНТ\s+\d+", f"КВАССИСТЕНТ {ONES}"),
     (r"kvassistent-live-v\d+", f"kvassistent-live-v{ONES}"),
+    (r"kvassistent-globe-v\d+", f"kvassistent-globe-v{ONES}"),
     (r"release\s+\d+\s+content", f"release {ONES} content"),
 )
 
@@ -103,16 +105,18 @@ if package_path.is_file():
     package["kvassistentRelease"] = VERSION
     package["onesCount"] = ONES
     package["description"] = (
-        "KVASSISTENT: human-first AI for manual kvass craft with simple language routing, "
-        "a compact mobile menu, GitHub coding-agent context, and Telegram feedback via Cloudflare Pages."
+        "KVASSISTENT: human-first AI for manual kvass craft with a fully clickable globe game, "
+        "inverted bottle carbonation propulsion, bubble exhaust, paper-roll wings and deterministic interaction tests."
     )
     package.setdefault("scripts", {})["finalize:release"] = "python scripts/finalize-release.py"
+    package.setdefault("scripts", {})["test:game"] = "node scripts/test-game.mjs"
     files = package.setdefault("files", [])
     for required in (
         "PROJECT_GOAL.md",
         ".github/copilot-instructions.md",
         "scripts/finalize-release.py",
         "scripts/canonicalize-generated-version-links.py",
+        "scripts/test-game.mjs",
     ):
         if required not in files:
             files.append(required)
