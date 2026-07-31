@@ -66,15 +66,42 @@ story = (ROOT / "feedback/stories/index.html").read_text(encoding="utf-8")
 for marker in ('width="1080" height="1920"', "navigator.canShare", "kvassistent-story.png"):
     assert marker in story, marker
 
-game_i18n = (ROOT / "companion/game/i18n.js").read_text(encoding="utf-8")
+game_root = ROOT / "companion/game"
+game_html = (game_root / "index.html").read_text(encoding="utf-8")
+game_js = (game_root / "game.js").read_text(encoding="utf-8")
+game_css = (game_root / "styles.css").read_text(encoding="utf-8")
+game_i18n = (game_root / "i18n.js").read_text(encoding="utf-8")
+game_state = (game_root / "game-state.js").read_text(encoding="utf-8")
+game_test = (ROOT / "scripts/test-game.mjs").read_text(encoding="utf-8")
+
 for label in (f"КВАССИСТЕНТ {ones}", f"KVASSISTENT {ones}", f"ВЕРСИЯ {ones}", f"VERSION {ones}", f"VERSIÓN {ones}", f"第 {ones} 版", f"ΕΚΔΟΣΗ {ones}"):
     assert label in game_i18n, label
 for stale in ("KVASSISTENT 16", "КВАССИСТЕНТ 16", "VERSION 20", "ВЕРСИЯ 20", "VERSIÓN 20", "第 16 版", "ΕΚΔΟΣΗ 20"):
     assert stale not in game_i18n, stale
 
+for marker in ('id="globe"', 'tabindex="0"', 'role="button"', 'id="launch-now"'):
+    assert marker in game_html, marker
+for marker in ('globe.addEventListener("click"', 'globe.addEventListener("keydown"', 'closest(".site")', "nearestLaunchSite", "registerLaunch", 'class="paper-wing left"', 'class="gas-bubble b1"'):
+    assert marker in game_js, marker
+for marker in ("touch-action:manipulation", ".craft-bottom", ".craft-neck", ".craft-cap", ".paper-wing", ".gas-bubble", "@keyframes cap-unscrew", "@keyframes bubble-exhaust"):
+    assert marker in game_css, marker
+assert 'class="flame"' not in game_js
+assert "@keyframes flame" not in game_css
+for marker in ("CONTINENT_IDS", "registerLaunch", "advanceCountdown", "nearestLaunchSite"):
+    assert marker in game_state, marker
+for marker in ("sphere click", "inverted bottle", "paper wings"):
+    assert marker in game_test, marker
+
+package = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
+assert package["kvassistentRelease"] == version
+assert package["onesCount"] == ones
+assert package["scripts"]["test:game"] == "node scripts/test-game.mjs"
+
 prepare = (ROOT / "scripts/prepare-release.py").read_text(encoding="utf-8")
 for pattern in (r"KVASSISTENT\s+\d+", r"КВАССИСТЕНТ\s+\d+", r"第\s*\d+\s*版"):
     assert pattern in prepare, pattern
+assert "companion/game/game.js" in prepare
+assert r"kvassistent-globe-v\d+" in prepare
 
 assert (ROOT / "V2_PLAN.md").is_file()
-print(f"version contract ok: {human} / {technical} / next Версия {next_release}; feedback, stories and game labels verified")
+print(f"version contract ok: {human} / {technical} / next Версия {next_release}; feedback, stories, clickable globe and carbonation craft verified")
