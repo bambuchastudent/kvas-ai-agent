@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ — квас «Жижа» твоими руками</title>
+<meta name="description" content="ИИ управляет приготовлением домашнего кваса «Жижа», а ты делаешь его своими руками. Личный КВАССИСТЕНТ ведёт партию шаг за шагом.">
+
+
+
+
+
+
+
+
+
+<style>
+@page {
+  size: A4;
+  margin: 20mm 18mm 22mm;
+  @bottom-left {
+    content: "КВАССИСТЕНТ v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1";
+    font-size: 8.5pt;
+    color: #746856;
+  }
+  @bottom-right {
+    content: "Page " counter(page) " / " counter(pages);
+    font-size: 8.5pt;
+    color: #746856;
+  }
+}
+:root {
+  --ink: #2a2118;
+  --muted: #6f6252;
+  --gold: #b47718;
+  --paper: #fffdf7;
+  --soft: #f4ead7;
+  --border: #dbc9a9;
+}
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Noto Sans", "Noto Sans CJK SC", "DejaVu Sans", sans-serif;
+  font-size: 11pt;
+  line-height: 1.55;
+}
+main { max-width: 920px; margin: 0 auto; padding: 30px; }
+.cover {
+  border: 1px solid var(--border);
+  border-top: 8px solid var(--gold);
+  background: linear-gradient(145deg, #fffdf7, #f8efdd);
+  padding: 34px;
+  margin-bottom: 30px;
+  border-radius: 14px;
+}
+.eyebrow { color: var(--gold); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+h1 { font-size: 30pt; line-height: 1.08; margin: 12px 0; }
+.subtitle { color: var(--muted); font-size: 15pt; }
+.hero-copy {
+  max-width: 760px;
+  margin: 16px 0 0;
+  font-size: 12.5pt;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+.button.primary {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #fffdf7;
+}
+.meta { color: var(--muted); margin-top: 18px; font-size: 9.5pt; }
+h2 {
+  font-size: 18pt;
+  margin-top: 28px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--soft);
+  break-after: avoid;
+}
+p, li { orphans: 3; widows: 3; }
+ul, ol { padding-left: 24px; }
+li { margin: 4px 0; }
+code {
+  font-family: "Noto Sans Mono", "DejaVu Sans Mono", monospace;
+  font-size: .9em;
+  background: #f1e7d6;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+pre {
+  background: #211a13;
+  color: #fff8e8;
+  padding: 14px;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+a { color: #8c5600; }
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 30px;
+}
+.nav a, .button {
+  display: inline-block;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  text-decoration: none;
+  background: #fffaf0;
+  color: var(--ink);
+  font-weight: 700;
+}
+.language-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.language-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  background: #fffaf0;
+}
+.language-card h2 { margin-top: 0; border: 0; }
+.downloads { margin-top: 14px; }
+.landing-page {
+  min-height: 100vh;
+  background: #f2b632;
+}
+.landing-page main {
+  position: relative;
+  z-index: 2;
+}
+.landing-page .cover,
+.landing-page .language-card,
+.landing-page .gallery {
+  background: rgba(255, 253, 247, .91);
+  box-shadow: 0 18px 50px rgba(91, 54, 3, .13);
+  backdrop-filter: blur(5px);
+}
+.beer-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(255, 246, 166, .95), transparent 38%),
+    linear-gradient(180deg, #ffd969 0%, #efb42f 54%, #d99113 100%);
+}
+.beer-bubble {
+  position: absolute;
+  left: var(--x);
+  bottom: -14vh;
+  width: var(--size);
+  height: var(--size);
+  border: 2px solid rgba(255, 255, 235, .72);
+  border-radius: 50%;
+  background: rgba(255, 247, 190, .18);
+  box-shadow: inset 3px 3px 6px rgba(255, 255, 255, .42), 0 0 14px rgba(255, 244, 164, .2);
+  animation: bubble-rise var(--duration) linear var(--delay) infinite;
+}
+@keyframes bubble-rise {
+  0% { transform: translate3d(0, 0, 0) scale(.7); opacity: 0; }
+  10% { opacity: .8; }
+  55% { transform: translate3d(var(--drift), -58vh, 0) scale(1); }
+  100% { transform: translate3d(0, -125vh, 0) scale(1.12); opacity: 0; }
+}
+.gallery {
+  margin-top: 46px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+.gallery > h2 { margin-top: 0; }
+.gallery-intro { max-width: 760px; color: var(--muted); font-size: 12pt; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+.gallery-card,
+.gallery-empty {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffaf0;
+}
+.gallery-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.gallery-card-content { padding: 18px; }
+.gallery-card h3 { margin: 0 0 8px; }
+.gallery-empty {
+  display: grid;
+  grid-template-columns: minmax(210px, .8fr) minmax(260px, 1.2fr);
+  grid-column: 1 / -1;
+}
+.gallery-empty-visual {
+  display: grid;
+  place-items: center;
+  min-height: 250px;
+  background: linear-gradient(160deg, #ffd95f, #c9780c);
+}
+.kvass-glass {
+  position: relative;
+  width: 92px;
+  height: 150px;
+  border: 5px solid rgba(255,255,255,.88);
+  border-top-width: 2px;
+  border-radius: 8px 8px 24px 24px;
+  background: linear-gradient(180deg, #8b4a0a 0%, #4d2207 100%);
+  box-shadow: inset 12px 0 18px rgba(255, 206, 82, .22), 0 15px 26px rgba(62, 28, 2, .3);
+}
+.kvass-glass::before {
+  content: "";
+  position: absolute;
+  inset: 7px 5px auto;
+  height: 18px;
+  border-radius: 50%;
+  background: #f7d88a;
+  box-shadow: 0 4px 0 rgba(255,255,255,.35);
+}
+.kvass-glass::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: 24px;
+  bottom: 32px;
+  border: 2px solid rgba(255,255,255,.62);
+  border-radius: 50%;
+  box-shadow: 30px -22px 0 -2px rgba(255,255,255,.62), 14px -52px 0 -3px rgba(255,255,255,.62);
+}
+.gallery-empty-copy { padding: 28px; align-self: center; }
+.gallery-empty-copy h3 { margin-top: 0; font-size: 17pt; }
+.gallery-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+@media (max-width: 640px) {
+  main { padding: 16px; }
+  .cover { padding: 24px; }
+  .gallery-empty { grid-template-columns: 1fr; }
+  .gallery-empty-visual { min-height: 190px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .beer-bubble { animation: none; opacity: .42; transform: translateY(-35vh); }
+}
+@media print {
+  main { padding: 0; }
+  .web-only { display: none !important; }
+  .cover { break-after: page; }
+}
+
+.role-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0;
+}
+.role-chip {
+  padding: 14px 16px;
+  border: 1px solid rgba(238, 181, 63, .58);
+  border-radius: 14px;
+  background: rgba(255, 250, 237, .09);
+  color: #fffaf0;
+  font-weight: 800;
+  text-align: center;
+}
+.role-chip strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #eeb53f;
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+@media (max-width: 720px) {
+  .role-strip { grid-template-columns: 1fr; }
+}
+.people-quickstart,
+.audience-section {
+  margin-top: 34px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 253, 247, .94);
+  box-shadow: 0 18px 50px rgba(91, 54, 3, .12);
+  backdrop-filter: blur(5px);
+}
+.people-quickstart > h2,
+.audience-section > h2 { margin-top: 0; }
+.section-kicker {
+  display: inline-block;
+  margin-bottom: 5px;
+  color: var(--gold);
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.section-lead {
+  max-width: 790px;
+  color: var(--muted);
+  font-size: 12.5pt;
+}
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 15px;
+  margin-top: 22px;
+}
+.quick-card {
+  padding: 19px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffaf0;
+}
+.quick-card-number {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: white;
+  font-weight: 900;
+}
+.quick-card h3 { margin: 12px 0 7px; }
+.quick-card p { margin: 0; }
+.safety-callout {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-left: 5px solid #9f2d20;
+  border-radius: 10px;
+  background: #fff0e9;
+}
+.audience-section.people { border-top: 8px solid #b47718; }
+.audience-section.agents { border-top: 8px solid #403b7a; }
+.audience-section.agents .section-kicker { color: #403b7a; }
+.audience-section.agents .language-card { background: #f7f5ff; }
+.audience-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+.version-counter {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(180, 119, 24, .15);
+  color: #7a4c06;
+  font-weight: 800;
+}
+@media (max-width: 640px) {
+  .people-quickstart,
+  .audience-section { padding: 20px; }
+}
+
+.site-topbar{position:sticky;top:0;z-index:40;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin:0 0 22px;padding:14px 18px;border:1px solid rgba(180,119,24,.2);border-radius:20px;background:rgba(255,251,241,.94);backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(52,31,8,.08)}
+.topbar-brand{display:flex;flex-direction:column;gap:4px}.topbar-brand strong{color:#503107}.topbar-brand span{color:var(--muted);font-size:.92rem}.topbar-links,.header-links{display:flex;flex-wrap:wrap;gap:9px}.topbar-links a,.header-links a{padding:9px 13px;border:1px solid rgba(180,119,24,.2);border-radius:999px;background:#fff;color:#2c251b;text-decoration:none;font-weight:800}
+.header-language{display:flex;flex-wrap:wrap;align-items:center;gap:9px}.header-language label{font-weight:900;color:#7a4c06}.header-language select{padding:10px 13px;border:1px solid rgba(180,119,24,.25);border-radius:999px;background:#fff;font:inherit}.header-language a{padding:10px 13px;border-radius:999px;background:#b47718;color:#fff;text-decoration:none;font-weight:850}.header-language a.secondary{background:#fff;color:#7a4c06;border:1px solid rgba(180,119,24,.25)}
+.version-link{color:inherit;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}.version-banner{margin:16px 0;padding:15px 18px;border:1px solid rgba(255,255,255,.18);border-radius:16px;background:rgba(255,255,255,.07);color:#fff4ce;font-weight:850;overflow-wrap:anywhere}
+.globe-game-release,.all-links-release,.companion-release,.localization-release,.comic-release{margin:30px 0;padding:clamp(24px,5vw,44px);border-radius:26px}.globe-game-release{position:relative;overflow:hidden;color:#eef5ff;border:2px solid #244b88;background:radial-gradient(circle at 30% 68%,rgba(38,117,213,.26),transparent 38%),linear-gradient(180deg,#0b1734,#040914)}.globe-game-release::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,#fff 0 1px,transparent 1.4px);background-size:91px 91px;opacity:.22;pointer-events:none}.globe-game-release>*{position:relative}.globe-game-release .eyebrow{color:#ffdc7a}.globe-game-release h2{margin:10px 0;color:#fff8e8;font-size:clamp(38px,7vw,72px);line-height:.95}.globe-game-release p{max-width:780px;color:#becce6}.globe-preview{display:grid;grid-template-columns:minmax(250px,1fr) minmax(270px,1fr);gap:25px;align-items:center}.mini-globe{position:relative;width:min(100%,430px);aspect-ratio:1;margin:auto;border:2px solid rgba(186,230,255,.65);border-radius:50%;background:radial-gradient(circle at 30% 24%,#81d5ff 0 4%,#1e82d0 28%,#09569f 58%,#031c43 100%);box-shadow:inset -42px -20px 70px rgba(0,0,0,.58),0 0 48px rgba(62,154,255,.52);overflow:hidden}.mini-globe::before{content:"";position:absolute;inset:12%;background:#79b850;clip-path:polygon(4% 20%,18% 2%,34% 9%,42% 26%,34% 42%,27% 61%,18% 58%,10% 43%,0 39%,46% 25%,56% 9%,70% 12%,79% 27%,71% 38%,60% 39%,49% 30%,57% 45%,68% 43%,78% 55%,75% 77%,64% 92%,56% 70%,50% 52%,82% 18%,95% 10%,100% 28%,92% 47%,82% 52%,90% 67%,100% 74%,94% 88%,80% 91%,75% 75%,61% 66%)}.mini-globe::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 27% 18%,rgba(255,255,255,.34),transparent 26%),radial-gradient(circle at 70% 75%,transparent 46%,rgba(0,0,0,.45) 82%)}.globe-dot{position:absolute;z-index:2;width:18px;height:18px;border-radius:50%;background:#f0bb45;box-shadow:0 0 0 5px rgba(240,187,69,.18),0 0 18px #f0bb45}.globe-dot:nth-child(1){left:24%;top:32%}.globe-dot:nth-child(2){left:35%;top:66%}.globe-dot:nth-child(3){left:51%;top:28%}.globe-dot:nth-child(4){left:54%;top:56%}.globe-dot:nth-child(5){left:73%;top:35%}.globe-dot:nth-child(6){left:79%;top:70%}.game-copy{display:grid;gap:12px}.game-copy article{padding:15px;border:1px solid rgba(255,255,255,.13);border-radius:16px;background:rgba(255,255,255,.045);color:#c6d3e9}.game-copy strong{display:block;color:#fff8e8}.game-cta{display:inline-flex;justify-content:center;padding:15px 22px;border-radius:999px;background:#f0bb45;color:#17110a;text-decoration:none;font-weight:950}
+.all-links-release{border:2px solid #d7c39a;background:linear-gradient(135deg,#fffaf0,#fff)}.all-links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:22px}.all-links-grid a{display:flex;min-height:82px;flex-direction:column;justify-content:center;padding:14px 16px;border:1px solid rgba(180,119,24,.18);border-radius:18px;background:#fff;color:#1f1811;text-decoration:none;box-shadow:0 10px 24px rgba(64,37,6,.06)}.all-links-grid span{color:var(--muted);font-size:.93rem}.stable-url{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere}
+.companion-release{color:#f6f0df;background:#17130d;border:1px solid #67522a}.companion-release h2{color:#fff8e8}.companion-release p{color:#c8bea8}.companion-release a{display:inline-flex;padding:13px 18px;border-radius:999px;background:#f0bb45;color:#17130d;text-decoration:none;font-weight:900}
+.localization-release{border:2px solid #317054;background:linear-gradient(135deg,#effcf4,#fffdf7)}.localization-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:11px}.localization-grid article{padding:15px;border:1px solid #b8dcc7;border-radius:16px;background:#fff}.localization-grid strong{display:block;margin-bottom:5px}.localization-note{margin-top:16px;padding:14px;border-left:5px solid #317054;background:#fff}
+.comic-release{border:2px solid #493a8a;background:#f6f3ff}.comic-release img{display:block;width:min(100%,900px);margin:20px auto 0;border:3px solid #2b244d;border-radius:18px}.comic-release figcaption{max-width:900px;margin:10px auto;color:var(--muted)}
+@media(max-width:760px){.globe-preview{grid-template-columns:1fr}.site-topbar{justify-content:flex-start}.header-language,.topbar-links{width:100%}.header-language select{flex:1;min-width:160px}}
+
+
+body.landing-page,body{position:relative;background:#03050d!important;overflow-x:hidden}
+body.landing-page .beer-background{display:none!important}
+body::before{content:"";position:fixed;inset:-10%;z-index:0;pointer-events:none;background:
+radial-gradient(1200px 800px at 15% 20%,rgba(128,82,255,.32),transparent 55%),
+radial-gradient(900px 700px at 85% 15%,rgba(39,170,255,.22),transparent 55%),
+radial-gradient(1000px 900px at 60% 92%,rgba(255,168,45,.15),transparent 55%),
+radial-gradient(circle at center,#0a0f22 0%,#03050d 65%)}
+body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:
+radial-gradient(circle,#fff 0 1px,transparent 1.5px) 0 0/54px 54px,
+radial-gradient(circle,rgba(255,255,255,.55) 0 1px,transparent 1.5px) 27px 27px/94px 94px,
+radial-gradient(circle,rgba(255,255,255,.35) 0 .8px,transparent 1.4px) 13px 41px/140px 140px;
+animation:kvass-twinkle 6s ease-in-out infinite}
+main,footer{position:relative;z-index:2}
+.cover,.people-quickstart,.audience-section,.gallery,.language-card,.quick-card,.role-chip,.safety-callout{color:#2a2118}
+.cover{background:linear-gradient(145deg,#fffdf7,#f8efdd)!important;box-shadow:0 24px 70px rgba(0,0,0,.5)!important;border:2px solid rgba(238,181,63,.85)!important}
+.people-quickstart,.audience-section,.gallery{background:rgba(255,253,247,.97)!important;box-shadow:0 24px 70px rgba(0,0,0,.55)!important;border:1px solid rgba(238,181,63,.55)!important}
+.language-card,.quick-card{background:#fffaf0!important;color:#2a2118}
+.role-chip{background:rgba(255,250,237,.98)!important;color:#3a2410!important;border:1px solid rgba(180,119,24,.6)!important}
+.role-chip strong{color:#8c5600!important}
+.safety-callout{background:#fff0e9!important;color:#4a1408!important;border-left:5px solid #9f2d20!important}
+.eyebrow,.section-kicker{color:#8c5600!important}
+.section-lead,.subtitle,.gallery-intro{color:#4a3d2b!important}
+.button.primary{background:#8c5600!important;border-color:#8c5600!important;color:#fffdf7!important}
+.button{background:#fffaf0!important;color:#2a2118!important;border:1px solid #b47718!important}
+.button:hover{background:#f7e6b8!important}
+.kvass-space-layer{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.kvass-orbit{position:absolute;top:50%;left:50%;width:0;height:0;animation:kvass-spin linear infinite}
+.kvass-orbit:nth-child(1){animation-duration:38s}
+.kvass-orbit:nth-child(2){animation-duration:52s;animation-direction:reverse}
+.kvass-orbit:nth-child(3){animation-duration:44s;animation-delay:-12s}
+.kvass-orbit:nth-child(4){animation-duration:66s;animation-direction:reverse;animation-delay:-22s}
+.kvass-orbit:nth-child(5){animation-duration:30s;animation-delay:-4s}
+.kvass-orbit:nth-child(6){animation-duration:74s;animation-direction:reverse;animation-delay:-30s}
+.kvass-satellite{position:absolute;left:0;top:0;width:26px;height:70px;transform-origin:center center;
+border:2px solid rgba(255,231,166,.85);border-radius:9px 9px 13px 13px;
+background:linear-gradient(90deg,rgba(255,255,255,.28),rgba(110,58,12,.9) 38%,rgba(30,15,5,.98));
+box-shadow:0 0 22px rgba(255,186,72,.42),0 0 46px rgba(255,120,32,.22)}
+.kvass-orbit:nth-child(1) .kvass-satellite{translate:340px -35px;rotate:90deg}
+.kvass-orbit:nth-child(2) .kvass-satellite{translate:470px -35px;rotate:90deg;scale:.9}
+.kvass-orbit:nth-child(3) .kvass-satellite{translate:230px -35px;rotate:90deg;scale:.75}
+.kvass-orbit:nth-child(4) .kvass-satellite{translate:560px -35px;rotate:90deg;scale:.85}
+.kvass-orbit:nth-child(5) .kvass-satellite{translate:150px -35px;rotate:90deg;scale:.6}
+.kvass-orbit:nth-child(6) .kvass-satellite{translate:640px -35px;rotate:90deg;scale:.7}
+.kvass-satellite::before{content:"";position:absolute;left:6px;top:-18px;width:12px;height:20px;
+border:2px solid rgba(255,231,166,.85);border-bottom:0;border-radius:5px 5px 0 0;background:#6b2f0b}
+.kvass-satellite::after{content:"КВАС";position:absolute;left:3px;right:3px;top:29px;padding:3px 0;
+border-radius:4px;background:#f2c05c;color:#201005;font:900 8px/1 sans-serif;text-align:center;letter-spacing:.5px}
+.kvass-flame{position:absolute;left:50%;bottom:-30px;width:10px;height:34px;translate:-50% 0;
+background:radial-gradient(ellipse at top,rgba(255,240,120,.95),rgba(255,120,32,.75) 40%,transparent 78%);
+filter:blur(2px);border-radius:50%;animation:kvass-flicker .18s steps(2) infinite}
+@keyframes kvass-spin{to{rotate:360deg}}
+@keyframes kvass-flicker{0%{opacity:.7;scale:1 .9}100%{opacity:1;scale:1.15 1.15}}
+@keyframes kvass-twinkle{0%,100%{opacity:.85}50%{opacity:1}}
+.human-manifesto-release,.telegram-release{margin:30px 0;padding:clamp(22px,5vw,44px);border-radius:28px;position:relative;overflow:hidden}
+.human-manifesto-release{border:2px solid rgba(255,207,98,.72);background:linear-gradient(145deg,rgba(22,13,44,.96),rgba(7,19,48,.96));color:#fff8df;box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.human-manifesto-release::before{content:"ORIGINAL HUMAN SIGNAL";position:absolute;right:18px;top:15px;color:rgba(255,222,143,.5);font:900 11px/1 sans-serif;letter-spacing:2px}
+.manifesto-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(250px,.8fr);gap:20px;margin-top:22px}.manifesto-original,.manifesto-explained{padding:20px;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14)}
+.manifesto-original pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;color:#fff8df;font:700 clamp(14px,2vw,18px)/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}.manifesto-explained p{color:#d8e4ff}.manifesto-explained strong{color:#ffd778}.manifesto-kicker{color:#ffd778;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.telegram-release{border:2px solid #4da9e9;background:linear-gradient(135deg,#07182d,#0b3150);color:#eef8ff}.telegram-release h2{color:#fff}.telegram-release p{color:#c8e6f7}.telegram-release a{display:inline-flex;padding:13px 18px;border-radius:999px;background:#55acee;color:#06111d;text-decoration:none;font-weight:950}
+@media(max-width:760px){.manifesto-grid{grid-template-columns:1fr}.kvass-orbit:nth-child(n+4){display:none}}
+@media(prefers-reduced-motion:reduce){.kvass-orbit,.kvass-satellite,.kvass-flame,body::after{animation:none}}
+
+
+/* kvassistent-compact-menu */
+.menu-toggle{display:none;align-items:center;gap:7px;padding:9px 12px;border:1px solid rgba(180,119,24,.28);border-radius:999px;background:#fff;color:#2a2118;font:800 15px/1 system-ui;cursor:pointer;touch-action:manipulation}
+.menu-toggle:focus-visible{outline:3px solid rgba(180,119,24,.35);outline-offset:2px}
+.telegram-direct{background:#229ed9!important;color:#fff!important;border-color:#229ed9!important}
+.inline-language-picker{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-left:auto;padding:5px;border:1px solid rgba(180,119,24,.28);border-radius:999px;background:rgba(255,253,247,.96);box-shadow:0 8px 24px rgba(42,33,24,.09)}
+.inline-language-picker>span{padding:0 6px;color:#6f6252;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.inline-language-button{min-width:42px;border:0;border-radius:999px;padding:9px 11px;background:transparent;color:#2a2118;font:900 13px/1 system-ui;cursor:pointer;touch-action:manipulation}
+.inline-language-button:hover{background:#f4ead7}
+.inline-language-button[aria-pressed="true"]{background:#b47718;color:#fffdf7;box-shadow:0 5px 16px rgba(180,119,24,.28)}
+.inline-language-button:focus-visible{outline:3px solid rgba(180,119,24,.36);outline-offset:2px}
+#header-language-select[hidden]{display:none!important}
+#kvass-language-content[aria-busy="true"]{opacity:.62}
+.header-version-badge{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 12px;border-radius:999px;background:#2a2118;color:#fffdf7;font:950 13px/1 system-ui;letter-spacing:.08em;box-shadow:0 7px 18px rgba(42,33,24,.2);white-space:nowrap}
+#kvass-language-content{transition:opacity .12s ease}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]){margin:18px 0 42px;padding:clamp(20px,4vw,42px);border:1px solid rgba(219,201,169,.96);border-radius:26px;background:rgba(255,253,247,.98);color:#2a2118;box-shadow:0 24px 70px rgba(0,0,0,.28);backdrop-filter:blur(14px)}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) :where(h1,h2,h3,h4,p,li,strong,em,code,span){color:inherit}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) a{color:#7a4c06;text-decoration-thickness:2px;text-underline-offset:3px}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) .cover{background:linear-gradient(145deg,#fffdf7,#f8efdd)!important;color:#2a2118!important;box-shadow:none!important}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) article{color:#2a2118}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) pre{color:#fff8e8;background:#211a13}
+#kvass-language-content[data-active-lang]:not([data-active-lang="ru"]) h2{border-bottom-color:#dbc9a9}
+
+@media(max-width:980px){.inline-language-picker{order:4;width:100%;justify-content:center;margin-left:0;border-radius:18px}.inline-language-picker>span{width:100%;text-align:center}}
+@media(max-width:760px){
+  .site-topbar{transition:none!important;transform:translateZ(0);backface-visibility:hidden;contain:paint}
+  .menu-toggle{display:inline-flex;margin-left:auto}
+  .site-topbar.is-compact{padding:8px 10px;gap:8px;border-radius:0 0 16px 16px;box-shadow:0 10px 28px rgba(0,0,0,.22)}
+  .site-topbar.is-compact .topbar-brand{flex:1;min-width:0}
+  .site-topbar.is-compact .topbar-brand span,.site-topbar.is-compact .topbar-links{display:none}.site-topbar.is-compact .header-version-badge{min-height:34px;padding:7px 9px}
+  .site-topbar.is-compact .topbar-brand strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .site-topbar.is-compact .inline-language-picker{display:flex;width:100%;padding:4px;gap:3px}
+  .site-topbar.is-compact .inline-language-picker>span{display:none}
+  .site-topbar.is-compact .inline-language-button{flex:1;min-width:0;padding:8px 5px}
+  .site-topbar.is-compact[data-expanded="true"]{padding:14px;align-items:flex-start}
+  .site-topbar.is-compact[data-expanded="true"] .topbar-brand{width:calc(100% - 90px)}
+  .site-topbar.is-compact[data-expanded="true"] .topbar-brand span{display:block}
+  .site-topbar.is-compact[data-expanded="true"] .topbar-links{display:flex;width:100%}
+}
+
+</style>
+<meta name="description" content="КВАССИСТЕНТ — ИИ-агент, который ведёт человека от сухарей до настоящего домашнего кваса «Жижа». Offline PWA, шесть языков, JSON-передача другим ИИ-агентам."><meta name="keywords" content="kvassistent, КВАССИСТЕНТ, квас Жижа, homemade kvass, homemade kvas, russian kvass recipe, ai fermentation assistant, agent-native instructions, human-first ai, ai kitchen assistant, offline pwa fermentation, AI_AGENT_START.md, openai codex, codex agent, live batch companion, домашний квас, рецепт кваса, ЖИЖА"><meta name="author" content="Dmitrii Kashirin"><meta property="og:locale" content="ru_RU"><meta property="og:locale:alternate" content="en_US"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"KVASSISTENT","alternateName":["КВАССИСТЕНТ","Kvas AI Agent"],"applicationCategory":"LifestyleApplication","operatingSystem":"Any (PWA)","url":"https://kvassistent.pages.dev/","softwareVersion":"v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1","description":"KVASSISTENT is a human-first AI agent that guides you to brew real kvass «Zhizha» from stale bread. Offline PWA, 6 languages, JSON handoff for other AI agents.","inLanguage":["ru","en","es","de","zh-CN","el"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Dmitrii Kashirin","url":"https://github.com/bambuchastudent"},"codeRepository":"https://github.com/bambuchastudent/kvas-ai-agent","license":"https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/LICENSE","screenshot":"https://kvassistent.pages.dev/share/devpost-cover.png"},{"@type":"HowTo","name":"Brew homemade kvass Zhizha with KVASSISTENT","description":"Guided 3-litre first batch: dry the bread, brew the wort, ferment, carbonate, chill.","totalTime":"PT18H","supply":[{"@type":"HowToSupply","name":"3 L water"},{"@type":"HowToSupply","name":"180-220 g fully dried bread"},{"@type":"HowToSupply","name":"100-120 g sugar"},{"@type":"HowToSupply","name":"0.5-1 g dry yeast for first batch"}],"step":[{"@type":"HowToStep","name":"Assemble","text":"Gather water, dried bread, sugar and starter."},{"@type":"HowToStep","name":"Infuse","text":"Toast bread dark-gold, pour boiling water, steep 4-8 h, strain."},{"@type":"HowToStep","name":"Ferment","text":"Cool to 25-35C, add starter, cover with cloth, 8-12 h."},{"@type":"HowToStep","name":"Carbonate and chill","text":"Bottle in PET, wait 2-6 h for firm bottle, then chill 8+ h."}]}]}</script><style>
+/* kvassistent-safe-interactions */
+:where(button,a,[role="button"],input,select,textarea,summary){touch-action:manipulation}
+:where(button,a,[role="button"]){-webkit-tap-highlight-color:transparent}
+body::after,.kvass-flame{animation:none!important}
+.kvass-orbit{animation-duration:90s!important}
+@media(max-width:760px){.kvass-orbit{animation:none!important}.kvass-space-layer{opacity:.55}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .kvass-space-layer{display:none!important}
+}
+</style><meta name="robots" content="noindex,follow"><meta name="googlebot" content="noindex,follow"><link rel="canonical" href="https://kvassistent.pages.dev/"><link rel="alternate" hreflang="ru" href="https://kvassistent.pages.dev/ru/summary/"><link rel="alternate" hreflang="en" href="https://kvassistent.pages.dev/en/summary/"><link rel="alternate" hreflang="es" href="https://kvassistent.pages.dev/es/summary/"><link rel="alternate" hreflang="de" href="https://kvassistent.pages.dev/de/summary/"><link rel="alternate" hreflang="zh-CN" href="https://kvassistent.pages.dev/zh-CN/summary/"><link rel="alternate" hreflang="el" href="https://kvassistent.pages.dev/el/summary/"><link rel="alternate" hreflang="x-default" href="https://kvassistent.pages.dev/"><meta property="og:site_name" content="KVASSISTENT"><meta property="og:type" content="website"><meta property="og:title" content="ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ — квас «Жижа» твоими руками"><meta property="og:description" content="ИИ управляет приготовлением домашнего кваса «Жижа», а ты делаешь его своими руками. Личный КВАССИСТЕНТ ведёт партию шаг за шагом."><meta property="og:url" content="https://kvassistent.pages.dev/"><meta property="og:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="800"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ — квас «Жижа» твоими руками"><meta name="twitter:description" content="ИИ управляет приготовлением домашнего кваса «Жижа», а ты делаешь его своими руками. Личный КВАССИСТЕНТ ведёт партию шаг за шагом."><meta name="twitter:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"></head>
+<body class="landing-page">
+<div class="beer-background web-only" aria-hidden="true"><span class="beer-bubble" style="--x:4%;--size:18px;--delay:-2s;--duration:17s;--drift:22px"></span><span class="beer-bubble" style="--x:10%;--size:34px;--delay:-8s;--duration:23s;--drift:-28px"></span><span class="beer-bubble" style="--x:17%;--size:12px;--delay:-4s;--duration:14s;--drift:18px"></span><span class="beer-bubble" style="--x:23%;--size:52px;--delay:-15s;--duration:28s;--drift:34px"></span><span class="beer-bubble" style="--x:31%;--size:24px;--delay:-11s;--duration:18s;--drift:-21px"></span><span class="beer-bubble" style="--x:39%;--size:15px;--delay:-5s;--duration:16s;--drift:26px"></span><span class="beer-bubble" style="--x:47%;--size:42px;--delay:-19s;--duration:25s;--drift:-35px"></span><span class="beer-bubble" style="--x:54%;--size:20px;--delay:-7s;--duration:15s;--drift:19px"></span><span class="beer-bubble" style="--x:61%;--size:31px;--delay:-14s;--duration:22s;--drift:30px"></span><span class="beer-bubble" style="--x:69%;--size:13px;--delay:-3s;--duration:13s;--drift:-16px"></span><span class="beer-bubble" style="--x:75%;--size:47px;--delay:-21s;--duration:27s;--drift:38px"></span><span class="beer-bubble" style="--x:82%;--size:22px;--delay:-9s;--duration:18s;--drift:-24px"></span><span class="beer-bubble" style="--x:89%;--size:36px;--delay:-16s;--duration:24s;--drift:31px"></span><span class="beer-bubble" style="--x:95%;--size:16px;--delay:-6s;--duration:15s;--drift:-18px"></span></div>
+<main>
+
+<header class="site-topbar web-only" id="site-topbar" data-expanded="false">
+  <div class="topbar-brand"><strong id="header-brand-title">КВАССИСТЕНТ</strong><span id="header-brand-subtitle">Последняя версия и все основные входы</span></div>
+  <button class="menu-toggle" id="menu-toggle" type="button" aria-controls="site-topbar" aria-expanded="false">☰ <span id="menu-label">Меню</span></button><nav class="topbar-links"><a href="/game/" data-header-key="game">Игра</a><a href="/companion/" data-header-key="companion">Живая партия</a><a href="#all-links" data-header-key="links">Все ссылки</a><a href="#for-people" data-header-key="people">Для людей</a><a href="#for-ai-agents" data-header-key="ai">Для ИИ</a><a href="/feedback/" data-header-key="feedback">Фидбек</a><a href="/telegram/" data-header-key="telegram">Telegram</a><a href="https://github.com/bambuchastudent/kvas-ai-agent" data-header-key="github">GitHub</a></nav>
+  <span class="header-version-badge" id="header-version-badge" aria-label="KVASSISTENT Версия 29">Версия 29</span><div class="inline-language-picker" role="group" aria-label="Language · Язык"><span id="header-language-label">Язык</span><button class="inline-language-button" type="button" data-kvass-lang="ru" aria-label="Русский" aria-pressed="false">RU</button><button class="inline-language-button" type="button" data-kvass-lang="en" aria-label="English" aria-pressed="false">EN</button><button class="inline-language-button" type="button" data-kvass-lang="es" aria-label="Español" aria-pressed="false">ES</button><button class="inline-language-button" type="button" data-kvass-lang="de" aria-label="Deutsch" aria-pressed="false">DE</button><button class="inline-language-button" type="button" data-kvass-lang="zh-CN" aria-label="简体中文" aria-pressed="false">中文</button><button class="inline-language-button" type="button" data-kvass-lang="el" aria-label="Ελληνικά" aria-pressed="false">EL</button><select id="header-language-select" hidden aria-hidden="true" tabindex="-1"><option value="ru">Русский</option><option value="en">English</option><option value="es">Español</option><option value="de">Deutsch</option><option value="zh-CN">简体中文</option><option value="el">Ελληνικά</option></select></div>
+</header>
+<div id="kvass-language-content">
+
+  <section class="cover">
+    <div class="eyebrow">Версия 29 · технический номер: <a class="version-link" href="/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/">v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1</a></div>
+    <h1>ТВОЙ ЛИЧНЫЙ КВАССИСТЕНТ</h1>
+    <div class="subtitle">ИИ управляет приготовлением кваса «Жижа». Ты делаешь его своими руками.</div>
+    <div class="role-strip" aria-label="Роли КВАССИСТЕНТА и человека">
+      <div class="role-chip"><strong>ИИ управляет</strong>ведёт партию и выбирает следующий шаг</div>
+      <div class="role-chip"><strong>Ты готовишь</strong>выполняешь действия своими руками</div>
+      <div class="role-chip"><strong>Результат</strong>твой домашний квас «Жижа»</div>
+    </div>
+    <p class="hero-copy">КВАССИСТЕНТ ведёт состояние партии, выбирает следующий безопасный шаг и объясняет его. Человек своими руками подготавливает ингредиенты, выполняет действия и подтверждает результат.</p>
+    
+<nav class="hero-actions web-only" aria-label="Быстрые действия"><a class="button primary" href="/game/">Играть</a><a class="button" href="/companion/">Живая партия</a><a class="button" href="#all-links">Все ссылки</a><a class="button" href="https://github.com/bambuchastudent/kvas-ai-agent">GitHub</a></nav>
+<div class="header-links web-only"><a href="/">Последняя версия</a><a href="/game/">/game/</a><a href="/companion/">/companion/</a><a href="/feedback/">/feedback/</a></div>
+
+  </section>
+
+  
+
+<section class="human-manifesto-release" id="human-manifesto">
+  <div class="manifesto-kicker">Человек написал первым · Human-authored comes first</div>
+  <h2>ЭТО ТВОЙ КВАС</h2>
+  <p>Оригинальный текст сохранён дословно. Профессиональное объяснение стоит рядом, а не вместо него.</p>
+  <div class="manifesto-grid">
+    <div class="manifesto-original"><pre>ЭТО ТВОЙ КВАС делай с ним что хочешь
+KVASSISTENT поможет тебе сделать это ПРАВИЛЬНО и добиться НАИЛУЧШЕГО результата
+МЫ всегда рады НОВЫМ идеям и именно ТЫ управляешь КВАСОМ
+
+You could build your own kvas, the recipe is open and nemed DZHIDHZA (ЖИЖА) ты его готовишь сам so you responsible with your solutions. 
+используй свой KVASSISTENT
+
+The text in the video originally written in RUSSIAN человеком и ога его придумала и есть оригинал все остальное не ИИ 
+
+Из инструментов used 3 cameras just to make this и 3 ИИ (RIP codex gemini claude)
+
+
+**The text below was read and it consistent but generated and I agree with it almost, all things was looking strange was removed. Use your AI and it would guide you as possible**</pre></div>
+    <div class="manifesto-explained">
+      <h3>What this means</h3>
+      <p><strong>KVASSISTENT is human-first AI for manual craft.</strong></p>
+      <p>You dry the bread, mix the wort, observe the jar, smell it, taste it, and decide. AI remembers the state, explains risk, and asks for the next observation without pretending it can see or smell the batch.</p>
+      <p><strong>Humans brew. AI guides.</strong></p>
+    </div>
+  </div>
+</section>
+<section class="telegram-release" id="telegram">
+  <div class="manifesto-kicker">Version 29 · feedback channel</div>
+  <h2>КВАССИСТЕНТ идёт в Telegram</h2>
+  <p>Каркас бота уже входит в релиз. Токен не хранится в репозитории. После безопасного подключения бот будет отвечать: «Какой хороший квас ты задумал! Вот это молодец — ай да хорош!»</p>
+  <a href="/telegram/">Открыть страницу Telegram →</a>
+</section>
+
+<section class="globe-game-release" id="globe-game"><div class="eyebrow">Игра сразу наверху</div><h2>Глобальная игра на сфере</h2><p>Она выглядит плоской только потому, что экран пока не согласился стать шаром. Внутри — шесть континентов, ручные пуски, автозапуск каждые 10 секунд и локальный счётчик.</p><div class="globe-preview"><div class="mini-globe" aria-hidden="true"><span class="globe-dot"></span><span class="globe-dot"></span><span class="globe-dot"></span><span class="globe-dot"></span><span class="globe-dot"></span><span class="globe-dot"></span></div><div class="game-copy"><div class="version-banner">Версия 29 · технический номер: <a class="version-link" href="/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/">v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1</a></div><article><strong>Короткая актуальная ссылка</strong><span class="stable-url">kvassistent.pages.dev/game/</span></article><article><strong>Локализация</strong>Русский и английский — источники знаний; другие языки совпадают по правилам и используют английский fallback, а не русский.</article><article><strong>Газ и реальность</strong>Игра обещает максимум пузырьков. Реальный дрожжевой квас не может честно гарантировать 0,0% алкоголя.</article><a class="game-cta" href="/game/">ИГРАТЬ НА ГЛОБУСЕ →</a></div></div></section>
+
+
+<section class="all-links-release" id="all-links"><div class="eyebrow">Короткие адреса всегда ведут на последнее</div><h2>Больше никаких обязательных километров из единиц</h2><p>Длинная ссылка остаётся неизменяемым адресом конкретного релиза. Для обычного использования теперь есть короткие постоянные адреса.</p><div class="all-links-grid"><a href="/"><strong>Главная</strong><span class="stable-url">kvassistent.pages.dev/</span></a><a href="/game/"><strong>Игра</strong><span class="stable-url">kvassistent.pages.dev/game/</span></a><a href="/companion/"><strong>Живая партия</strong><span class="stable-url">kvassistent.pages.dev/companion/</span></a><a href="/feedback/"><strong>Фидбек</strong><span class="stable-url">kvassistent.pages.dev/feedback/</span></a><a href="/ru/summary/"><strong>Русская инструкция</strong><span>Последняя локализация</span></a><a href="/en/summary/"><strong>English guide</strong><span>Latest localization</span></a><a href="/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/"><strong>Версия 29</strong><span class="stable-url">v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1</span></a><a href="https://github.com/bambuchastudent/kvas-ai-agent"><strong>GitHub</strong><span>Код и история релизов</span></a></div></section>
+
+<section class="people-quickstart" id="best-human-instructions">
+    <span class="section-kicker">Сначала самое нужное</span>
+    <h2>Лучшие инструкции для людей</h2>
+    <p class="section-lead">Базовый безопасный путь на 3 литра. Для первой партии используются дрожжи; для следующих можно брать старый квас или осадок.</p>
+    <div class="quick-grid">
+      <article class="quick-card">
+        <span class="quick-card-number">1</span>
+        <h3>Собери основу</h3>
+        <p>3 л воды, 180–220 г полностью сухих сухарей, 100–120 г сахара или панели. Для первой партии: 0,5–1 г сухих или 2–3 г свежих дрожжей.</p>
+      </article>
+      <article class="quick-card">
+        <span class="quick-card-number">2</span>
+        <h3>Сделай настой</h3>
+        <p>Поджарь хлеб до тёмно-золотистого цвета, залей кипятком на 4–8 часов и тщательно процеди. Для брожения нужна жидкость, а не хлебная каша.</p>
+      </article>
+      <article class="quick-card">
+        <span class="quick-card-number">3</span>
+        <h3>Запусти брожение</h3>
+        <p>Добавь сладость, остуди до 25–35°C, внеси закваску и оставь на 8–12 часов под тканью или неплотной крышкой. На жаре проверяй с 6 часов.</p>
+      </article>
+      <article class="quick-card">
+        <span class="quick-card-number">4</span>
+        <h3>Дай газ и охлади</h3>
+        <p>При нормальном запахе и пузырьках разлей в пластиковые бутылки. Догазируй 2–6 часов. Как бутылка стала твёрдой — сразу в холодильник минимум на 8 часов.</p>
+      </article>
+    </div>
+    <div class="safety-callout"><strong>Не пробовать и вылить:</strong> плесень, пушистый налёт, цветные пятна, слизь, запах гнили, ацетона, мяса или канализации. Основное брожение нельзя закрывать герметично.</div>
+  </section>
+
+  
+<section class="companion-release" id="live-batch"><div class="eyebrow">Реальный процесс отдельно от игры</div><h2>Живая партия</h2><p>Пошаговый локальный помощник хранит состояние партии на устройстве, проверяет температуру, солнце, запах, поверхность и давление.</p><a href="/companion/">Открыть короткий адрес /companion/ →</a></section>
+<section class="localization-release" id="localization"><div class="eyebrow">Локализации сопоставлены</div><h2>Одинаковые знания, числа, риски и ссылки</h2><div class="localization-grid"><article><strong>Русский</strong>Канонический источник знаний.</article><article><strong>English</strong>Canonical knowledge source and universal fallback.</article><article><strong>Español</strong>Misma estructura y seguridad.</article><article><strong>Deutsch</strong>Gleiche Struktur und Sicherheitsregeln.</article><article><strong>简体中文</strong>相同的步骤、数量和安全规则。</article><article><strong>Ελληνικά</strong>Ίδια βήματα, ποσότητες και ασφάλεια.</article></div><div class="localization-note"><strong>Правило fallback:</strong> в нерусских интерфейсах недостающая строка может временно остаться английской или быть записана местным письмом, но не должна заменяться русским текстом.</div></section>
+<section class="comic-release" id="comic-guide"><div class="eyebrow">Версия 29 · визуальное резюме</div><h2>Последняя версия, короткие ссылки и переводы</h2><figure><a href="/assets/kvassistent-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1-comic.svg"><img src="/assets/kvassistent-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1-comic.svg" alt="КВАССИСТЕНТ 29: короткие ссылки и согласованная локализация" loading="lazy"></a><figcaption>Неизменяемый релиз: <a href="/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/">v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1</a>. Обычная актуальная ссылка: <a href="/">kvassistent.pages.dev/</a>.</figcaption></figure></section>
+
+<section class="audience-section people" id="for-people">
+    <span class="section-kicker">Часть 1</span>
+    <h2>Для людей</h2>
+    <p class="section-lead">Выбери язык. Здесь только практический рецепт, порядок действий, визуальная проверка и безопасность — без внутренней агентской механики.</p>
+    <div class="language-grid">
+<article class="language-card" lang="ru">
+  <h2>Русский</h2>
+  <p>Краткий рецепт, последовательность действий и правила безопасности для человека.</p>
+  <div class="audience-links web-only">
+    <a class="button primary" href="ru/summary/">Открыть для человека</a>
+    <a class="button" href="pdfs/kvas-summary-ru-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="en">
+  <h2>English</h2>
+  <p>A short recipe, step-by-step process, and safety rules for people.</p>
+  <div class="audience-links web-only">
+    <a class="button primary" href="en/summary/">Open human guide</a>
+    <a class="button" href="pdfs/kvas-summary-en-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="es">
+  <h2>Español</h2>
+  <p>Receta breve, pasos de preparación y normas de seguridad para personas.</p>
+  <div class="audience-links web-only">
+    <a class="button primary" href="es/summary/">Abrir guía para personas</a>
+    <a class="button" href="pdfs/kvas-summary-es-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="de">
+  <h2>Deutsch</h2>
+  <p>Kurzrezept, einzelne Arbeitsschritte und Sicherheitsregeln für Menschen.</p>
+  <div class="audience-links web-only">
+    <a class="button primary" href="de/summary/">Anleitung für Menschen</a>
+    <a class="button" href="pdfs/kvas-summary-de-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="zh-CN">
+  <h2>简体中文</h2>
+  <p>面向用户的简明配方、操作步骤和安全规则。</p>
+  <div class="audience-links web-only">
+    <a class="button primary" href="zh-CN/summary/">打开用户指南</a>
+    <a class="button" href="pdfs/kvas-summary-zh-CN-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="el">
+  <h2>Ελληνικά</h2>
+  <p>Σύντομη συνταγή, βήματα παρασκευής και κανόνες ασφάλειας για ανθρώπους.</p>
+  <div class="audience-links web-only">
+    <a class="button primary" href="el/summary/">Άνοιγμα οδηγού για ανθρώπους</a>
+    <a class="button" href="pdfs/kvas-summary-el-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article></div>
+  </section>
+
+  <section class="audience-section agents" id="for-ai-agents">
+    <span class="section-kicker">Часть 2</span>
+    <h2>Для ИИ-агентов</h2>
+    <p class="section-lead">Отдельный набор инструкций: явное состояние партии, поля `null` для неизвестного, одно следующее действие, safety flags и передача контекста другому агенту.</p>
+    <div class="language-grid">
+<article class="language-card" lang="ru">
+  <h2>Русский</h2>
+  <p>Состояние партии, формат ответа, безопасность, воспроизводимость и передача между агентами.</p>
+  <div class="audience-links web-only">
+    <a class="button" href="ru/instructions/">Инструкция ИИ-агента</a>
+    <a class="button" href="pdfs/kvas-instructions-ru-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="en">
+  <h2>English</h2>
+  <p>Batch state, response format, safety, reproducibility, and handoff between agents.</p>
+  <div class="audience-links web-only">
+    <a class="button" href="en/instructions/">AI agent instructions</a>
+    <a class="button" href="pdfs/kvas-instructions-en-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="es">
+  <h2>Español</h2>
+  <p>Estado del lote, formato de respuesta, seguridad, reproducibilidad y traspaso entre agentes.</p>
+  <div class="audience-links web-only">
+    <a class="button" href="es/instructions/">Instrucciones para agente de IA</a>
+    <a class="button" href="pdfs/kvas-instructions-es-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="de">
+  <h2>Deutsch</h2>
+  <p>Chargenstatus, Antwortformat, Sicherheit, Reproduzierbarkeit und Übergabe zwischen Agenten.</p>
+  <div class="audience-links web-only">
+    <a class="button" href="de/instructions/">Anleitung für KI-Agenten</a>
+    <a class="button" href="pdfs/kvas-instructions-de-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="zh-CN">
+  <h2>简体中文</h2>
+  <p>批次状态、回复格式、安全、可复现性以及智能体之间的交接。</p>
+  <div class="audience-links web-only">
+    <a class="button" href="zh-CN/instructions/">AI 智能体说明</a>
+    <a class="button" href="pdfs/kvas-instructions-zh-CN-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article>
+
+<article class="language-card" lang="el">
+  <h2>Ελληνικά</h2>
+  <p>Κατάσταση παρτίδας, μορφή απάντησης, ασφάλεια, αναπαραγωγιμότητα και παράδοση μεταξύ πρακτόρων.</p>
+  <div class="audience-links web-only">
+    <a class="button" href="el/instructions/">Οδηγίες πράκτορα AI</a>
+    <a class="button" href="pdfs/kvas-instructions-el-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+  </div>
+</article></div>
+    <div class="audience-links web-only">
+      <a class="button" href="https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/agent-instructions/state.schema.json">JSON Schema состояния</a>
+      <a class="button" href="https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/agent-instructions/state-example.json">Пример состояния</a>
+    </div>
+  </section>
+
+  
+<section class="gallery" id="gallery">
+  <h2>Галерея успешных напитков</h2>
+  <p class="gallery-intro">Реальные партии сообщества: фотография, проверенный рецепт и заметки о результате. Галерея пополняется только настоящими напитками — без выдуманных примеров.</p>
+  
+<div class="gallery-grid">
+  <div class="gallery-empty">
+    <div class="gallery-empty-visual" aria-hidden="true"><div class="kvass-glass"></div></div>
+    <div class="gallery-empty-copy">
+      <h3>Первое место ждёт твою «Жижу»</h3>
+      <p>Пришли фотографию удачной партии, пропорции, время брожения и короткую заметку о вкусе. После проверки напиток появится здесь с указанием автора.</p>
+      <div class="gallery-actions web-only">
+        <a class="button primary" href="https://t.me/kvassistent_bot">Добавить свой напиток</a>
+        <a class="button" href="https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/gallery/README.md">Как оформить результат</a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+</div>
+<script id="kvass-language-data" type="application/json">{"ru":{"title":"КВАССИСТЕНТ — краткая инструкция человеку","html":"<section class=\"cover\">\n    <div class=\"eyebrow\">KVASSISTENT · Русский<\/div>\n    <h1>КВАССИСТЕНТ — краткая инструкция человеку<\/h1>\n    <div class=\"subtitle\">Понятный домашний квас, безопасная газировка и честные ограничения<\/div>\n    <div class=\"meta\">Версия 29. В ней 29 единиц: v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1 · Source of truth: publication/ru/summary.md<\/div>\n  <\/section>\n  <nav class=\"nav web-only\">\n    <a href=\"/\">Languages<\/a>\n    <a href=\"/ru/instructions/\">Instructions<\/a>\n    <a href=\"/pdfs/kvas-summary-ru-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf\">PDF<\/a>\n    <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">GitHub<\/a>\n  <\/nav>\n  <article><h2>Что это<\/h2>\n<p><strong>КВАССИСТЕНТ<\/strong> помогает приготовить домашний квас «Жижа» и не смешивает игру с реальной технологией. Русский и английский тексты являются источниками знаний; остальные локализации повторяют ту же структуру, числа, риски и последовательность действий.<\/p>\n<h2>Базовый рецепт на 3 литра<\/h2>\n<ul>\n<li>вода — 3 л;<\/li>\n<li>полностью сухие сухари — 180–220 г;<\/li>\n<li>желательно: 150 г белых и 50–70 г ржаных или Бородинских;<\/li>\n<li>сахар или панела — 100–120 г;<\/li>\n<li>солод — 20–30 г либо ржаная мука — 10–20 г;<\/li>\n<li>первая партия: 0,5–1 г сухих или 2–3 г свежих дрожжей;<\/li>\n<li>следующие партии: 500 мл старого кваса или 3–5 ст. л. активного осадка.<\/li>\n<\/ul>\n<h2>Короткий процесс<\/h2>\n<ol>\n<li>Поджарь хлеб до тёмно-золотистого цвета, не сжигай.<\/li>\n<li>Залей кипятком на 4–8 часов.<\/li>\n<li>Тщательно процеди через чистую марлю, сложенный бинт или пищевой фильтровальный мешок: в брожение идёт жидкость, а не хлебная каша.<\/li>\n<li>Добавь сахар или панелу и остуди настой до 25–35°C.<\/li>\n<li>Добавь закваску и прикрой тканью, марлей или неплотной крышкой.<\/li>\n<li>Броди 8–12 часов; при 28°C начинай проверять через 4–6 часов.<\/li>\n<li>При чистой поверхности, нормальном запахе и подходящем вкусе процеди ещё раз через чистую марлю, сложенный бинт или пищевой фильтровальный мешок.<\/li>\n<li>Разлей в пищевой ПЭТ, дай набрать газ и сразу охлади, когда бутылка стала упругой.<\/li>\n<\/ol>\n<h2>Жара 28°C и солнце<\/h2>\n<p>28°C <strong>в тени<\/strong> — допустимый, но быстрый режим. Прямое солнце запрещено: жидкость может быть заметно горячее воздуха. Переставь ёмкость в тень и измеряй температуру именно жидкости.<\/p>\n<ul>\n<li>18–24°C — спокойный режим;<\/li>\n<li>25–27°C — быстрый, проверка с 6 часов;<\/li>\n<li>28–30°C — жаркий, только в тени, проверка с 4 часов;<\/li>\n<li>31–34°C — переставить в прохладу;<\/li>\n<li>35°C и выше — охладить и остановить бытовой протокол.<\/li>\n<\/ul>\n<h2>Газированность и алкоголь<\/h2>\n<p>Домашнее дрожжевое брожение не даёт честной гарантии <strong>0,0% алкоголя<\/strong>. Максимум пузырьков при минимальном росте алкоголя достигается коротким дображиванием в пищевой ПЭТ, частой проверкой давления и немедленным охлаждением. Не добавляй лишний сахар и не держи герметичную бутылку долго в тепле.<\/p>\n<p>В 3 л 100–120 г добавленного сахара дают теоретический максимум около 2,2–2,6% об. только из этого сахара. Точный процент неизвестен без измерения начальной и конечной плотности либо лабораторного анализа.<\/p>\n<h2>Сахар, панела, мальтоза и солод<\/h2>\n<p>Панела заменяет белый сахар примерно 1:1. Мальтоза ферментируется, но не заменяет вкус и ферменты солода. Солодовый экстракт обычно полезнее чистой мальтозы для выраженного солодового вкуса.<\/p>\n<h2>Состояние партии<\/h2>\n<p>ИИ-агент хранит объём, время, температуру воздуха и жидкости, максимальную температуру, прямое солнце, способ закрытия, поверхность, запах, вкус, сахар и момент охлаждения. Неизвестные данные остаются <code>null<\/code>; неподтверждённые действия не считаются выполненными.<\/p>\n<h2>Безопасность<\/h2>\n<p>Основное брожение нельзя закрывать герметично. Для дображивания используй только пищевой ПЭТ, не стекло. Не встряхивай очень твёрдую или деформированную бутылку; осторожно охлади её вдали от лица. Партию нужно вылить при плесени, пушистом налёте, цветных пятнах, слизи, запахе гнили, ацетона, мяса или канализации.<\/p>\n<h2>Актуальные ссылки<\/h2>\n<ul>\n<li>Главная последней версии: <a href=\"https://kvassistent.pages.dev/\">https://kvassistent.pages.dev/<\/a><\/li>\n<li>Игра: <a href=\"https://kvassistent.pages.dev/game/\">https://kvassistent.pages.dev/game/<\/a><\/li>\n<li>Живая партия: <a href=\"https://kvassistent.pages.dev/companion/\">https://kvassistent.pages.dev/companion/<\/a><\/li>\n<li>Эта неизменяемая версия: <a href=\"https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/\">https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/<\/a><\/li>\n<li>Репозиторий: <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">https://github.com/bambuchastudent/kvas-ai-agent<\/a><\/li>\n<\/ul>\n<\/article>"},"en":{"title":"KVASSISTENT — human quick guide","html":"<section class=\"cover\">\n    <div class=\"eyebrow\">KVASSISTENT · English<\/div>\n    <h1>KVASSISTENT — human quick guide<\/h1>\n    <div class=\"subtitle\">Clear homemade kvass, safer carbonation, and honest limits<\/div>\n    <div class=\"meta\">Version 29. It contains 29 ones: v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1 · Source of truth: publication/en/summary.md<\/div>\n  <\/section>\n  <nav class=\"nav web-only\">\n    <a href=\"/\">Languages<\/a>\n    <a href=\"/en/instructions/\">Instructions<\/a>\n    <a href=\"/pdfs/kvas-summary-en-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf\">PDF<\/a>\n    <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">GitHub<\/a>\n  <\/nav>\n  <article><h2>What this is<\/h2>\n<p><strong>KVASSISTENT<\/strong> helps a person make homemade Zhizha kvass without confusing the game with the real process. Russian and English are the knowledge sources; every other localization follows the same structure, quantities, risks, and sequence of actions.<\/p>\n<h2>3-liter baseline<\/h2>\n<ul>\n<li>water — 3 L;<\/li>\n<li>fully dry bread crackers — 180–220 g;<\/li>\n<li>preferably 150 g white and 50–70 g rye or Borodinsky;<\/li>\n<li>sugar or panela — 100–120 g;<\/li>\n<li>malt — 20–30 g or rye flour — 10–20 g;<\/li>\n<li>first batch: 0.5–1 g dry or 2–3 g fresh yeast;<\/li>\n<li>later batches: 500 ml old kvass or 3–5 tbsp active sediment.<\/li>\n<\/ul>\n<h2>Short process<\/h2>\n<ol>\n<li>Toast the bread dark golden; do not burn it.<\/li>\n<li>Infuse it in boiling water for 4–8 hours.<\/li>\n<li>Strain thoroughly through clean gauze, a folded bandage, or a food-grade filter bag: ferment the liquid, not bread porridge.<\/li>\n<li>Add sugar or panela and cool the infusion to 25–35°C.<\/li>\n<li>Add starter and cover with cloth, gauze, or a loose lid.<\/li>\n<li>Ferment for 8–12 hours; at 28°C start checking after 4–6 hours.<\/li>\n<li>When the surface is clean and smell and taste are normal, strain again through clean gauze, a folded bandage, or a food-grade filter bag.<\/li>\n<li>Bottle in food-grade PET, let pressure build, and chill immediately when the bottle becomes firm.<\/li>\n<\/ol>\n<h2>28°C heat and sunlight<\/h2>\n<p>28°C <strong>in shade<\/strong> is acceptable but fast. Direct sunlight is not: the liquid can become much hotter than the air. Move the vessel to shade and measure the liquid temperature itself.<\/p>\n<ul>\n<li>18–24°C — steady;<\/li>\n<li>25–27°C — fast, check from 6 hours;<\/li>\n<li>28–30°C — hot, shade only, check from 4 hours;<\/li>\n<li>31–34°C — move cooler;<\/li>\n<li>35°C or above — cool and stop the household protocol.<\/li>\n<\/ul>\n<h2>Carbonation and alcohol<\/h2>\n<p>Household yeast fermentation cannot honestly guarantee <strong>0.0% alcohol<\/strong>. The practical way to maximize bubbles while minimizing additional alcohol is a short PET bottle-conditioning window, frequent pressure checks, and immediate chilling. Do not add excess priming sugar or leave a sealed bottle warm for a long time.<\/p>\n<p>In 3 L, 100–120 g added sugar gives a theoretical maximum of about 2.2–2.6% ABV from that sugar alone. Exact ABV is unknown without original/final gravity or laboratory analysis.<\/p>\n<h2>Sugar, panela, maltose, and malt<\/h2>\n<p>Panela replaces white sugar roughly 1:1. Maltose ferments but does not replace malt flavor or enzymes. Malt extract is usually more useful than pure maltose for a pronounced malt character.<\/p>\n<h2>Batch state<\/h2>\n<p>The AI agent records volume, time, room and liquid temperature, peak temperature, direct sunlight, closure, surface, smell, taste, sugar, and chilling time. Unknown values remain <code>null<\/code>; unconfirmed actions are not treated as completed.<\/p>\n<h2>Safety<\/h2>\n<p>Never tightly seal primary fermentation. Use food-grade PET, not glass, for bottle conditioning. Do not shake a very firm or deformed bottle; chill it carefully and keep it away from your face. Discard the batch for mold, fuzzy growth, colored spots, slime, rotten smell, acetone smell, meat-like smell, or sewage smell.<\/p>\n<h2>Current links<\/h2>\n<ul>\n<li>Latest homepage: <a href=\"https://kvassistent.pages.dev/\">https://kvassistent.pages.dev/<\/a><\/li>\n<li>Game: <a href=\"https://kvassistent.pages.dev/game/\">https://kvassistent.pages.dev/game/<\/a><\/li>\n<li>Live batch: <a href=\"https://kvassistent.pages.dev/companion/\">https://kvassistent.pages.dev/companion/<\/a><\/li>\n<li>Immutable release: <a href=\"https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/\">https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/<\/a><\/li>\n<li>Repository: <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">https://github.com/bambuchastudent/kvas-ai-agent<\/a><\/li>\n<\/ul>\n<\/article>"},"es":{"title":"KVASSISTENT — guía rápida para personas","html":"<section class=\"cover\">\n    <div class=\"eyebrow\">KVASSISTENT · Español<\/div>\n    <h1>KVASSISTENT — guía rápida para personas<\/h1>\n    <div class=\"subtitle\">Kvas casero claro, carbonatación más segura y límites honestos<\/div>\n    <div class=\"meta\">Versión 29. Contiene 29 unos: v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1 · Source of truth: publication/es/summary.md<\/div>\n  <\/section>\n  <nav class=\"nav web-only\">\n    <a href=\"/\">Languages<\/a>\n    <a href=\"/es/instructions/\">Instructions<\/a>\n    <a href=\"/pdfs/kvas-summary-es-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf\">PDF<\/a>\n    <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">GitHub<\/a>\n  <\/nav>\n  <article><h2>Qué es<\/h2>\n<p><strong>KVASSISTENT<\/strong> ayuda a preparar en casa el kvas «Zhizha» sin confundir el juego con el proceso real. El ruso y el inglés son las fuentes de conocimiento; las demás localizaciones conservan la misma estructura, cantidades, riesgos y secuencia de acciones.<\/p>\n<h2>Receta base para 3 litros<\/h2>\n<ul>\n<li>agua — 3 L;<\/li>\n<li>pan completamente seco — 180–220 g;<\/li>\n<li>preferiblemente 150 g de pan blanco y 50–70 g de centeno o Borodinsky;<\/li>\n<li>azúcar o panela — 100–120 g;<\/li>\n<li>malta — 20–30 g o harina de centeno — 10–20 g;<\/li>\n<li>primer lote: 0,5–1 g de levadura seca o 2–3 g de levadura fresca;<\/li>\n<li>lotes posteriores: 500 ml de kvas anterior o 3–5 cucharadas de sedimento activo.<\/li>\n<\/ul>\n<h2>Proceso breve<\/h2>\n<ol>\n<li>Tuesta el pan hasta un dorado oscuro, sin quemarlo.<\/li>\n<li>Déjalo en agua hirviendo durante 4–8 horas.<\/li>\n<li>Cuela bien: fermenta el líquido, no una papilla de pan.<\/li>\n<li>Añade azúcar o panela y enfría la infusión a 25–35°C.<\/li>\n<li>Añade el cultivo y cubre con tela, gasa o una tapa floja.<\/li>\n<li>Fermenta 8–12 horas; a 28°C empieza a revisar a las 4–6 horas.<\/li>\n<li>Cuando la superficie esté limpia y el olor y el sabor sean normales, cuela otra vez.<\/li>\n<li>Embotella en PET alimentario, deja que se forme presión y enfría en cuanto la botella esté firme.<\/li>\n<\/ol>\n<h2>Calor de 28°C y sol<\/h2>\n<p>28°C <strong>a la sombra<\/strong> es aceptable, pero rápido. El sol directo no: el líquido puede calentarse mucho más que el aire. Lleva el recipiente a la sombra y mide la temperatura del líquido.<\/p>\n<ul>\n<li>18–24°C — ritmo estable;<\/li>\n<li>25–27°C — rápido, revisar desde 6 horas;<\/li>\n<li>28–30°C — caliente, solo sombra, revisar desde 4 horas;<\/li>\n<li>31–34°C — mover a un lugar más fresco;<\/li>\n<li>35°C o más — enfriar y detener el protocolo doméstico.<\/li>\n<\/ul>\n<h2>Gas y alcohol<\/h2>\n<p>La fermentación doméstica con levadura no puede garantizar honestamente <strong>0,0% de alcohol<\/strong>. Para maximizar las burbujas y minimizar alcohol adicional, usa una carbonatación corta en PET, revisa la presión con frecuencia y enfría de inmediato. No añadas azúcar de cebado de más ni dejes una botella cerrada mucho tiempo en caliente.<\/p>\n<p>En 3 L, 100–120 g de azúcar añadido dan un máximo teórico de aproximadamente 2,2–2,6% vol. solo a partir de ese azúcar. El porcentaje exacto es desconocido sin densidad inicial/final o análisis de laboratorio.<\/p>\n<h2>Azúcar, panela, maltosa y malta<\/h2>\n<p>La panela sustituye al azúcar blanco aproximadamente 1:1. La maltosa fermenta, pero no sustituye el sabor ni las enzimas de la malta. El extracto de malta suele ser más útil que la maltosa pura para un sabor malteado marcado.<\/p>\n<h2>Estado del lote<\/h2>\n<p>El agente de IA registra volumen, tiempo, temperatura ambiente y del líquido, temperatura máxima, sol directo, cierre, superficie, olor, sabor, azúcar y momento de enfriado. Los valores desconocidos quedan en <code>null<\/code>; las acciones no confirmadas no se consideran realizadas.<\/p>\n<h2>Seguridad<\/h2>\n<p>No cierres herméticamente la fermentación primaria. Para la carbonatación usa PET alimentario, no vidrio. No agites una botella muy dura o deformada; enfríala con cuidado y lejos de la cara. Desecha el lote si hay moho, pelusa, manchas de color, baba, olor podrido, acetona, carne o alcantarilla.<\/p>\n<h2>Enlaces actuales<\/h2>\n<ul>\n<li>Página principal más reciente: <a href=\"https://kvassistent.pages.dev/\">https://kvassistent.pages.dev/<\/a><\/li>\n<li>Juego: <a href=\"https://kvassistent.pages.dev/game/\">https://kvassistent.pages.dev/game/<\/a><\/li>\n<li>Lote vivo: <a href=\"https://kvassistent.pages.dev/companion/\">https://kvassistent.pages.dev/companion/<\/a><\/li>\n<li>Versión inmutable: <a href=\"https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/\">https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/<\/a><\/li>\n<li>Repositorio: <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">https://github.com/bambuchastudent/kvas-ai-agent<\/a><\/li>\n<\/ul>\n<\/article>"},"de":{"title":"KVASSISTENT — Kurzanleitung für Menschen","html":"<section class=\"cover\">\n    <div class=\"eyebrow\">KVASSISTENT · Deutsch<\/div>\n    <h1>KVASSISTENT — Kurzanleitung für Menschen<\/h1>\n    <div class=\"subtitle\">Verständlicher hausgemachter Kwas, sichere Karbonisierung und ehrliche Grenzen<\/div>\n    <div class=\"meta\">Version 29. Sie enthält 29 Einsen: v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1 · Source of truth: publication/de/summary.md<\/div>\n  <\/section>\n  <nav class=\"nav web-only\">\n    <a href=\"/\">Languages<\/a>\n    <a href=\"/de/instructions/\">Instructions<\/a>\n    <a href=\"/pdfs/kvas-summary-de-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf\">PDF<\/a>\n    <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">GitHub<\/a>\n  <\/nav>\n  <article><h2>Was das ist<\/h2>\n<p><strong>KVASSISTENT<\/strong> hilft beim hausgemachten Kwas „Zhizha“, ohne das Spiel mit dem echten Verfahren zu verwechseln. Russisch und Englisch sind die Wissensquellen; alle anderen Lokalisierungen übernehmen dieselbe Struktur, Mengen, Risiken und Reihenfolge.<\/p>\n<h2>Grundrezept für 3 Liter<\/h2>\n<ul>\n<li>Wasser — 3 L;<\/li>\n<li>vollständig trockenes Brot — 180–220 g;<\/li>\n<li>vorzugsweise 150 g Weißbrot und 50–70 g Roggen- oder Borodinsky-Brot;<\/li>\n<li>Zucker oder Panela — 100–120 g;<\/li>\n<li>Malz — 20–30 g oder Roggenmehl — 10–20 g;<\/li>\n<li>erste Charge: 0,5–1 g Trockenhefe oder 2–3 g Frischhefe;<\/li>\n<li>weitere Chargen: 500 ml alter Kwas oder 3–5 EL aktiver Bodensatz.<\/li>\n<\/ul>\n<h2>Kurzer Ablauf<\/h2>\n<ol>\n<li>Brot dunkelgolden rösten, aber nicht verbrennen.<\/li>\n<li>4–8 Stunden mit kochendem Wasser ziehen lassen.<\/li>\n<li>Gründlich abseihen: Die Flüssigkeit fermentiert, nicht der Brotbrei.<\/li>\n<li>Zucker oder Panela zugeben und den Aufguss auf 25–35°C abkühlen.<\/li>\n<li>Starter zugeben und mit Tuch, Gaze oder losem Deckel abdecken.<\/li>\n<li>8–12 Stunden fermentieren; bei 28°C nach 4–6 Stunden prüfen.<\/li>\n<li>Bei sauberer Oberfläche sowie normalem Geruch und Geschmack erneut abseihen.<\/li>\n<li>In lebensmittelechtes PET füllen, Druck aufbauen lassen und sofort kühlen, sobald die Flasche fest wird.<\/li>\n<\/ol>\n<h2>28°C, Hitze und Sonne<\/h2>\n<p>28°C <strong>im Schatten<\/strong> ist akzeptabel, aber schnell. Direkte Sonne ist nicht akzeptabel: Die Flüssigkeit kann deutlich heißer als die Luft werden. Stelle das Gefäß in den Schatten und miss die Flüssigkeitstemperatur.<\/p>\n<ul>\n<li>18–24°C — ruhiger Bereich;<\/li>\n<li>25–27°C — schnell, ab 6 Stunden prüfen;<\/li>\n<li>28–30°C — heiß, nur Schatten, ab 4 Stunden prüfen;<\/li>\n<li>31–34°C — kühler stellen;<\/li>\n<li>ab 35°C — kühlen und das Haushaltsprotokoll stoppen.<\/li>\n<\/ul>\n<h2>Kohlensäure und Alkohol<\/h2>\n<p>Eine häusliche Hefegärung kann <strong>0,0% Alkohol<\/strong> nicht ehrlich garantieren. Für möglichst viele Blasen bei möglichst wenig zusätzlichem Alkohol: kurzes Flaschengären in PET, häufige Druckkontrolle und sofortiges Kühlen. Kein überschüssiger Zucker und keine lange warme Lagerung in einer verschlossenen Flasche.<\/p>\n<p>In 3 L ergeben 100–120 g zugesetzter Zucker theoretisch etwa 2,2–2,6 Vol.-% allein aus diesem Zucker. Der genaue Wert ist ohne Stammwürze/Enddichte oder Laboranalyse unbekannt.<\/p>\n<h2>Zucker, Panela, Maltose und Malz<\/h2>\n<p>Panela ersetzt weißen Zucker ungefähr 1:1. Maltose vergärt, ersetzt aber weder Malzgeschmack noch Malzenzyme. Malzextrakt ist für einen deutlichen Malzcharakter meist nützlicher als reine Maltose.<\/p>\n<h2>Chargenstatus<\/h2>\n<p>Der KI-Agent speichert Volumen, Zeit, Raum- und Flüssigkeitstemperatur, Spitzentemperatur, direkte Sonne, Verschluss, Oberfläche, Geruch, Geschmack, Zucker und Kühlzeitpunkt. Unbekannte Werte bleiben <code>null<\/code>; unbestätigte Schritte gelten nicht als erledigt.<\/p>\n<h2>Sicherheit<\/h2>\n<p>Die Hauptgärung nie luftdicht verschließen. Für Flaschengärung lebensmittelechtes PET statt Glas verwenden. Eine sehr harte oder verformte Flasche nicht schütteln; vorsichtig und vom Gesicht weg kühlen. Bei Schimmel, Flaum, farbigen Flecken, Schleim oder Geruch nach Fäulnis, Aceton, Fleisch oder Abwasser entsorgen.<\/p>\n<h2>Aktuelle Links<\/h2>\n<ul>\n<li>Neueste Startseite: <a href=\"https://kvassistent.pages.dev/\">https://kvassistent.pages.dev/<\/a><\/li>\n<li>Spiel: <a href=\"https://kvassistent.pages.dev/game/\">https://kvassistent.pages.dev/game/<\/a><\/li>\n<li>Lebendige Charge: <a href=\"https://kvassistent.pages.dev/companion/\">https://kvassistent.pages.dev/companion/<\/a><\/li>\n<li>Unveränderliche Version: <a href=\"https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/\">https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/<\/a><\/li>\n<li>Repository: <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">https://github.com/bambuchastudent/kvas-ai-agent<\/a><\/li>\n<\/ul>\n<\/article>"},"zh-CN":{"title":"KVASSISTENT — 用户快速指南","html":"<section class=\"cover\">\n    <div class=\"eyebrow\">KVASSISTENT · 简体中文<\/div>\n    <h1>KVASSISTENT — 用户快速指南<\/h1>\n    <div class=\"subtitle\">清晰的家庭格瓦斯流程、更安全的充气方式和诚实的限制<\/div>\n    <div class=\"meta\">第 29 版，共有 29 个 1：v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1 · Source of truth: publication/zh-CN/summary.md<\/div>\n  <\/section>\n  <nav class=\"nav web-only\">\n    <a href=\"/\">Languages<\/a>\n    <a href=\"/zh-CN/instructions/\">Instructions<\/a>\n    <a href=\"/pdfs/kvas-summary-zh-CN-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf\">PDF<\/a>\n    <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">GitHub<\/a>\n  <\/nav>\n  <article><h2>这是什么<\/h2>\n<p><strong>KVASSISTENT<\/strong> 帮助用户制作家庭格瓦斯“Zhizha”，并明确区分网页游戏和真实发酵流程。俄语和英语是知识源；其他语言版本必须保持相同的结构、用量、风险和操作顺序。<\/p>\n<h2>3 升基础配方<\/h2>\n<ul>\n<li>水 — 3 L；<\/li>\n<li>完全干燥的面包干 — 180–220 g；<\/li>\n<li>建议：150 g 白面包干，加 50–70 g 黑麦或 Borodinsky 面包干；<\/li>\n<li>糖或 panela — 100–120 g；<\/li>\n<li>麦芽 — 20–30 g，或黑麦粉 — 10–20 g；<\/li>\n<li>第一批：0.5–1 g 干酵母，或 2–3 g 鲜酵母；<\/li>\n<li>后续批次：500 ml 旧格瓦斯，或 3–5 汤匙活性沉淀。<\/li>\n<\/ul>\n<h2>简短流程<\/h2>\n<ol>\n<li>把面包烤到深金色，但不要烤焦。<\/li>\n<li>加入开水，浸泡 4–8 小时。<\/li>\n<li>彻底过滤：发酵的是液体，不是面包糊。<\/li>\n<li>加入糖或 panela，把浸液冷却到 25–35°C。<\/li>\n<li>加入发酵种，用布、纱布或松盖覆盖。<\/li>\n<li>发酵 8–12 小时；在 28°C 时，4–6 小时后就开始检查。<\/li>\n<li>表面干净、气味和味道正常时，再过滤一次。<\/li>\n<li>装入食品级 PET 瓶，等待产生压力；瓶身变硬后立即冷藏。<\/li>\n<\/ol>\n<h2>28°C、高温和阳光<\/h2>\n<p>28°C <strong>且处于阴凉处<\/strong>可以接受，但发酵会很快。不能直晒：液体温度可能明显高于空气温度。把容器移到阴凉处，并测量液体本身的温度。<\/p>\n<ul>\n<li>18–24°C — 平稳；<\/li>\n<li>25–27°C — 较快，6 小时后开始检查；<\/li>\n<li>28–30°C — 炎热，只能放阴凉处，4 小时后开始检查；<\/li>\n<li>31–34°C — 移到更凉的地方；<\/li>\n<li>35°C 及以上 — 降温并停止家庭流程。<\/li>\n<\/ul>\n<h2>气泡和酒精<\/h2>\n<p>家庭酵母发酵无法诚实保证 <strong>0.0% 酒精<\/strong>。想要尽量多的气泡、尽量少的额外酒精，应在食品级 PET 中短时间二次发酵，频繁检查压力，并立即冷藏。不要加入过量的二次发酵糖，也不要让密封瓶长时间处于温暖环境。<\/p>\n<p>在 3 L 中，100–120 g 添加糖仅从这些糖计算，理论上最多约为 2,2–2,6% ABV。没有初始/最终密度或实验室分析，就无法知道准确酒精度。<\/p>\n<h2>糖、panela、麦芽糖和麦芽<\/h2>\n<p>Panela 可大致按 1:1 替代白糖。麦芽糖可以发酵，但不能替代麦芽的味道和酶。若想要更明显的麦芽风味，麦芽提取物通常比纯麦芽糖更合适。<\/p>\n<h2>批次状态<\/h2>\n<p>AI 智能体记录体积、时间、室温、液体温度、最高温度、直射阳光、封口方式、表面、气味、味道、糖量和冷藏时间。未知值保持为 <code>null<\/code>；未经确认的操作不能视为已完成。<\/p>\n<h2>安全<\/h2>\n<p>主发酵不能密封。瓶内二次发酵只能使用食品级 PET，不能使用玻璃。不要摇晃非常硬或变形的瓶子；让瓶口远离脸部并小心冷藏。出现霉菌、绒毛、彩色斑点、黏液，或腐烂、丙酮、肉类、下水道气味时，必须丢弃。<\/p>\n<h2>当前链接<\/h2>\n<ul>\n<li>最新主页：<a href=\"https://kvassistent.pages.dev/\">https://kvassistent.pages.dev/<\/a><\/li>\n<li>游戏：<a href=\"https://kvassistent.pages.dev/game/\">https://kvassistent.pages.dev/game/<\/a><\/li>\n<li>实时批次：<a href=\"https://kvassistent.pages.dev/companion/\">https://kvassistent.pages.dev/companion/<\/a><\/li>\n<li>不可变版本：<a href=\"https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/\">https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/<\/a><\/li>\n<li>仓库：<a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">https://github.com/bambuchastudent/kvas-ai-agent<\/a><\/li>\n<\/ul>\n<\/article>"},"el":{"title":"KVASSISTENT — σύντομος οδηγός για ανθρώπους","html":"<section class=\"cover\">\n    <div class=\"eyebrow\">KVASSISTENT · Ελληνικά<\/div>\n    <h1>KVASSISTENT — σύντομος οδηγός για ανθρώπους<\/h1>\n    <div class=\"subtitle\">Καθαρή διαδικασία σπιτικού κβας, ασφαλέστερη ανθράκωση και ειλικρινή όρια<\/div>\n    <div class=\"meta\">Έκδοση 29. Περιέχει 29 μονάδες: v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1 · Source of truth: publication/el/summary.md<\/div>\n  <\/section>\n  <nav class=\"nav web-only\">\n    <a href=\"/\">Languages<\/a>\n    <a href=\"/el/instructions/\">Instructions<\/a>\n    <a href=\"/pdfs/kvas-summary-el-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf\">PDF<\/a>\n    <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">GitHub<\/a>\n  <\/nav>\n  <article><h2>Τι είναι<\/h2>\n<p>Το <strong>KVASSISTENT<\/strong> βοηθά στην παρασκευή του σπιτικού κβας «Zhizha» χωρίς να συγχέει το παιχνίδι με την πραγματική διαδικασία. Τα ρωσικά και τα αγγλικά είναι οι πηγές γνώσης· όλες οι άλλες μεταφράσεις διατηρούν την ίδια δομή, ποσότητες, κινδύνους και σειρά ενεργειών.<\/p>\n<h2>Βασική συνταγή για 3 λίτρα<\/h2>\n<ul>\n<li>νερό — 3 L·<\/li>\n<li>εντελώς ξερά παξιμάδια ψωμιού — 180–220 g·<\/li>\n<li>κατά προτίμηση 150 g λευκό και 50–70 g σίκαλης ή Borodinsky·<\/li>\n<li>ζάχαρη ή panela — 100–120 g·<\/li>\n<li>βύνη — 20–30 g ή αλεύρι σίκαλης — 10–20 g·<\/li>\n<li>πρώτη παρτίδα: 0,5–1 g ξηρή ή 2–3 g φρέσκια μαγιά·<\/li>\n<li>επόμενες παρτίδες: 500 ml παλιό κβας ή 3–5 κ.σ. ενεργό ίζημα.<\/li>\n<\/ul>\n<h2>Σύντομη διαδικασία<\/h2>\n<ol>\n<li>Καβούρδισε το ψωμί μέχρι σκούρο χρυσαφί, χωρίς να καεί.<\/li>\n<li>Άφησέ το σε βραστό νερό για 4–8 ώρες.<\/li>\n<li>Σούρωσε καλά: ζυμώνεται το υγρό, όχι ο πολτός ψωμιού.<\/li>\n<li>Πρόσθεσε ζάχαρη ή panela και κρύωσε το έγχυμα στους 25–35°C.<\/li>\n<li>Πρόσθεσε καλλιέργεια και κάλυψε με ύφασμα, γάζα ή χαλαρό καπάκι.<\/li>\n<li>Ζύμωσε 8–12 ώρες· στους 28°C ξεκίνα έλεγχο στις 4–6 ώρες.<\/li>\n<li>Με καθαρή επιφάνεια και φυσιολογική μυρωδιά και γεύση, σούρωσε ξανά.<\/li>\n<li>Βάλε σε PET τροφίμων, άφησε να δημιουργηθεί πίεση και ψύξε αμέσως όταν η φιάλη γίνει σφιχτή.<\/li>\n<\/ol>\n<h2>28°C, ζέστη και ήλιος<\/h2>\n<p>Οι 28°C <strong>στη σκιά<\/strong> είναι αποδεκτοί αλλά γρήγοροι. Ο άμεσος ήλιος όχι: το υγρό μπορεί να γίνει πολύ θερμότερο από τον αέρα. Μετέφερε το δοχείο στη σκιά και μέτρησε τη θερμοκρασία του υγρού.<\/p>\n<ul>\n<li>18–24°C — ήρεμος ρυθμός·<\/li>\n<li>25–27°C — γρήγορος, έλεγχος από 6 ώρες·<\/li>\n<li>28–30°C — ζεστός, μόνο σκιά, έλεγχος από 4 ώρες·<\/li>\n<li>31–34°C — μεταφορά σε δροσερότερο μέρος·<\/li>\n<li>35°C και πάνω — ψύξη και διακοπή του οικιακού πρωτοκόλλου.<\/li>\n<\/ul>\n<h2>Ανθράκωση και αλκοόλ<\/h2>\n<p>Η οικιακή ζύμωση με μαγιά δεν μπορεί να εγγυηθεί ειλικρινά <strong>0,0% αλκοόλ<\/strong>. Για περισσότερες φυσαλίδες με όσο γίνεται λιγότερο επιπλέον αλκοόλ: σύντομη δευτερογενής ζύμωση σε PET, συχνοί έλεγχοι πίεσης και άμεση ψύξη. Μην προσθέτεις υπερβολική ζάχαρη και μην αφήνεις σφραγισμένη φιάλη ζεστή για πολύ.<\/p>\n<p>Σε 3 L, 100–120 g πρόσθετης ζάχαρης δίνουν θεωρητικά περίπου 2,2–2,6% ABV μόνο από αυτή τη ζάχαρη. Το ακριβές ποσοστό είναι άγνωστο χωρίς αρχική/τελική πυκνότητα ή εργαστηριακή ανάλυση.<\/p>\n<h2>Ζάχαρη, panela, μαλτόζη και βύνη<\/h2>\n<p>Η panela αντικαθιστά τη λευκή ζάχαρη περίπου 1:1. Η μαλτόζη ζυμώνεται, αλλά δεν αντικαθιστά τη γεύση ή τα ένζυμα της βύνης. Το εκχύλισμα βύνης είναι συνήθως πιο χρήσιμο από την καθαρή μαλτόζη για έντονο χαρακτήρα βύνης.<\/p>\n<h2>Κατάσταση παρτίδας<\/h2>\n<p>Ο πράκτορας AI καταγράφει όγκο, χρόνο, θερμοκρασία χώρου και υγρού, μέγιστη θερμοκρασία, άμεσο ήλιο, κλείσιμο, επιφάνεια, μυρωδιά, γεύση, ζάχαρη και χρόνο ψύξης. Οι άγνωστες τιμές μένουν <code>null<\/code> και οι μη επιβεβαιωμένες ενέργειες δεν θεωρούνται ολοκληρωμένες.<\/p>\n<h2>Ασφάλεια<\/h2>\n<p>Η κύρια ζύμωση δεν κλείνει αεροστεγώς. Για ανθράκωση χρησιμοποίησε PET τροφίμων, όχι γυαλί. Μην κουνάς πολύ σκληρή ή παραμορφωμένη φιάλη· ψύξε την προσεκτικά μακριά από το πρόσωπο. Απόρριψε για μούχλα, χνούδι, χρωματιστές κηλίδες, γλίτσα ή μυρωδιά σήψης, ακετόνης, κρέατος ή αποχέτευσης.<\/p>\n<h2>Τρέχοντες σύνδεσμοι<\/h2>\n<ul>\n<li>Τελευταία αρχική σελίδα: <a href=\"https://kvassistent.pages.dev/\">https://kvassistent.pages.dev/<\/a><\/li>\n<li>Παιχνίδι: <a href=\"https://kvassistent.pages.dev/game/\">https://kvassistent.pages.dev/game/<\/a><\/li>\n<li>Ζωντανή παρτίδα: <a href=\"https://kvassistent.pages.dev/companion/\">https://kvassistent.pages.dev/companion/<\/a><\/li>\n<li>Αμετάβλητη έκδοση: <a href=\"https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/\">https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/<\/a><\/li>\n<li>Αποθετήριο: <a href=\"https://github.com/bambuchastudent/kvas-ai-agent\">https://github.com/bambuchastudent/kvas-ai-agent<\/a><\/li>\n<\/ul>\n<\/article>"}}</script>
+<script id="kvass-header-language-data" type="application/json">{"ru":{"brand":"КВАССИСТЕНТ","subtitle":"Последняя версия и все основные входы","game":"Игра","companion":"Живая партия","links":"Все ссылки","people":"Для людей","ai":"Для ИИ","feedback":"Фидбек","telegram":"Telegram","telegramBot":"Telegram-бот","github":"GitHub","menu":"Меню","language":"Язык"},"en":{"brand":"KVASSISTENT","subtitle":"Latest version and every main entry point","game":"Game","companion":"Live batch","links":"All links","people":"For people","ai":"For AI","feedback":"Feedback","telegram":"Telegram","telegramBot":"Telegram bot","github":"GitHub","menu":"Menu","language":"Language"},"es":{"brand":"KVASSISTENT","subtitle":"Última versión y todos los accesos principales","game":"Juego","companion":"Lote en vivo","links":"Todos los enlaces","people":"Para personas","ai":"Para IA","feedback":"Comentarios","telegram":"Telegram","telegramBot":"Bot de Telegram","github":"GitHub","menu":"Menú","language":"Idioma"},"de":{"brand":"KVASSISTENT","subtitle":"Neueste Version und alle wichtigen Einstiege","game":"Spiel","companion":"Live-Charge","links":"Alle Links","people":"Für Menschen","ai":"Für KI","feedback":"Feedback","telegram":"Telegram","telegramBot":"Telegram-Bot","github":"GitHub","menu":"Menü","language":"Sprache"},"zh-CN":{"brand":"KVASSISTENT","subtitle":"最新版本和所有主要入口","game":"游戏","companion":"实时批次","links":"全部链接","people":"用户指南","ai":"AI 指南","feedback":"反馈","telegram":"Telegram","telegramBot":"Telegram 机器人","github":"GitHub","menu":"菜单","language":"语言"},"el":{"brand":"KVASSISTENT","subtitle":"Τελευταία έκδοση και όλες οι βασικές είσοδοι","game":"Παιχνίδι","companion":"Ζωντανή παρτίδα","links":"Όλοι οι σύνδεσμοι","people":"Για ανθρώπους","ai":"Για AI","feedback":"Σχόλια","telegram":"Telegram","telegramBot":"Bot Telegram","github":"GitHub","menu":"Μενού","language":"Γλώσσα"}}</script>
+<script id="kvassistent-inline-languages">
+(() => {
+  const content = document.getElementById("kvass-language-content");
+  const dataNode = document.getElementById("kvass-language-data");
+  const headerNode = document.getElementById("kvass-header-language-data");
+  const buttons = Array.from(document.querySelectorAll("[data-kvass-lang]"));
+  if (!content || !dataNode || !headerNode || !buttons.length) return;
+  const items = JSON.parse(dataNode.textContent || "{}");
+  const headerItems = JSON.parse(headerNode.textContent || "{}");
+  items.ru = {html:content.innerHTML,title:document.title};
+  const setText = (id, value) => { const node = document.getElementById(id); if (node && value) node.textContent = value; };
+  const apply = (requested, remember=true) => {
+    const language = Object.prototype.hasOwnProperty.call(items, requested) ? requested : "ru";
+    const header = headerItems[language] || headerItems.ru || {};
+    content.setAttribute("aria-busy", "true");
+    content.innerHTML = items[language].html;
+    content.dataset.activeLang = language;
+    document.documentElement.lang = language;
+    document.title = items[language].title;
+    setText("header-brand-title", header.brand);
+    setText("header-brand-subtitle", header.subtitle);
+    setText("menu-label", header.menu);
+    setText("header-language-label", header.language);
+    document.querySelectorAll("[data-header-key]").forEach((node) => { const value = header[node.dataset.headerKey]; if (value) node.textContent = value; });
+    buttons.forEach((button) => button.setAttribute("aria-pressed", button.dataset.kvassLang === language ? "true" : "false"));
+    content.removeAttribute("aria-busy");
+    if (remember) { try { localStorage.setItem("kvassistent-language", language); } catch (_) {} }
+  };
+  buttons.forEach((button) => button.addEventListener("click", () => apply(button.dataset.kvassLang || "ru")));
+  let stored = "ru";
+  try { stored = localStorage.getItem("kvassistent-language") || "ru"; } catch (_) {}
+  apply(stored, false);
+})();
+</script>
+</main>
+
+<script>
+(() => {
+  const routes={ru:{human:'/ru/summary/',agent:'/ru/instructions/'},en:{human:'/en/summary/',agent:'/en/instructions/'},es:{human:'/es/summary/',agent:'/es/instructions/'},de:{human:'/de/summary/',agent:'/de/instructions/'},'zh-CN':{human:'/zh-CN/summary/',agent:'/zh-CN/instructions/'},el:{human:'/el/summary/',agent:'/el/instructions/'}};
+  const select=document.getElementById('header-language-select');const human=document.getElementById('header-human-link');const agent=document.getElementById('header-agent-link');if(!select||!human||!agent)return;
+  const stored=localStorage.getItem('kvassistent-landing-lang');if(stored&&routes[stored])select.value=stored;
+  const apply=()=>{const current=routes[select.value]||routes.en;human.href=current.human;agent.href=current.agent;localStorage.setItem('kvassistent-landing-lang',select.value)};select.addEventListener('change',apply);apply();
+})();
+</script>
+
+<script id="kvassistent-navigation">
+(() => {
+  const topbar = document.getElementById("site-topbar");
+  const toggle = document.getElementById("menu-toggle");
+  const setExpanded = (expanded) => { if (!topbar) return; topbar.dataset.expanded = expanded ? "true" : "false"; if (toggle) toggle.setAttribute("aria-expanded", expanded ? "true" : "false"); };
+  let compact = false;
+  let scheduled = false;
+  const ENTER_COMPACT_AT = 180;
+  const LEAVE_COMPACT_AT = 72;
+  const sync = () => {
+    scheduled = false;
+    if (!topbar) return;
+    const y = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
+    const nextCompact = compact ? y > LEAVE_COMPACT_AT : y >= ENTER_COMPACT_AT;
+    if (nextCompact === compact) return;
+    compact = nextCompact;
+    topbar.classList.toggle("is-compact", compact);
+    if (!compact) setExpanded(false);
+  };
+  const scheduleSync = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(sync);
+  };
+  let last = 0;
+  if (toggle) toggle.addEventListener("click", () => { const now = performance.now(); if (now-last < 450) return; last=now; setExpanded(topbar?.dataset.expanded !== "true"); });
+  window.addEventListener("scroll", scheduleSync, {passive:true});
+  window.addEventListener("resize", scheduleSync, {passive:true});
+  sync();
+})();
+</script>
+</body>
+</html>

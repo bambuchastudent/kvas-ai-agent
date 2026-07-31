@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KVASSISTENT — instrucciones para agente de IA</title>
+<meta name="description" content="Estado confirmado, fermentación más segura y lógica idéntica en todos los idiomas">
+
+<style>
+@page {
+  size: A4;
+  margin: 20mm 18mm 22mm;
+  @bottom-left {
+    content: "КВАССИСТЕНТ v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1";
+    font-size: 8.5pt;
+    color: #746856;
+  }
+  @bottom-right {
+    content: "Page " counter(page) " / " counter(pages);
+    font-size: 8.5pt;
+    color: #746856;
+  }
+}
+:root {
+  --ink: #2a2118;
+  --muted: #6f6252;
+  --gold: #b47718;
+  --paper: #fffdf7;
+  --soft: #f4ead7;
+  --border: #dbc9a9;
+}
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Noto Sans", "Noto Sans CJK SC", "DejaVu Sans", sans-serif;
+  font-size: 11pt;
+  line-height: 1.55;
+}
+main { max-width: 920px; margin: 0 auto; padding: 30px; }
+.cover {
+  border: 1px solid var(--border);
+  border-top: 8px solid var(--gold);
+  background: linear-gradient(145deg, #fffdf7, #f8efdd);
+  padding: 34px;
+  margin-bottom: 30px;
+  border-radius: 14px;
+}
+.eyebrow { color: var(--gold); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+h1 { font-size: 30pt; line-height: 1.08; margin: 12px 0; }
+.subtitle { color: var(--muted); font-size: 15pt; }
+.hero-copy {
+  max-width: 760px;
+  margin: 16px 0 0;
+  font-size: 12.5pt;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+.button.primary {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #fffdf7;
+}
+.meta { color: var(--muted); margin-top: 18px; font-size: 9.5pt; }
+h2 {
+  font-size: 18pt;
+  margin-top: 28px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--soft);
+  break-after: avoid;
+}
+p, li { orphans: 3; widows: 3; }
+ul, ol { padding-left: 24px; }
+li { margin: 4px 0; }
+code {
+  font-family: "Noto Sans Mono", "DejaVu Sans Mono", monospace;
+  font-size: .9em;
+  background: #f1e7d6;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+pre {
+  background: #211a13;
+  color: #fff8e8;
+  padding: 14px;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+a { color: #8c5600; }
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 30px;
+}
+.nav a, .button {
+  display: inline-block;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  text-decoration: none;
+  background: #fffaf0;
+  color: var(--ink);
+  font-weight: 700;
+}
+.language-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.language-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  background: #fffaf0;
+}
+.language-card h2 { margin-top: 0; border: 0; }
+.downloads { margin-top: 14px; }
+.landing-page {
+  min-height: 100vh;
+  background: #f2b632;
+}
+.landing-page main {
+  position: relative;
+  z-index: 2;
+}
+.landing-page .cover,
+.landing-page .language-card,
+.landing-page .gallery {
+  background: rgba(255, 253, 247, .91);
+  box-shadow: 0 18px 50px rgba(91, 54, 3, .13);
+  backdrop-filter: blur(5px);
+}
+.beer-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(255, 246, 166, .95), transparent 38%),
+    linear-gradient(180deg, #ffd969 0%, #efb42f 54%, #d99113 100%);
+}
+.beer-bubble {
+  position: absolute;
+  left: var(--x);
+  bottom: -14vh;
+  width: var(--size);
+  height: var(--size);
+  border: 2px solid rgba(255, 255, 235, .72);
+  border-radius: 50%;
+  background: rgba(255, 247, 190, .18);
+  box-shadow: inset 3px 3px 6px rgba(255, 255, 255, .42), 0 0 14px rgba(255, 244, 164, .2);
+  animation: bubble-rise var(--duration) linear var(--delay) infinite;
+}
+@keyframes bubble-rise {
+  0% { transform: translate3d(0, 0, 0) scale(.7); opacity: 0; }
+  10% { opacity: .8; }
+  55% { transform: translate3d(var(--drift), -58vh, 0) scale(1); }
+  100% { transform: translate3d(0, -125vh, 0) scale(1.12); opacity: 0; }
+}
+.gallery {
+  margin-top: 46px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+.gallery > h2 { margin-top: 0; }
+.gallery-intro { max-width: 760px; color: var(--muted); font-size: 12pt; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+.gallery-card,
+.gallery-empty {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffaf0;
+}
+.gallery-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.gallery-card-content { padding: 18px; }
+.gallery-card h3 { margin: 0 0 8px; }
+.gallery-empty {
+  display: grid;
+  grid-template-columns: minmax(210px, .8fr) minmax(260px, 1.2fr);
+  grid-column: 1 / -1;
+}
+.gallery-empty-visual {
+  display: grid;
+  place-items: center;
+  min-height: 250px;
+  background: linear-gradient(160deg, #ffd95f, #c9780c);
+}
+.kvass-glass {
+  position: relative;
+  width: 92px;
+  height: 150px;
+  border: 5px solid rgba(255,255,255,.88);
+  border-top-width: 2px;
+  border-radius: 8px 8px 24px 24px;
+  background: linear-gradient(180deg, #8b4a0a 0%, #4d2207 100%);
+  box-shadow: inset 12px 0 18px rgba(255, 206, 82, .22), 0 15px 26px rgba(62, 28, 2, .3);
+}
+.kvass-glass::before {
+  content: "";
+  position: absolute;
+  inset: 7px 5px auto;
+  height: 18px;
+  border-radius: 50%;
+  background: #f7d88a;
+  box-shadow: 0 4px 0 rgba(255,255,255,.35);
+}
+.kvass-glass::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: 24px;
+  bottom: 32px;
+  border: 2px solid rgba(255,255,255,.62);
+  border-radius: 50%;
+  box-shadow: 30px -22px 0 -2px rgba(255,255,255,.62), 14px -52px 0 -3px rgba(255,255,255,.62);
+}
+.gallery-empty-copy { padding: 28px; align-self: center; }
+.gallery-empty-copy h3 { margin-top: 0; font-size: 17pt; }
+.gallery-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+@media (max-width: 640px) {
+  main { padding: 16px; }
+  .cover { padding: 24px; }
+  .gallery-empty { grid-template-columns: 1fr; }
+  .gallery-empty-visual { min-height: 190px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .beer-bubble { animation: none; opacity: .42; transform: translateY(-35vh); }
+}
+@media print {
+  main { padding: 0; }
+  .web-only { display: none !important; }
+  .cover { break-after: page; }
+}
+
+.role-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0;
+}
+.role-chip {
+  padding: 14px 16px;
+  border: 1px solid rgba(238, 181, 63, .58);
+  border-radius: 14px;
+  background: rgba(255, 250, 237, .09);
+  color: #fffaf0;
+  font-weight: 800;
+  text-align: center;
+}
+.role-chip strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #eeb53f;
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+@media (max-width: 720px) {
+  .role-strip { grid-template-columns: 1fr; }
+}
+.people-quickstart,
+.audience-section {
+  margin-top: 34px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 253, 247, .94);
+  box-shadow: 0 18px 50px rgba(91, 54, 3, .12);
+  backdrop-filter: blur(5px);
+}
+.people-quickstart > h2,
+.audience-section > h2 { margin-top: 0; }
+.section-kicker {
+  display: inline-block;
+  margin-bottom: 5px;
+  color: var(--gold);
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.section-lead {
+  max-width: 790px;
+  color: var(--muted);
+  font-size: 12.5pt;
+}
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 15px;
+  margin-top: 22px;
+}
+.quick-card {
+  padding: 19px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffaf0;
+}
+.quick-card-number {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: white;
+  font-weight: 900;
+}
+.quick-card h3 { margin: 12px 0 7px; }
+.quick-card p { margin: 0; }
+.safety-callout {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-left: 5px solid #9f2d20;
+  border-radius: 10px;
+  background: #fff0e9;
+}
+.audience-section.people { border-top: 8px solid #b47718; }
+.audience-section.agents { border-top: 8px solid #403b7a; }
+.audience-section.agents .section-kicker { color: #403b7a; }
+.audience-section.agents .language-card { background: #f7f5ff; }
+.audience-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+.version-counter {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(180, 119, 24, .15);
+  color: #7a4c06;
+  font-weight: 800;
+}
+@media (max-width: 640px) {
+  .people-quickstart,
+  .audience-section { padding: 20px; }
+}
+</style>
+<style>
+/* kvassistent-safe-interactions */
+:where(button,a,[role="button"],input,select,textarea,summary){touch-action:manipulation}
+:where(button,a,[role="button"]){-webkit-tap-highlight-color:transparent}
+body::after,.kvass-flame{animation:none!important}
+.kvass-orbit{animation-duration:90s!important}
+@media(max-width:760px){.kvass-orbit{animation:none!important}.kvass-space-layer{opacity:.55}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .kvass-space-layer{display:none!important}
+}
+</style><meta name="robots" content="index,follow,max-image-preview:large"><meta name="googlebot" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://kvassistent.pages.dev/es/instructions/"><link rel="alternate" hreflang="ru" href="https://kvassistent.pages.dev/ru/instructions/"><link rel="alternate" hreflang="en" href="https://kvassistent.pages.dev/en/instructions/"><link rel="alternate" hreflang="es" href="https://kvassistent.pages.dev/es/instructions/"><link rel="alternate" hreflang="de" href="https://kvassistent.pages.dev/de/instructions/"><link rel="alternate" hreflang="zh-CN" href="https://kvassistent.pages.dev/zh-CN/instructions/"><link rel="alternate" hreflang="el" href="https://kvassistent.pages.dev/el/instructions/"><link rel="alternate" hreflang="x-default" href="https://kvassistent.pages.dev/"><meta property="og:site_name" content="KVASSISTENT"><meta property="og:type" content="website"><meta property="og:title" content="KVASSISTENT — instrucciones para agente de IA"><meta property="og:description" content="Estado confirmado, fermentación más segura y lógica idéntica en todos los idiomas"><meta property="og:url" content="https://kvassistent.pages.dev/es/instructions/"><meta property="og:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="800"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="KVASSISTENT — instrucciones para agente de IA"><meta name="twitter:description" content="Estado confirmado, fermentación más segura y lógica idéntica en todos los idiomas"><meta name="twitter:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"></head>
+<body>
+<main>
+  <section class="cover">
+    <div class="eyebrow">KVASSISTENT · Español</div>
+    <h1>KVASSISTENT — instrucciones para agente de IA</h1>
+    <div class="subtitle">Estado confirmado, fermentación más segura y lógica idéntica en todos los idiomas</div>
+    <div class="meta">Versión 29. Contiene 29 unos: v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1 · Source of truth: publication/es/instructions.md</div>
+  </section>
+  <nav class="nav web-only">
+    <a href="../../">Languages</a>
+    <a href="../summary/">Summary</a>
+    <a href="../../pdfs/kvas-instructions-es-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+    <a href="https://github.com/bambuchastudent/kvas-ai-agent">GitHub</a>
+  </nav>
+  <article><h2>Rol</h2>
+<p>Guía a una persona en la preparación del kvas casero «Zhizha». La persona realiza las acciones físicas; el agente conserva el estado confirmado, evalúa el riesgo y propone solo el siguiente paso seguro. No mezcles lotes ni trates acciones no confirmadas como realizadas.</p>
+<h2>Formato de respuesta</h2>
+<ol>
+<li><strong>Estado actual</strong> — fase, temperatura, tiempo transcurrido y riesgo principal.</li>
+<li><strong>Siguiente acción</strong> — una acción concreta.</li>
+<li><strong>Después informa</strong> — una medición u observación.</li>
+</ol>
+<h2>Estado</h2>
+<p>Usa <code>state.schema.json</code>. Registra volumen, pan, azúcar, cultivo, hora de inicio, temperatura ambiente y del líquido, temperatura máxima, sol directo, tiempo en caliente, cierre, superficie, olor, sabor, presión de la botella y momento de enfriado. Los valores desconocidos quedan en <code>null</code>.</p>
+<h2>Qué preguntar</h2>
+<p>Pregunta por volumen, composición del pan, cantidad de azúcar, tipo y cantidad de cultivo, hora de inicio, temperatura ambiente y del líquido, sol directo, cierre, superficie, olor, sabor y estado de la botella PET.</p>
+<h2>Base para 3 litros</h2>
+<ul>
+<li>pan seco — 180–220 g;</li>
+<li>azúcar o panela — 100–120 g;</li>
+<li>malta — 20–30 g o harina de centeno — 10–20 g;</li>
+<li>primer lote: 0,5–1 g de levadura seca o 2–3 g fresca;</li>
+<li>lotes posteriores: 500 ml de kvas anterior o 3–5 cucharadas de sedimento activo.</li>
+</ul>
+<h2>Proceso</h2>
+<p>Tuesta el pan, déjalo en agua hirviendo 4–8 horas, cuela, añade el endulzante, enfría a 25–35°C, añade el cultivo y realiza la fermentación primaria bajo tela o tapa floja. Tras una revisión normal, cuela de nuevo, embotella en PET alimentario, carbonata durante poco tiempo y enfría de inmediato cuando la botella esté firme.</p>
+<h2>Fermentación con calor</h2>
+<ul>
+<li>18–24°C — <code>recommended</code>;</li>
+<li>25–27°C — <code>fast</code>, revisar desde 6 horas;</li>
+<li>28–30°C — <code>hot</code>, solo sombra, revisar desde 4 horas;</li>
+<li>31–34°C — <code>overheated</code>, mover a un lugar más fresco;</li>
+<li>35°C o más — <code>stop</code>, enfriar.</li>
+</ul>
+<p>Si el recipiente está al sol, añade <code>direct_sunlight</code>. La única acción siguiente es moverlo a la sombra y medir la temperatura del líquido. A 28°C o más durante más de 12 horas, añade <code>extended_warm_fermentation</code>.</p>
+<h2>Gas y alcohol</h2>
+<p>No prometas 0,0% ni un ABV exacto solo por el tiempo. La carbonatación doméstica con levadura siempre puede añadir algo de alcohol. Para maximizar el gas y minimizar alcohol adicional: usa la cantidad mínima calculada de azúcar de cebado, solo PET alimentario, revisa la presión con frecuencia y enfría de inmediato.</p>
+<p>En 3 L, 100–120 g de azúcar añadido dan un máximo teórico de aproximadamente 2,2–2,6% vol. solo a partir de ese azúcar. El ABV exacto requiere densidad inicial/final o análisis de laboratorio.</p>
+<h2>Ingredientes</h2>
+<p>La panela sustituye al azúcar aproximadamente 1:1. La maltosa fermenta, pero no sustituye la malta. Añade pasas solo después de enfriar el mosto; remoja, deshuesa y tritura los dátiles. No aumentes el azúcar de cebado sin calcular volumen y presión.</p>
+<h2>Control visual</h2>
+<p>La papilla de pan es macerado: cuela de nuevo y conserva el líquido. Sol, sobrecalentamiento, fermentación primaria sellada y una botella muy dura o deformada son riesgos, no señales de éxito.</p>
+<h2>Seguridad</h2>
+<p>Con moho, pelusa, manchas de color, baba, olor podrido, acetona, carne o alcantarilla, usa <code>stage: discard</code>. Con fermentación primaria sellada, añade <code>sealed_primary_fermentation</code>. Con una botella muy dura o deformada, añade <code>bottle_overpressure</code>: no agitar, mantener lejos de la cara y enfriar con cuidado. No uses vidrio para carbonatar.</p>
+<h2>Traspaso</h2>
+<p>Entrega un resumen breve, JSON completo, última acción confirmada, tiempo, temperatura, exposición al sol, estimación de alcohol, presión de la botella, siguiente acción segura y todos los campos desconocidos.</p>
+<h2>Reproducibilidad</h2>
+<p>Registra temperatura del líquido, temperatura máxima, tiempo, azúcar, densidad si existe, olor, sabor, burbujas, firmeza del PET y momento de enfriado. Cambia una sola variable por lote. Ruso e inglés son canónicos; las traducciones deben conservar los mismos marcadores de sección y cantidades.</p>
+<h2>Enlaces actuales</h2>
+<ul>
+<li>Última versión: <a href="https://kvassistent.pages.dev/">https://kvassistent.pages.dev/</a></li>
+<li>Juego: <a href="https://kvassistent.pages.dev/game/">https://kvassistent.pages.dev/game/</a></li>
+<li>Lote vivo: <a href="https://kvassistent.pages.dev/companion/">https://kvassistent.pages.dev/companion/</a></li>
+<li>Schema: <a href="https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/agent-instructions/state.schema.json">https://github.com/bambuchastudent/kvas-ai-agent/blob/develop/agent-instructions/state.schema.json</a></li>
+<li>Repositorio: <a href="https://github.com/bambuchastudent/kvas-ai-agent">https://github.com/bambuchastudent/kvas-ai-agent</a></li>
+</ul>
+</article>
+</main>
+</body>
+</html>

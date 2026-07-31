@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KVASSISTENT — 用户快速指南</title>
+<meta name="description" content="清晰的家庭格瓦斯流程、更安全的充气方式和诚实的限制">
+
+<style>
+@page {
+  size: A4;
+  margin: 20mm 18mm 22mm;
+  @bottom-left {
+    content: "КВАССИСТЕНТ v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1";
+    font-size: 8.5pt;
+    color: #746856;
+  }
+  @bottom-right {
+    content: "Page " counter(page) " / " counter(pages);
+    font-size: 8.5pt;
+    color: #746856;
+  }
+}
+:root {
+  --ink: #2a2118;
+  --muted: #6f6252;
+  --gold: #b47718;
+  --paper: #fffdf7;
+  --soft: #f4ead7;
+  --border: #dbc9a9;
+}
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Noto Sans", "Noto Sans CJK SC", "DejaVu Sans", sans-serif;
+  font-size: 11pt;
+  line-height: 1.55;
+}
+main { max-width: 920px; margin: 0 auto; padding: 30px; }
+.cover {
+  border: 1px solid var(--border);
+  border-top: 8px solid var(--gold);
+  background: linear-gradient(145deg, #fffdf7, #f8efdd);
+  padding: 34px;
+  margin-bottom: 30px;
+  border-radius: 14px;
+}
+.eyebrow { color: var(--gold); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+h1 { font-size: 30pt; line-height: 1.08; margin: 12px 0; }
+.subtitle { color: var(--muted); font-size: 15pt; }
+.hero-copy {
+  max-width: 760px;
+  margin: 16px 0 0;
+  font-size: 12.5pt;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+.button.primary {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #fffdf7;
+}
+.meta { color: var(--muted); margin-top: 18px; font-size: 9.5pt; }
+h2 {
+  font-size: 18pt;
+  margin-top: 28px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--soft);
+  break-after: avoid;
+}
+p, li { orphans: 3; widows: 3; }
+ul, ol { padding-left: 24px; }
+li { margin: 4px 0; }
+code {
+  font-family: "Noto Sans Mono", "DejaVu Sans Mono", monospace;
+  font-size: .9em;
+  background: #f1e7d6;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+pre {
+  background: #211a13;
+  color: #fff8e8;
+  padding: 14px;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+a { color: #8c5600; }
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 30px;
+}
+.nav a, .button {
+  display: inline-block;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  text-decoration: none;
+  background: #fffaf0;
+  color: var(--ink);
+  font-weight: 700;
+}
+.language-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.language-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  background: #fffaf0;
+}
+.language-card h2 { margin-top: 0; border: 0; }
+.downloads { margin-top: 14px; }
+.landing-page {
+  min-height: 100vh;
+  background: #f2b632;
+}
+.landing-page main {
+  position: relative;
+  z-index: 2;
+}
+.landing-page .cover,
+.landing-page .language-card,
+.landing-page .gallery {
+  background: rgba(255, 253, 247, .91);
+  box-shadow: 0 18px 50px rgba(91, 54, 3, .13);
+  backdrop-filter: blur(5px);
+}
+.beer-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(255, 246, 166, .95), transparent 38%),
+    linear-gradient(180deg, #ffd969 0%, #efb42f 54%, #d99113 100%);
+}
+.beer-bubble {
+  position: absolute;
+  left: var(--x);
+  bottom: -14vh;
+  width: var(--size);
+  height: var(--size);
+  border: 2px solid rgba(255, 255, 235, .72);
+  border-radius: 50%;
+  background: rgba(255, 247, 190, .18);
+  box-shadow: inset 3px 3px 6px rgba(255, 255, 255, .42), 0 0 14px rgba(255, 244, 164, .2);
+  animation: bubble-rise var(--duration) linear var(--delay) infinite;
+}
+@keyframes bubble-rise {
+  0% { transform: translate3d(0, 0, 0) scale(.7); opacity: 0; }
+  10% { opacity: .8; }
+  55% { transform: translate3d(var(--drift), -58vh, 0) scale(1); }
+  100% { transform: translate3d(0, -125vh, 0) scale(1.12); opacity: 0; }
+}
+.gallery {
+  margin-top: 46px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+.gallery > h2 { margin-top: 0; }
+.gallery-intro { max-width: 760px; color: var(--muted); font-size: 12pt; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+.gallery-card,
+.gallery-empty {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffaf0;
+}
+.gallery-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.gallery-card-content { padding: 18px; }
+.gallery-card h3 { margin: 0 0 8px; }
+.gallery-empty {
+  display: grid;
+  grid-template-columns: minmax(210px, .8fr) minmax(260px, 1.2fr);
+  grid-column: 1 / -1;
+}
+.gallery-empty-visual {
+  display: grid;
+  place-items: center;
+  min-height: 250px;
+  background: linear-gradient(160deg, #ffd95f, #c9780c);
+}
+.kvass-glass {
+  position: relative;
+  width: 92px;
+  height: 150px;
+  border: 5px solid rgba(255,255,255,.88);
+  border-top-width: 2px;
+  border-radius: 8px 8px 24px 24px;
+  background: linear-gradient(180deg, #8b4a0a 0%, #4d2207 100%);
+  box-shadow: inset 12px 0 18px rgba(255, 206, 82, .22), 0 15px 26px rgba(62, 28, 2, .3);
+}
+.kvass-glass::before {
+  content: "";
+  position: absolute;
+  inset: 7px 5px auto;
+  height: 18px;
+  border-radius: 50%;
+  background: #f7d88a;
+  box-shadow: 0 4px 0 rgba(255,255,255,.35);
+}
+.kvass-glass::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: 24px;
+  bottom: 32px;
+  border: 2px solid rgba(255,255,255,.62);
+  border-radius: 50%;
+  box-shadow: 30px -22px 0 -2px rgba(255,255,255,.62), 14px -52px 0 -3px rgba(255,255,255,.62);
+}
+.gallery-empty-copy { padding: 28px; align-self: center; }
+.gallery-empty-copy h3 { margin-top: 0; font-size: 17pt; }
+.gallery-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+@media (max-width: 640px) {
+  main { padding: 16px; }
+  .cover { padding: 24px; }
+  .gallery-empty { grid-template-columns: 1fr; }
+  .gallery-empty-visual { min-height: 190px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .beer-bubble { animation: none; opacity: .42; transform: translateY(-35vh); }
+}
+@media print {
+  main { padding: 0; }
+  .web-only { display: none !important; }
+  .cover { break-after: page; }
+}
+
+.role-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0;
+}
+.role-chip {
+  padding: 14px 16px;
+  border: 1px solid rgba(238, 181, 63, .58);
+  border-radius: 14px;
+  background: rgba(255, 250, 237, .09);
+  color: #fffaf0;
+  font-weight: 800;
+  text-align: center;
+}
+.role-chip strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #eeb53f;
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+@media (max-width: 720px) {
+  .role-strip { grid-template-columns: 1fr; }
+}
+.people-quickstart,
+.audience-section {
+  margin-top: 34px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 253, 247, .94);
+  box-shadow: 0 18px 50px rgba(91, 54, 3, .12);
+  backdrop-filter: blur(5px);
+}
+.people-quickstart > h2,
+.audience-section > h2 { margin-top: 0; }
+.section-kicker {
+  display: inline-block;
+  margin-bottom: 5px;
+  color: var(--gold);
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.section-lead {
+  max-width: 790px;
+  color: var(--muted);
+  font-size: 12.5pt;
+}
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 15px;
+  margin-top: 22px;
+}
+.quick-card {
+  padding: 19px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffaf0;
+}
+.quick-card-number {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: white;
+  font-weight: 900;
+}
+.quick-card h3 { margin: 12px 0 7px; }
+.quick-card p { margin: 0; }
+.safety-callout {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-left: 5px solid #9f2d20;
+  border-radius: 10px;
+  background: #fff0e9;
+}
+.audience-section.people { border-top: 8px solid #b47718; }
+.audience-section.agents { border-top: 8px solid #403b7a; }
+.audience-section.agents .section-kicker { color: #403b7a; }
+.audience-section.agents .language-card { background: #f7f5ff; }
+.audience-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+.version-counter {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(180, 119, 24, .15);
+  color: #7a4c06;
+  font-weight: 800;
+}
+@media (max-width: 640px) {
+  .people-quickstart,
+  .audience-section { padding: 20px; }
+}
+</style>
+<style>
+/* kvassistent-safe-interactions */
+:where(button,a,[role="button"],input,select,textarea,summary){touch-action:manipulation}
+:where(button,a,[role="button"]){-webkit-tap-highlight-color:transparent}
+body::after,.kvass-flame{animation:none!important}
+.kvass-orbit{animation-duration:90s!important}
+@media(max-width:760px){.kvass-orbit{animation:none!important}.kvass-space-layer{opacity:.55}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .kvass-space-layer{display:none!important}
+}
+</style><meta name="robots" content="index,follow,max-image-preview:large"><meta name="googlebot" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://kvassistent.pages.dev/zh-CN/summary/"><link rel="alternate" hreflang="ru" href="https://kvassistent.pages.dev/ru/summary/"><link rel="alternate" hreflang="en" href="https://kvassistent.pages.dev/en/summary/"><link rel="alternate" hreflang="es" href="https://kvassistent.pages.dev/es/summary/"><link rel="alternate" hreflang="de" href="https://kvassistent.pages.dev/de/summary/"><link rel="alternate" hreflang="zh-CN" href="https://kvassistent.pages.dev/zh-CN/summary/"><link rel="alternate" hreflang="el" href="https://kvassistent.pages.dev/el/summary/"><link rel="alternate" hreflang="x-default" href="https://kvassistent.pages.dev/"><meta property="og:site_name" content="KVASSISTENT"><meta property="og:type" content="website"><meta property="og:title" content="KVASSISTENT — 用户快速指南"><meta property="og:description" content="清晰的家庭格瓦斯流程、更安全的充气方式和诚实的限制"><meta property="og:url" content="https://kvassistent.pages.dev/zh-CN/summary/"><meta property="og:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="800"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="KVASSISTENT — 用户快速指南"><meta name="twitter:description" content="清晰的家庭格瓦斯流程、更安全的充气方式和诚实的限制"><meta name="twitter:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"></head>
+<body>
+<main>
+  <section class="cover">
+    <div class="eyebrow">KVASSISTENT · 简体中文</div>
+    <h1>KVASSISTENT — 用户快速指南</h1>
+    <div class="subtitle">清晰的家庭格瓦斯流程、更安全的充气方式和诚实的限制</div>
+    <div class="meta">第 29 版，共有 29 个 1：v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1 · Source of truth: publication/zh-CN/summary.md</div>
+  </section>
+  <nav class="nav web-only">
+    <a href="../../">Languages</a>
+    <a href="../instructions/">Instructions</a>
+    <a href="../../pdfs/kvas-summary-zh-CN-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf">PDF</a>
+    <a href="https://github.com/bambuchastudent/kvas-ai-agent">GitHub</a>
+  </nav>
+  <article><h2>这是什么</h2>
+<p><strong>KVASSISTENT</strong> 帮助用户制作家庭格瓦斯“Zhizha”，并明确区分网页游戏和真实发酵流程。俄语和英语是知识源；其他语言版本必须保持相同的结构、用量、风险和操作顺序。</p>
+<h2>3 升基础配方</h2>
+<ul>
+<li>水 — 3 L；</li>
+<li>完全干燥的面包干 — 180–220 g；</li>
+<li>建议：150 g 白面包干，加 50–70 g 黑麦或 Borodinsky 面包干；</li>
+<li>糖或 panela — 100–120 g；</li>
+<li>麦芽 — 20–30 g，或黑麦粉 — 10–20 g；</li>
+<li>第一批：0.5–1 g 干酵母，或 2–3 g 鲜酵母；</li>
+<li>后续批次：500 ml 旧格瓦斯，或 3–5 汤匙活性沉淀。</li>
+</ul>
+<h2>简短流程</h2>
+<ol>
+<li>把面包烤到深金色，但不要烤焦。</li>
+<li>加入开水，浸泡 4–8 小时。</li>
+<li>彻底过滤：发酵的是液体，不是面包糊。</li>
+<li>加入糖或 panela，把浸液冷却到 25–35°C。</li>
+<li>加入发酵种，用布、纱布或松盖覆盖。</li>
+<li>发酵 8–12 小时；在 28°C 时，4–6 小时后就开始检查。</li>
+<li>表面干净、气味和味道正常时，再过滤一次。</li>
+<li>装入食品级 PET 瓶，等待产生压力；瓶身变硬后立即冷藏。</li>
+</ol>
+<h2>28°C、高温和阳光</h2>
+<p>28°C <strong>且处于阴凉处</strong>可以接受，但发酵会很快。不能直晒：液体温度可能明显高于空气温度。把容器移到阴凉处，并测量液体本身的温度。</p>
+<ul>
+<li>18–24°C — 平稳；</li>
+<li>25–27°C — 较快，6 小时后开始检查；</li>
+<li>28–30°C — 炎热，只能放阴凉处，4 小时后开始检查；</li>
+<li>31–34°C — 移到更凉的地方；</li>
+<li>35°C 及以上 — 降温并停止家庭流程。</li>
+</ul>
+<h2>气泡和酒精</h2>
+<p>家庭酵母发酵无法诚实保证 <strong>0.0% 酒精</strong>。想要尽量多的气泡、尽量少的额外酒精，应在食品级 PET 中短时间二次发酵，频繁检查压力，并立即冷藏。不要加入过量的二次发酵糖，也不要让密封瓶长时间处于温暖环境。</p>
+<p>在 3 L 中，100–120 g 添加糖仅从这些糖计算，理论上最多约为 2,2–2,6% ABV。没有初始/最终密度或实验室分析，就无法知道准确酒精度。</p>
+<h2>糖、panela、麦芽糖和麦芽</h2>
+<p>Panela 可大致按 1:1 替代白糖。麦芽糖可以发酵，但不能替代麦芽的味道和酶。若想要更明显的麦芽风味，麦芽提取物通常比纯麦芽糖更合适。</p>
+<h2>批次状态</h2>
+<p>AI 智能体记录体积、时间、室温、液体温度、最高温度、直射阳光、封口方式、表面、气味、味道、糖量和冷藏时间。未知值保持为 <code>null</code>；未经确认的操作不能视为已完成。</p>
+<h2>安全</h2>
+<p>主发酵不能密封。瓶内二次发酵只能使用食品级 PET，不能使用玻璃。不要摇晃非常硬或变形的瓶子；让瓶口远离脸部并小心冷藏。出现霉菌、绒毛、彩色斑点、黏液，或腐烂、丙酮、肉类、下水道气味时，必须丢弃。</p>
+<h2>当前链接</h2>
+<ul>
+<li>最新主页：<a href="https://kvassistent.pages.dev/">https://kvassistent.pages.dev/</a></li>
+<li>游戏：<a href="https://kvassistent.pages.dev/game/">https://kvassistent.pages.dev/game/</a></li>
+<li>实时批次：<a href="https://kvassistent.pages.dev/companion/">https://kvassistent.pages.dev/companion/</a></li>
+<li>不可变版本：<a href="https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/">https://kvassistent.pages.dev/v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1/</a></li>
+<li>仓库：<a href="https://github.com/bambuchastudent/kvas-ai-agent">https://github.com/bambuchastudent/kvas-ai-agent</a></li>
+</ul>
+</article>
+</main>
+</body>
+</html>

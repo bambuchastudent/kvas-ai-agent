@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0a08">
+  <meta name="description" content="Соберите вертикальную сториз 9:16 из результата домашнего кваса и сохраните PNG для Telegram или Instagram.">
+  <title>Сториз 9:16 · КВАССИСТЕНТ</title>
+  <style>
+  :root{color-scheme:dark;--ink:#fff7e7;--muted:#b9ad97;--gold:#f0bb45;--line:#463a29;--panel:#1d1811}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 5%,#4a2c13,#090806 38%);color:var(--ink);font:16px/1.5 system-ui,-apple-system,sans-serif}main{width:min(1120px,calc(100% - 28px));margin:auto;padding:24px 0 60px}nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}nav a{color:var(--gold);text-decoration:none;font-weight:800}.layout{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(320px,1.2fr);gap:22px;align-items:start}.panel{padding:24px;border:1px solid var(--line);border-radius:24px;background:rgba(25,20,14,.94)}h1{margin:.1em 0 .35em;font:600 clamp(42px,7vw,74px)/.94 Georgia,serif}p{color:var(--muted)}label{display:grid;gap:7px;margin-top:15px;font-size:12px;font-weight:800;color:var(--muted)}input,textarea{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;background:#0e0c09;color:var(--ink);font:inherit}textarea{min-height:100px;resize:vertical}.buttons{display:grid;gap:10px;margin-top:20px}button{padding:15px 18px;border:0;border-radius:13px;background:var(--gold);color:#171109;font-weight:900;cursor:pointer}button.secondary{border:1px solid var(--line);background:#17130e;color:var(--ink)}button:disabled{opacity:.55;cursor:not-allowed}.canvas-shell{position:sticky;top:14px;display:grid;place-items:center;padding:18px;border:1px solid var(--line);border-radius:24px;background:#080706;overflow:auto}canvas{display:block;width:min(100%,420px);height:auto;border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.45)}.hint{margin-top:12px;font-size:12px;text-align:center}@media(max-width:820px){.layout{grid-template-columns:1fr}.canvas-shell{position:static}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+  </style>
+<style>
+/* kvassistent-safe-interactions */
+:where(button,a,[role="button"],input,select,textarea,summary){touch-action:manipulation}
+:where(button,a,[role="button"]){-webkit-tap-highlight-color:transparent}
+body::after,.kvass-flame{animation:none!important}
+.kvass-orbit{animation-duration:90s!important}
+@media(max-width:760px){.kvass-orbit{animation:none!important}.kvass-space-layer{opacity:.55}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .kvass-space-layer{display:none!important}
+}
+</style><meta name="robots" content="noindex,follow"><meta name="googlebot" content="noindex,follow"><link rel="canonical" href="https://kvassistent.pages.dev/feedback/stories/"><meta property="og:site_name" content="KVASSISTENT"><meta property="og:type" content="website"><meta property="og:title" content="Сториз 9:16 · КВАССИСТЕНТ"><meta property="og:description" content="Соберите вертикальную сториз 9:16 из результата домашнего кваса и сохраните PNG для Telegram или Instagram."><meta property="og:url" content="https://kvassistent.pages.dev/feedback/stories/"><meta property="og:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="800"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Сториз 9:16 · КВАССИСТЕНТ"><meta name="twitter:description" content="Соберите вертикальную сториз 9:16 из результата домашнего кваса и сохраните PNG для Telegram или Instagram."><meta name="twitter:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"></head>
+<body><main>
+<nav><a href="../">← Добавить результат</a><a href="../../">КВАССИСТЕНТ</a></nav>
+<div class="layout">
+  <section class="panel">
+    <p><strong>Версия 28 · Story maker</strong></p>
+    <h1>Сделай сториз из кваса</h1>
+    <p>Фотография остаётся в браузере. Мы собираем PNG 1080×1920, который можно отправить в Telegram или Instagram.</p>
+    <label>Фото кваса<input id="photo" type="file" accept="image/*"></label>
+    <label>Название<input id="title" maxlength="52" value="МОЯ ЖИЖА"></label>
+    <label>Короткий результат<textarea id="result" maxlength="180" placeholder="8 часов при 27°C · хлебный вкус · мягкая кислинка · хорошая газация"></textarea></label>
+    <label>Подпись автора<input id="author" maxlength="42" placeholder="@ник или имя"></label>
+    <div class="buttons">
+      <button id="render" type="button">Обновить сториз</button>
+      <button id="save" type="button" class="secondary">Сохранить PNG 9:16</button>
+      <button id="share" type="button" class="secondary">Поделиться</button>
+    </div>
+    <p class="hint">Instagram не даёт надёжно публиковать сториз напрямую из обычного сайта, поэтому PNG и системное меню «Поделиться» работают честнее.</p>
+  </section>
+  <section class="canvas-shell"><canvas id="story" width="1080" height="1920" aria-label="Предпросмотр сториз"></canvas></section>
+</div>
+</main>
+<script>
+(() => {
+  const canvas=document.getElementById('story');const ctx=canvas.getContext('2d');
+  const photo=document.getElementById('photo');const title=document.getElementById('title');const result=document.getElementById('result');const author=document.getElementById('author');
+  const renderButton=document.getElementById('render');const saveButton=document.getElementById('save');const shareButton=document.getElementById('share');let image=null;
+  const lines=(text,max)=>{const words=text.trim().split(/\s+/).filter(Boolean);const out=[];let line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>max&&line){out.push(line);line=word}else line=next}if(line)out.push(line);return out};
+  const draw=()=>{const w=canvas.width,h=canvas.height;const gradient=ctx.createLinearGradient(0,0,w,h);gradient.addColorStop(0,'#54300f');gradient.addColorStop(.55,'#17100a');gradient.addColorStop(1,'#050403');ctx.fillStyle=gradient;ctx.fillRect(0,0,w,h);
+    if(image){const scale=Math.max(w/image.width,h/image.height);const iw=image.width*scale,ih=image.height*scale;ctx.drawImage(image,(w-iw)/2,(h-ih)/2,iw,ih);const shade=ctx.createLinearGradient(0,0,0,h);shade.addColorStop(0,'rgba(0,0,0,.12)');shade.addColorStop(.48,'rgba(0,0,0,.28)');shade.addColorStop(1,'rgba(0,0,0,.92)');ctx.fillStyle=shade;ctx.fillRect(0,0,w,h)}
+    ctx.strokeStyle='rgba(240,187,69,.75)';ctx.lineWidth=5;ctx.strokeRect(48,48,w-96,h-96);ctx.fillStyle='#f0bb45';ctx.font='900 30px system-ui';ctx.fillText('КВАССИСТЕНТ · РЕАЛЬНЫЙ РЕЗУЛЬТАТ',80,115);
+    ctx.fillStyle='#fff7e7';ctx.font='700 94px Georgia';let y=1320;for(const line of lines(title.value||'МОЯ ЖИЖА',850).slice(0,2)){ctx.fillText(line,80,y);y+=104}
+    ctx.fillStyle='#eee1ca';ctx.font='600 43px system-ui';y+=22;for(const line of lines(result.value||'Добавь вкус, время и температуру — коротко и честно.',890).slice(0,4)){ctx.fillText(line,80,y);y+=58}
+    ctx.fillStyle='#f0bb45';ctx.font='800 32px system-ui';ctx.fillText(author.value.trim()||'СДЕЛАНО ЧЕЛОВЕКОМ · ИИ ПОМОГАЛ',80,1810);ctx.textAlign='right';ctx.fillText('kvassistent.pages.dev',1000,1810);ctx.textAlign='left'};
+  photo.addEventListener('change',()=>{const file=photo.files&&photo.files[0];if(!file){image=null;draw();return}const reader=new FileReader();reader.onload=()=>{const next=new Image();next.onload=()=>{image=next;draw()};next.src=reader.result};reader.readAsDataURL(file)});
+  [title,result,author].forEach(node=>node.addEventListener('input',draw));renderButton.addEventListener('click',draw);
+  const blob=()=>new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+  saveButton.addEventListener('click',async()=>{draw();const data=await blob();if(!data)return;const url=URL.createObjectURL(data);const a=document.createElement('a');a.href=url;a.download='kvassistent-story.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+  shareButton.addEventListener('click',async()=>{draw();const data=await blob();if(!data)return;const file=new File([data],'kvassistent-story.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:'Мой результат КВАССИСТЕНТ',text:'Домашний квас своими руками',files:[file]})}else{saveButton.click()}});
+  draw();
+})();
+</script></body></html>

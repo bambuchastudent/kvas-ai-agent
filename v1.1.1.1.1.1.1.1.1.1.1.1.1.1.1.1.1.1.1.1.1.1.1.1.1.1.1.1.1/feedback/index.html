@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#17130d">
+  <meta name="description" content="Добавьте результат домашнего кваса в КВАССИСТЕНТ одним коротким сообщением, с необязательной ссылкой на фото или видео.">
+  <title>Добавить результат · КВАССИСТЕНТ · Версия 29</title>
+  <link rel="stylesheet" href="styles.css">
+<style>
+/* kvassistent-safe-interactions */
+:where(button,a,[role="button"],input,select,textarea,summary){touch-action:manipulation}
+:where(button,a,[role="button"]){-webkit-tap-highlight-color:transparent}
+body::after,.kvass-flame{animation:none!important}
+.kvass-orbit{animation-duration:90s!important}
+@media(max-width:760px){.kvass-orbit{animation:none!important}.kvass-space-layer{opacity:.55}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .kvass-space-layer{display:none!important}
+}
+</style><meta name="robots" content="noindex,follow"><meta name="googlebot" content="noindex,follow"><link rel="canonical" href="https://kvassistent.pages.dev/feedback/"><meta property="og:site_name" content="KVASSISTENT"><meta property="og:type" content="website"><meta property="og:title" content="Добавить результат · КВАССИСТЕНТ · Версия 29"><meta property="og:description" content="Добавьте результат домашнего кваса в КВАССИСТЕНТ одним коротким сообщением, с необязательной ссылкой на фото или видео."><meta property="og:url" content="https://kvassistent.pages.dev/feedback/"><meta property="og:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="800"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Добавить результат · КВАССИСТЕНТ · Версия 29"><meta name="twitter:description" content="Добавьте результат домашнего кваса в КВАССИСТЕНТ одним коротким сообщением, с необязательной ссылкой на фото или видео."><meta name="twitter:image" content="https://kvassistent.pages.dev/assets/kvassistent-social.png"></head>
+<body>
+  <header>
+    <a class="brand" href="../"><span>К</span><strong>КВАССИСТЕНТ</strong></a>
+    <a class="quiet-link" href="../companion/">Живая партия →</a>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="kicker">Версия 29 · результат за полминуты</p>
+      <h1>Покажи, что<br><em>получилось.</em></h1>
+      <p class="lead">Напиши вкус и сколько бродило. Фото, видео, имя и контакт — необязательно. Результат уйдёт автору и станет кандидатом в истории и галерею.</p>
+    </section>
+
+    <section class="layout">
+      <form id="drink-form">
+        <div class="form-heading"><span>01</span><div><h2>Мой результат</h2><p>Одно обязательное поле. Без анкеты и допроса.</p></div></div>
+
+        <label><span>Что получилось? *</span><textarea name="message" minlength="3" maxlength="2000" rows="6" required placeholder="Например: 3 л, 8 часов при 27°C. Кисленький, хлебный, газа пока мало."></textarea></label>
+        <label><span>Фото или видео ссылкой</span><input name="media_url" type="url" maxlength="500" inputmode="url" placeholder="https://… (необязательно)"></label>
+
+        <details class="optional-fields">
+          <summary>Название, имя и контакт — необязательно</summary>
+          <label><span>Название результата</span><input name="drink_name" maxlength="120" placeholder="Например: Жижа №2"></label>
+          <div class="two">
+            <label><span>Как подписать</span><input name="name" maxlength="80" autocomplete="name" placeholder="Имя или ник"></label>
+            <label><span>Как ответить</span><input name="contact" maxlength="180" autocomplete="email" placeholder="@telegram или email"></label>
+          </div>
+        </details>
+
+        <input name="photo_url" type="hidden">
+        <label class="honey" aria-hidden="true"><span>Website</span><input name="website" tabindex="-1" autocomplete="off"></label>
+
+        <button type="submit"><strong>Добавить результат</strong><span>→</span></button>
+        <p class="privacy">История на странице не сохраняется автоматически. Данные отправляются владельцу КВАССИСТЕНТА и записываются задачей релиза 30. Не отправляй пароли, платёжные данные и чужие личные фото.</p>
+        <p id="form-result" class="form-result" role="status" aria-live="polite" hidden></p>
+      </form>
+
+      <aside>
+        <p class="kicker">Ещё проще с телефона</p>
+        <h2>Фото или видео — сразу боту.</h2>
+        <p>Нажми «Мой результат», пришли медиа и короткую подпись. Бот больше не заваливает тебя рецептами и меню после каждого сообщения.</p>
+        <nav aria-label="Контакты">
+          <a href="https://t.me/kvassistent_bot?start=result" target="_blank" rel="noopener noreferrer"><strong>Отправить результат</strong><span>Telegram ↗</span></a>
+          <a href="stories/"><strong>Сделать сториз 9:16</strong><span>PNG →</span></a>
+          <a href="https://github.com/bambuchastudent/kvas-ai-agent" target="_blank" rel="noopener noreferrer"><strong>GitHub</strong><span>Код проекта ↗</span></a>
+        </nav>
+        <small>Одинаковое фото или видео с той же подписью не должно создавать повторную задачу.</small>
+      </aside>
+    </section>
+
+    <section class="story-publications" id="stories">
+      <p class="kicker">Публикации и истории</p>
+      <h2>Квас должен быть виден, а не лежать в переписке</h2>
+      <p class="story-lead">Версия 29 сохраняет единый формат: вертикальная карточка 9:16, короткий результат и ссылка на исходные данные. Уже опубликованные два фото и видео подключаются сюда прямыми ссылками после добавления их URL в репозиторий — без выдуманных публикаций.</p>
+      <div class="story-rail">
+        <a class="story-card story-video" href="https://devpost.com/software/kvassistent" target="_blank" rel="noopener noreferrer"><span>VIDEO</span><strong>Видео и история проекта</strong><small>Devpost ↗</small></a>
+        <a class="story-card story-create" href="stories/"><span>9:16</span><strong>Собрать сториз из своего результата</strong><small>Telegram / Instagram →</small></a>
+        <a class="story-card story-send" href="https://t.me/kvassistent_bot?start=result" target="_blank" rel="noopener noreferrer"><span>+ RESULT</span><strong>Прислать фото или видео</strong><small>@kvassistent_bot ↗</small></a>
+        <a class="story-card story-data" href="../changelog/"><span>DATA</span><strong>Проверить данные и историю релизов</strong><small>Changelog →</small></a>
+      </div>
+    </section>
+  </main>
+  <footer>КВАССИСТЕНТ · Версия 29 · Результат, история, публикация</footer>
+
+  <script>
+  (() => {
+    const endpoint = "https://q49g8jkjoe.execute-api.eu-west-1.amazonaws.com/default/kvassistent/feedback";
+    const form = document.getElementById("drink-form");
+    const result = document.getElementById("form-result");
+    const button = form.querySelector("button[type=submit]");
+    let sending = false;
+
+    const show = (text, kind) => {
+      result.textContent = text;
+      result.dataset.kind = kind;
+      result.hidden = false;
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (sending || !form.reportValidity()) return;
+      sending = true;
+      button.disabled = true;
+      button.setAttribute("aria-busy", "true");
+      show("Отправляю результат…", "pending");
+
+      try {
+        const payload = Object.fromEntries(new FormData(form).entries());
+        payload.drink_name = (payload.drink_name || "").trim() || "Мой результат кваса";
+        payload.photo_url = payload.media_url || "";
+        payload.kind = "result";
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {"content-type": "application/json"},
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || "Не получилось отправить результат");
+        show(data.message || "Результат добавлен. Ай да хорош!", "ok");
+        form.reset();
+      } catch (error) {
+        show(`${error.message || "Не получилось отправить результат"}. Можно прислать его @kvassistent_bot.`, "error");
+      } finally {
+        sending = false;
+        button.disabled = false;
+        button.removeAttribute("aria-busy");
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

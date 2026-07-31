@@ -1,0 +1,262 @@
+{
+  "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+  "gallery": {
+    "count": 0,
+    "web": "#gallery"
+  },
+  "documents": [
+    {
+      "language": "ru",
+      "type": "summary",
+      "title": "КВАССИСТЕНТ — краткая инструкция человеку",
+      "sections": [
+        "overview",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "sweeteners",
+        "state",
+        "safety",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-summary-ru-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "ru/summary/"
+    },
+    {
+      "language": "ru",
+      "type": "instructions",
+      "title": "КВАССИСТЕНТ — инструкция ИИ-агента",
+      "sections": [
+        "role",
+        "response",
+        "state",
+        "questions",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "ingredients",
+        "visual",
+        "safety",
+        "handoff",
+        "reproducibility",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-instructions-ru-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "ru/instructions/"
+    },
+    {
+      "language": "en",
+      "type": "summary",
+      "title": "KVASSISTENT — human quick guide",
+      "sections": [
+        "overview",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "sweeteners",
+        "state",
+        "safety",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-summary-en-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "en/summary/"
+    },
+    {
+      "language": "en",
+      "type": "instructions",
+      "title": "KVASSISTENT — AI agent instruction",
+      "sections": [
+        "role",
+        "response",
+        "state",
+        "questions",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "ingredients",
+        "visual",
+        "safety",
+        "handoff",
+        "reproducibility",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-instructions-en-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "en/instructions/"
+    },
+    {
+      "language": "es",
+      "type": "summary",
+      "title": "KVASSISTENT — guía rápida para personas",
+      "sections": [
+        "overview",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "sweeteners",
+        "state",
+        "safety",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-summary-es-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "es/summary/"
+    },
+    {
+      "language": "es",
+      "type": "instructions",
+      "title": "KVASSISTENT — instrucciones para agente de IA",
+      "sections": [
+        "role",
+        "response",
+        "state",
+        "questions",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "ingredients",
+        "visual",
+        "safety",
+        "handoff",
+        "reproducibility",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-instructions-es-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "es/instructions/"
+    },
+    {
+      "language": "de",
+      "type": "summary",
+      "title": "KVASSISTENT — Kurzanleitung für Menschen",
+      "sections": [
+        "overview",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "sweeteners",
+        "state",
+        "safety",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-summary-de-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "de/summary/"
+    },
+    {
+      "language": "de",
+      "type": "instructions",
+      "title": "KVASSISTENT — Anleitung für KI-Agenten",
+      "sections": [
+        "role",
+        "response",
+        "state",
+        "questions",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "ingredients",
+        "visual",
+        "safety",
+        "handoff",
+        "reproducibility",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-instructions-de-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "de/instructions/"
+    },
+    {
+      "language": "zh-CN",
+      "type": "summary",
+      "title": "KVASSISTENT — 用户快速指南",
+      "sections": [
+        "overview",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "sweeteners",
+        "state",
+        "safety",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-summary-zh-CN-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "zh-CN/summary/"
+    },
+    {
+      "language": "zh-CN",
+      "type": "instructions",
+      "title": "KVASSISTENT — AI 智能体说明",
+      "sections": [
+        "role",
+        "response",
+        "state",
+        "questions",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "ingredients",
+        "visual",
+        "safety",
+        "handoff",
+        "reproducibility",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-instructions-zh-CN-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "zh-CN/instructions/"
+    },
+    {
+      "language": "el",
+      "type": "summary",
+      "title": "KVASSISTENT — σύντομος οδηγός για ανθρώπους",
+      "sections": [
+        "overview",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "sweeteners",
+        "state",
+        "safety",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-summary-el-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "el/summary/"
+    },
+    {
+      "language": "el",
+      "type": "instructions",
+      "title": "KVASSISTENT — οδηγίες πράκτορα AI",
+      "sections": [
+        "role",
+        "response",
+        "state",
+        "questions",
+        "baseline",
+        "process",
+        "heat",
+        "alcohol",
+        "ingredients",
+        "visual",
+        "safety",
+        "handoff",
+        "reproducibility",
+        "links"
+      ],
+      "pdf": "pdfs/kvas-instructions-el-1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.pdf",
+      "web": "el/instructions/"
+    }
+  ],
+  "release": {
+    "version": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+    "display": "v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+    "ones_count": 29,
+    "next": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+    "project": "КВАССИСТЕНТ"
+  }
+}

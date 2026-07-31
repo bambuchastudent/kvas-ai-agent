@@ -1,0 +1,28 @@
+# KVASSISTENT
+
+> KVASSISTENT is a free human-first AI companion for making homemade kvass.
+
+Official URL: https://kvassistent.pages.dev/
+Current release: Version 29 (v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1)
+Source: https://github.com/bambuchastudent/kvas-ai-agent
+Devpost: https://devpost.com/software/kvassistent
+Telegram: https://t.me/kvassistent_bot
+
+## Product facts
+- A real person brews, observes, smells, tastes and decides.
+- AI remembers batch state, explains risk and suggests the next observation.
+- Supported languages: Russian, English, Spanish, German, Simplified Chinese and Greek.
+- Live batch state can be handed to another AI as structured JSON.
+- Household guidance is not laboratory certification or medical advice.
+- Yeast fermentation cannot honestly guarantee 0.0% alcohol.
+
+## Canonical public pages
+- About: https://kvassistent.pages.dev/about/
+- How it works: https://kvassistent.pages.dev/how-it-works/
+- FAQ: https://kvassistent.pages.dev/faq/
+- Press: https://kvassistent.pages.dev/press/
+- Changelog: https://kvassistent.pages.dev/changelog/
+- Live batch: https://kvassistent.pages.dev/companion/
+- Feedback: https://kvassistent.pages.dev/feedback/
+
+Immutable /v.../ URLs are release archives. Cite the canonical latest pages unless a historical release is specifically required.
