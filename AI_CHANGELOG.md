@@ -1,5 +1,18 @@
 # AI-readable change log
 
+## 2026-07-31 — KVASSISTENT website release 29 clickable carbonation craft
+
+- **Version or scope:** release 29, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`; next release 30.
+- **Changed:** made the entire game globe clickable; added nearest-continent selection, keyboard launch, safe local-state recovery and a pure game-state module; replaced the fire rocket with an inverted kvass bottle whose cap unscrews, whose neck emits carbonation bubbles, and whose toilet-paper rolls unfold as wings; synchronized six languages and release metadata.
+- **Why:** the globe looked interactive but tapping the sphere did nothing unless the user hit a small continent marker. The previous rocket also contradicted the product joke: KVASSISTENT should fly on carbonation, not fire.
+- **Behavior:** tapping anywhere on the sphere launches from the nearest site; Enter or Space launches the next site; the bottle flies bottom-first with the neck trailing, bubble exhaust and paper wings; the game frames the real drink as a non-alcoholic target up to 0.5% ABV and does not claim an exact value without measurement.
+- **Files and systems:** `companion/game/index.html`, `game.js`, `game-state.js`, `styles.css`, `i18n.js`, `scripts/test-game.mjs`, fast and full GitHub Actions workflows, release metadata, feedback page, publication manifest, gallery metadata, README and release notes.
+- **Verification:** deterministic Node tests cover all six launch sites, countdown behavior, nearest-site selection and static interaction/animation contracts; PR CI runs the source tests, while the merge-only workflow repeats them against the generated immutable game and performs live marker checks after deployment.
+- **Deployment:** proposed on branch `agent/release-v29-clickable-gas-craft`; publish after paired backend release 29 is green and merged.
+- **Remaining work:** complete CI, merge both repositories, then manually tap the production sphere on a phone to confirm the visual timing and hit area feel right.
+
+---
+
 ## 2026-07-30 — KVASSISTENT website release 28 results and stories
 
 - **Version or scope:** release 28, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`; next release 29.
