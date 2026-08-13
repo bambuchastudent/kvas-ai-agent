@@ -1,5 +1,18 @@
 # AI-readable change log
 
+## 2026-08-13 — Agents for Humans Strands prototype preparation
+
+- **Version or scope:** unreleased hackathon preparation; product release remains Version 29.
+- **Changed:** added a standalone preparation workspace under `hackathons/agents-for-humans/` with a Python 3.10+ Strands agent entry point, local resumable batch-state store, deterministic safety gate, deterministic checkpoint planner, pure unit tests, architecture/demo guidance and an explicit pre-existing-work disclosure.
+- **Why:** prepare a new competition-eligible `Agents for Humans` implementation without presenting the pre-existing BSD-licensed KVASSISTENT repository or historical releases as newly created hackathon work.
+- **Behavior:** no production user-visible behavior changes. The prototype can persist an explicitly reported batch state, recover it after restart, decide whether a checkpoint is due, and prevent model reasoning from overriding reported mold/slime/unsafe-smell/overheat stop conditions.
+- **Files and systems:** `hackathons/agents-for-humans/pyproject.toml`, `hackathons/agents-for-humans/src/kvassistent_steward/`, `hackathons/agents-for-humans/tests/test_core.py`, `hackathons/agents-for-humans/README.md`, GitHub issue #32 and this changelog.
+- **Verification:** source reviewed against the current Strands Python custom-tool contract; deterministic unit tests and Python compilation are specified and still need execution in CI/local checkout before merge. No live model, AWS AgentCore or Devpost submission has been claimed.
+- **Deployment:** proposed only on branch `hackathon/agents-for-humans-prep`; not merged, not published, and not the final contest repository.
+- **Remaining work:** run the deterministic tests and compile checks; create a new public MIT/Apache competition repository during the submission period; migrate only the new/disclosed work; add accessible demo/AgentCore deployment if practical; record a <=5-minute video; complete the owner-authenticated Devpost submission before 2026-09-14.
+
+---
+
 ## 2026-07-31 — KVASSISTENT website release 29 clickable carbonation craft
 
 - **Version or scope:** release 29, `v1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1`; next release 30.
