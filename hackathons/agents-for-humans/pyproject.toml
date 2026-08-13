@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kvassistent-fermentation-steward"
+version = "0.1.0"
+description = "New Agents for Humans prototype: a human-first Strands fermentation steward"
+requires-python = ">=3.10"
+dependencies = [
+  "strands-agents",
+]
+
+[project.scripts]
+kvassistent-steward = "kvassistent_steward.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
